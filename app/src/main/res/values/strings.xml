@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">MovieCatalogue</string>
+    <string name="movies">Movies</string>
+    <string name="tvshows">Tv Shows</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movie_title">movie title</string>
+    <string name="movie_desc">description</string>
+    <string name="tvShow_title">tv show title</string>
+    <string name="tvShow_desc">tv show desc</string>
+    <string name="movie_release_date">movie release date</string>
+    <string name="tv_show_release_date">TV Show release date</string>
+    <string name="detail_movie">Detail Movie</string>
+    <string name="detail_title">detail title</string>
+    <string name="detail_desc">detail desc</string>
+    <string name="detail_release_date">detail release date</string>
+    <string name="detail_genre">detail genre</string>
+    <string name="detail_score">detail score</string>
+    <string name="image_poster_film">image poster film</string>
+    <string name="label_title">Title</string>
+    <string name="label_releaseDate">Release Date</string>
+    <string name="label_genre">Genre</string>
+    <string name="label_score">Score</string>
+
+</resources>
