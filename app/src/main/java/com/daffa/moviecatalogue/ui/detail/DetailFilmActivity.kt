@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.daffa.moviecatalogue.R
 import com.daffa.moviecatalogue.data.FilmEntity
 import com.daffa.moviecatalogue.databinding.ActivityDetailFilmBinding
+import com.daffa.moviecatalogue.utils.Constants
 
 class DetailFilmActivity : AppCompatActivity() {
 
@@ -32,7 +33,7 @@ class DetailFilmActivity : AppCompatActivity() {
             dataFilm = viewModel.getFilmById(filmEntity.id, type)
 
         }
-
+        
         detailFilmBinding.tvDetailTitle.text = dataFilm.title
         detailFilmBinding.tvDetailImgPoster.setImageResource(dataFilm.imgPoster)
         detailFilmBinding.tvReleaseDate.text = dataFilm.releaseDate

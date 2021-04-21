@@ -9,13 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieCatalogue">
-        <activity android:name=".ui.detail.DetailFilmActivity"></activity>
-        <activity android:name=".ui.main.MainActivity">
+        <activity android:name=".ui.main.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.detail.DetailFilmActivity" />
+        <activity android:name=".ui.main.MainActivity">
         </activity>
     </application>
 
