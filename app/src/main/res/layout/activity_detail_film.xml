@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         tools:context=".ui.detail.DetailFilmActivity">
 
-
         <TextView
             android:id="@+id/detail_appname"
             android:layout_width="match_parent"

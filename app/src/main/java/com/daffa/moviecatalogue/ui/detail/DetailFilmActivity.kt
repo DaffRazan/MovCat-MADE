@@ -8,6 +8,7 @@ import com.daffa.moviecatalogue.R
 import com.daffa.moviecatalogue.data.FilmEntity
 import com.daffa.moviecatalogue.databinding.ActivityDetailFilmBinding
 import com.daffa.moviecatalogue.utils.Constants
+import java.lang.StringBuilder
 
 class DetailFilmActivity : AppCompatActivity() {
 
@@ -33,7 +34,8 @@ class DetailFilmActivity : AppCompatActivity() {
             dataFilm = viewModel.getFilmById(filmEntity.id, type)
 
         }
-        
+
+        detailFilmBinding.detailAppname.text = StringBuilder("Detail ").append(type)
         detailFilmBinding.tvDetailTitle.text = dataFilm.title
         detailFilmBinding.tvDetailImgPoster.setImageResource(dataFilm.imgPoster)
         detailFilmBinding.tvReleaseDate.text = dataFilm.releaseDate
@@ -41,5 +43,4 @@ class DetailFilmActivity : AppCompatActivity() {
         detailFilmBinding.tvScore.text = dataFilm.score
         detailFilmBinding.tvDetailDesc.text = dataFilm.description
     }
-
 }
