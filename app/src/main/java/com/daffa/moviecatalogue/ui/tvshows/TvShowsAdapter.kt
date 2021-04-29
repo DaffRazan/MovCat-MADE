@@ -8,40 +8,43 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.daffa.moviecatalogue.R
 import com.daffa.moviecatalogue.data.FilmEntity
-import com.daffa.moviecatalogue.databinding.ItemsMoviesBinding
+import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
+import com.daffa.moviecatalogue.data.source.remote.response.model.TvShow
 import com.daffa.moviecatalogue.databinding.ItemsTvshowsBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
-import com.daffa.moviecatalogue.ui.movies.MoviesAdapter
 
 class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() {
 
-    private var listTvShows = ArrayList<FilmEntity>()
+//    private var listTvShows = ArrayList<FilmEntity>()
 
-    fun setTvShows(tvShows: List<FilmEntity>?) {
-        if (tvShows == null) return
-        this.listTvShows.clear()
-        this.listTvShows.addAll(tvShows)
-    }
+    var data: MutableList<TvShow> = ArrayList()
 
-    class TvShowsViewHolder(private val binding: ItemsTvshowsBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(tvShow: FilmEntity) {
+//    fun setTvShows(tvShows: List<FilmEntity>?) {
+//        if (tvShows == null) return
+//        this.listTvShows.clear()
+//        this.listTvShows.addAll(tvShows)
+//    }
+
+    class TvShowsViewHolder(private val binding: ItemsTvshowsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(tvShow: TvShow) {
             with(binding) {
                 Glide.with(itemView.context)
-                    .load(tvShow.imgPoster)
+                    .load(tvShow.poster_path)
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_loading)
                             .error(R.drawable.ic_error)
                     )
                     .into(imgPoster)
-                tvTvShowTitle.text = tvShow.title
-                tvTvShowReleaseDate.text = tvShow.releaseDate
+                tvTvShowTitle.text = tvShow.name
+                tvTvShowReleaseDate.text = tvShow.first_air_date
 
-                itemView.setOnClickListener {
-                    val intent = Intent(itemView.context, DetailFilmActivity::class.java)
-                    intent.putExtra(DetailFilmActivity.EXTRA_DATA, tvShow)
-                    intent.putExtra(DetailFilmActivity.EXTRA_TYPE, "TV Show")
-                    itemView.context.startActivity(intent)
-                }
+//                itemView.setOnClickListener {
+//                    val intent = Intent(itemView.context, DetailFilmActivity::class.java)
+//                    intent.putExtra(DetailFilmActivity.EXTRA_DATA, tvShow)
+//                    intent.putExtra(DetailFilmActivity.EXTRA_TYPE, "TV Show")
+//                    itemView.context.startActivity(intent)
+//                }
 
             }
         }
@@ -57,11 +60,11 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() 
     }
 
     override fun onBindViewHolder(holder: TvShowsAdapter.TvShowsViewHolder, position: Int) {
-        val tvShows = listTvShows[position]
+        val tvShows = data[position]
         holder.bind(tvShows)
     }
 
-    override fun getItemCount(): Int = listTvShows.size
+    override fun getItemCount(): Int = data.size
 
 
 }

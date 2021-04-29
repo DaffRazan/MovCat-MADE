@@ -9,7 +9,8 @@ import com.daffa.moviecatalogue.R
 import com.daffa.moviecatalogue.ui.movies.MoviesFragment
 import com.daffa.moviecatalogue.ui.tvshows.TvShowsFragment
 
-class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
+    FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     companion object {
         @StringRes
@@ -19,11 +20,12 @@ class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
     override fun getCount(): Int = 2
 
     override fun getItem(position: Int): Fragment =
-            when (position) {
-                0 -> MoviesFragment()
-                1 -> TvShowsFragment()
-                else -> Fragment()
-            }
+        when (position) {
+            0 -> MoviesFragment()
+            1 -> TvShowsFragment()
+            else -> Fragment()
+        }
 
-    override fun getPageTitle(position: Int): CharSequence = mContext.resources.getString(TAB_TITLES[position])
+    override fun getPageTitle(position: Int): CharSequence =
+        mContext.resources.getString(TAB_TITLES[position])
 }

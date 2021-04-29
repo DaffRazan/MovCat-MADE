@@ -7,7 +7,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="placeholder">#6FB6B6B6</color>
-    <color name="bc_cardview">#3e2723</color>
-    <color name="rv_backgroundColor">#f4eee8</color>
-    <color name="detailActivity_background">#6a4f4b</color>
+    <color name="bc_cardview">#151515</color>
+    <color name="rv_backgroundColor">#252a34</color>
+    <color name="detailActivity_background">#151515</color>
+    <color name="label_color">#424642</color>
 </resources>

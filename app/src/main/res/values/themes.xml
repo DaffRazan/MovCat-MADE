@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.MovieCatalogue" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#6a4f4b</item>
-        <item name="colorPrimaryVariant">#1b0000</item>
+        <item name="colorPrimary">#151515</item>
+        <item name="colorPrimaryVariant">#151515</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

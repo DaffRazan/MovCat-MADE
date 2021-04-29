@@ -3,6 +3,7 @@ package com.daffa.moviecatalogue.ui.detail
 import com.daffa.moviecatalogue.utils.Constants.TYPE_MOVIE
 import com.daffa.moviecatalogue.utils.Constants.TYPE_TVSHOW
 import com.daffa.moviecatalogue.utils.DummyData
+import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
 import org.junit.Before
 import org.junit.Test
 

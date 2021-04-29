@@ -1,22 +1,31 @@
 package com.daffa.moviecatalogue.ui.tvshows
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.daffa.moviecatalogue.R
-import com.daffa.moviecatalogue.databinding.FragmentMoviesBinding
+import com.daffa.moviecatalogue.data.source.Resource
+import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
+import com.daffa.moviecatalogue.data.source.remote.response.TvShowResponse
 import com.daffa.moviecatalogue.databinding.FragmentTvshowsBinding
-import com.daffa.moviecatalogue.databinding.ItemsTvshowsBinding
-import com.daffa.moviecatalogue.ui.movies.MoviesViewModel
+import com.daffa.moviecatalogue.ui.movies.MoviesAdapter
+import com.daffa.moviecatalogue.viewmodels.MainViewModel
+import javax.inject.Inject
 
 
 class TvShowsFragment : Fragment() {
-    private lateinit var fragmentTvshowsBinding: FragmentTvshowsBinding
 
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    val viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+
+    private lateinit var adapter: TvShowsAdapter
+    private lateinit var fragmentTvshowsBinding: FragmentTvshowsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,20 +36,32 @@ class TvShowsFragment : Fragment() {
         return fragmentTvshowsBinding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-        if (activity != null){
-            val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[TvShowsViewModel::class.java]
-            val tvShows = viewModel.getTvShows()
+        val tvShowsAdapter = TvShowsAdapter()
 
-            val tvShowsAdapter = TvShowsAdapter()
-            tvShowsAdapter.setTvShows(tvShows)
+        with(fragmentTvshowsBinding.rvTvShow) {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = tvShowsAdapter
+        }
 
-            with(fragmentTvshowsBinding.rvTvShow) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = tvShowsAdapter
+        viewModel.getTvShows.observe(viewLifecycleOwner, { handleStat(it) })
+
+    }
+
+    private fun handleStat(resource: Resource<TvShowResponse>) {
+        when (resource) {
+            is Resource.Loading -> fragmentTvshowsBinding.isLoading = true
+            is Resource.Empty -> fragmentTvshowsBinding.isLoading = false
+            is Resource.Success -> {
+                fragmentTvshowsBinding.isLoading = false
+                resource.data.let { data -> adapter.data = data.results.toMutableList() }
+            }
+            is Resource.Error -> {
+                fragmentTvshowsBinding.isLoading = false
+                Toast.makeText(requireContext(), resource.errorMessage, Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -9,14 +9,14 @@ object DummyData {
 
         movies.add(
             FilmEntity(
-            "MOVIE_001",
-            "A Star Is Born",
-               R.drawable.poster_a_start_is_born,
-               "Seorang bintang musik country yang karirnya mulai memudar, Jackson Maine (Bradley Cooper) menemukan sebuah talenta yang sangat berbakat di dalam diri dari seorang musisi muda bernama Ally (Lady Gaga). Maine berhasil mengorbitkan Ally menjadi seorang bintang muda yang menjanjikan. Namun keduanya terlibat hubungan yang lebih jauh dari sekedar mentor dan anak didik. Seiring dengan meroketnya karir dari Ally dan dirinya, Maine mengalami dilema mengenai masalah ini.",
-               "2018",
-               "Drama, Percintaan, Musik",
-               "75%"
-           )
+                "MOVIE_001",
+                "A Star Is Born",
+                R.drawable.poster_a_start_is_born,
+                "Seorang bintang musik country yang karirnya mulai memudar, Jackson Maine (Bradley Cooper) menemukan sebuah talenta yang sangat berbakat di dalam diri dari seorang musisi muda bernama Ally (Lady Gaga). Maine berhasil mengorbitkan Ally menjadi seorang bintang muda yang menjanjikan. Namun keduanya terlibat hubungan yang lebih jauh dari sekedar mentor dan anak didik. Seiring dengan meroketnya karir dari Ally dan dirinya, Maine mengalami dilema mengenai masalah ini.",
+                "2018",
+                "Drama, Percintaan, Musik",
+                "75%"
+            )
         )
         movies.add(
             FilmEntity(
