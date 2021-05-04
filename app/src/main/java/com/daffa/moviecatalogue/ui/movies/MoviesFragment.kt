@@ -1,32 +1,28 @@
 package com.daffa.moviecatalogue.ui.movies
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.daffa.moviecatalogue.data.repository.MainRepository
-import com.daffa.moviecatalogue.data.repository.MainRepository.Companion.getInstance
-import com.daffa.moviecatalogue.data.source.Resource
-import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
+import com.daffa.moviecatalogue.data.source.remote.network.ApiConfig
+import com.daffa.moviecatalogue.data.source.remote.network.ApiService
+import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
 import com.daffa.moviecatalogue.databinding.FragmentMoviesBinding
+import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
 import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
+import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.MOVIE
 import com.daffa.moviecatalogue.viewmodels.MainViewModel
-import com.daffa.moviecatalogue.viewmodels.MainViewModel_Factory
-import dagger.android.AndroidInjection
-import javax.inject.Inject
 
 class MoviesFragment : Fragment() {
 
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-
+    private lateinit var viewModel: MainViewModel
     private lateinit var adapter: MoviesAdapter
     private lateinit var fragmentMoviesBinding: FragmentMoviesBinding
 
@@ -38,32 +34,41 @@ class MoviesFragment : Fragment() {
         return fragmentMoviesBinding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val moviesAdapter = MoviesAdapter()
+        val factory = ViewModelFactory.getInstance()
+        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
 
-        with(fragmentMoviesBinding.rvMovie) {
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = moviesAdapter
-        }
+        fragmentMoviesBinding.rvMovie.layoutManager = LinearLayoutManager(activity)
+        adapter = MoviesAdapter()
+        fragmentMoviesBinding.rvMovie.setHasFixedSize(true)
 
-        viewModel.getMovies.observe(viewLifecycleOwner, { handleStat(it) })
+
+        viewModel.getMovies.observe(viewLifecycleOwner, Observer {
+            adapter.setMovies(it)
+        })
+        fragmentMoviesBinding.rvMovie.adapter = adapter
+
+        adapter.setOnItemClickCallback(object :
+            MoviesAdapter.OnItemClickCallback {
+            override fun onItemClicked(id: String) {
+                selectedMovie(id)
+            }
+        })
     }
 
-    private fun handleStat(resource: Resource<MovieResponse>) {
-        when (resource) {
-            is Resource.Loading -> fragmentMoviesBinding.isLoading = true
-            is Resource.Empty -> fragmentMoviesBinding.isLoading = false
-            is Resource.Success -> {
-                fragmentMoviesBinding.isLoading = false
-                resource.data.let { data -> adapter.data = data.results.toMutableList() }
-            }
-            is Resource.Error -> {
-                fragmentMoviesBinding.isLoading = false
-                Toast.makeText(requireContext(), resource.errorMessage, Toast.LENGTH_SHORT).show()
-            }
-        }
+    //loading
+    private fun showLoading(state: Boolean) {
+        fragmentMoviesBinding.progressBar.isVisible = state
+        fragmentMoviesBinding.rvMovie.isGone = state
+    }
+
+    private fun selectedMovie(id: String) {
+        val intent = Intent(context, DetailFilmActivity::class.java)
+        intent.putExtra(DetailFilmActivity.EXTRA_FILM, id)
+        intent.putExtra(DetailFilmActivity.EXTRA_CATEGORY, MOVIE)
+
+        requireActivity().startActivity(intent)
     }
 }

@@ -1,6 +1,5 @@
 package com.daffa.moviecatalogue.ui.movies
 
-import android.content.Entity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,23 +7,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.daffa.moviecatalogue.R
-import com.daffa.moviecatalogue.data.FilmEntity
 import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
 import com.daffa.moviecatalogue.databinding.ItemsMoviesBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
+import com.daffa.moviecatalogue.utils.Constants
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
 
-class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
+class MoviesAdapter() : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
-//    var listMovies = ArrayList<FilmEntity>()
+    var data: List<Movie> = arrayListOf()
 
-    var data: MutableList<Movie> = ArrayList()
+    private lateinit var onItemClickCallback: OnItemClickCallback
 
-//    fun setMovies(movies: List<FilmEntity>?) {
-//        if (movies == null) return
-//        this.listMovies.clear()
-//        this.listMovies.addAll(movies)
-//    }
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
+    interface OnItemClickCallback {
+        fun onItemClicked(id: String)
+    }
+
+    fun setMovies(movies: List<Movie>) {
+        this.data = movies
+        notifyDataSetChanged()
+    }
 
     inner class MoviesViewHolder(private val binding: ItemsMoviesBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -39,15 +45,9 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
                     .into(imgPoster)
                 tvMovieTitle.text = movie.title
                 tvMovieReleaseDate.text = movie.release_date
-
-//                itemView.setOnClickListener {
-//                    val intent = Intent(itemView.context, DetailFilmActivity::class.java)
-//                    intent.putExtra(DetailFilmActivity.EXTRA_DATA, movie)
-//                    intent.putExtra(DetailFilmActivity.EXTRA_TYPE, "Movie")
-//                    itemView.context.startActivity(intent)
-//                }
-
             }
+
+            itemView.setOnClickListener { onItemClickCallback.onItemClicked(movie.id.toString())  }
         }
     }
 

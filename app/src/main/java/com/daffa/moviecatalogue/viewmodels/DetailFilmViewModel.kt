@@ -1,32 +1,42 @@
 package com.daffa.moviecatalogue.viewmodels
 
-
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.daffa.moviecatalogue.data.repository.MainRepository
 import com.daffa.moviecatalogue.data.source.Resource
+import com.daffa.moviecatalogue.data.source.remote.network.ApiConfig
 import com.daffa.moviecatalogue.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.DetailTvShowResponse
+import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
+import com.daffa.moviecatalogue.data.source.remote.response.model.TvShow
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
 
-class DetailFilmViewModel @Inject constructor(private val repository: MainRepository) :
+class DetailFilmViewModel @Inject constructor (private val mainRepository: MainRepository) :
     ViewModel() {
-    private lateinit var dataExtra: MutableList<Int>
+        companion object {
+            const val MOVIE = "movie"
+            const val TV_SHOW = "tvShow"
+        }
 
-    companion object {
-        const val DATA_DESTINATION = 0
-        const val DATA_ID = 1
-    }
+        private lateinit var detailMovie: LiveData<DetailMovieResponse>
+        private lateinit var detailTvShow: LiveData<DetailTvShowResponse>
 
-    var dataMovie: LiveData<Resource<DetailMovieResponse>>? = null
-    var dataTvShow: LiveData<Resource<DetailTvShowResponse>>? = null
+        fun setFilm(id: String, category: String){
+            when(category) {
+                MOVIE -> {
+                    detailMovie = mainRepository.getMovieById(id.toInt())
+                }
+                TV_SHOW -> {
+                    detailTvShow = mainRepository.getTvShowById(id.toInt())
+                }
+            }
+        }
 
-    fun getDataExtra(data: Int) = this.dataExtra[data]
-
-    fun setDataExtra(dataDesc: Int, dataId: Int) {
-        dataExtra = mutableListOf(dataDesc, dataId)
-
-        if (dataMovie == null) dataMovie = repository.getMovieById(dataExtra[DATA_ID])
-        if (dataTvShow == null) dataTvShow = repository.getTvShowById(dataExtra[DATA_ID])
-    }
+        fun getDetailMovie() = detailMovie
+        fun getDetailTvShow() = detailTvShow
 }

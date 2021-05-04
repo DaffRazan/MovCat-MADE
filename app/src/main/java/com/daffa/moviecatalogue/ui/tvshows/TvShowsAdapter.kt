@@ -12,25 +12,34 @@ import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
 import com.daffa.moviecatalogue.data.source.remote.response.model.TvShow
 import com.daffa.moviecatalogue.databinding.ItemsTvshowsBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
+import com.daffa.moviecatalogue.ui.movies.MoviesAdapter
+import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
 
-class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() {
+class TvShowsAdapter() : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() {
 
-//    private var listTvShows = ArrayList<FilmEntity>()
+    var data: List<TvShow> = arrayListOf()
 
-    var data: MutableList<TvShow> = ArrayList()
+    private lateinit var onItemClickCallback: OnItemClickCallback
 
-//    fun setTvShows(tvShows: List<FilmEntity>?) {
-//        if (tvShows == null) return
-//        this.listTvShows.clear()
-//        this.listTvShows.addAll(tvShows)
-//    }
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
 
-    class TvShowsViewHolder(private val binding: ItemsTvshowsBinding) :
+    interface OnItemClickCallback {
+        fun onItemClicked(id: String)
+    }
+
+    fun setTvShows(tvShows: List<TvShow>) {
+        this.data = tvShows
+        notifyDataSetChanged()
+    }
+
+    inner class TvShowsViewHolder(private val binding: ItemsTvshowsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(tvShow: TvShow) {
             with(binding) {
                 Glide.with(itemView.context)
-                    .load(tvShow.poster_path)
+                    .load(API_POSTER_PATH + tvShow.poster_path)
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_loading)
                             .error(R.drawable.ic_error)
@@ -38,15 +47,8 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() 
                     .into(imgPoster)
                 tvTvShowTitle.text = tvShow.name
                 tvTvShowReleaseDate.text = tvShow.first_air_date
-
-//                itemView.setOnClickListener {
-//                    val intent = Intent(itemView.context, DetailFilmActivity::class.java)
-//                    intent.putExtra(DetailFilmActivity.EXTRA_DATA, tvShow)
-//                    intent.putExtra(DetailFilmActivity.EXTRA_TYPE, "TV Show")
-//                    itemView.context.startActivity(intent)
-//                }
-
             }
+            itemView.setOnClickListener { onItemClickCallback.onItemClicked(tvShow.id.toString()) }
         }
     }
 
@@ -56,7 +58,7 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() 
     ): TvShowsAdapter.TvShowsViewHolder {
         val itemsTvshowsBinding =
             ItemsTvshowsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TvShowsAdapter.TvShowsViewHolder(itemsTvshowsBinding)
+        return TvShowsViewHolder(itemsTvshowsBinding)
     }
 
     override fun onBindViewHolder(holder: TvShowsAdapter.TvShowsViewHolder, position: Int) {

@@ -13,13 +13,23 @@
         tools:context=".ui.detail.DetailFilmActivity">
 
         <ImageView
-            android:id="@+id/tv_detail_imgPoster"
+            android:id="@+id/tv_detail_imgBackdrop"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="200dp"
             android:contentDescription="@string/image_poster_film"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/poster_hanna" />
+
+        <ImageView
+            android:id="@+id/tv_detail_imgPoster"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/image_poster_film"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_imgBackdrop"
+            tools:src="@drawable/poster_a_start_is_born" />
 
         <TextView
             android:id="@+id/tv_detail_title"
@@ -57,7 +67,7 @@
 
         <TextView
             android:id="@+id/tv_release_date"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
@@ -86,7 +96,7 @@
 
         <TextView
             android:id="@+id/tv_score"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"

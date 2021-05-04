@@ -1,30 +1,36 @@
 package com.daffa.moviecatalogue.ui.tvshows
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.daffa.moviecatalogue.data.source.Resource
 import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.TvShowResponse
+import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
+import com.daffa.moviecatalogue.data.source.remote.response.model.TvShow
 import com.daffa.moviecatalogue.databinding.FragmentTvshowsBinding
+import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
 import com.daffa.moviecatalogue.ui.movies.MoviesAdapter
+import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
+import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
+import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
 import com.daffa.moviecatalogue.viewmodels.MainViewModel
 import javax.inject.Inject
 
 
 class TvShowsFragment : Fragment() {
 
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    val viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+    private lateinit var viewModel: MainViewModel
 
     private lateinit var adapter: TvShowsAdapter
+
     private lateinit var fragmentTvshowsBinding: FragmentTvshowsBinding
 
     override fun onCreateView(
@@ -36,34 +42,35 @@ class TvShowsFragment : Fragment() {
         return fragmentTvshowsBinding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val tvShowsAdapter = TvShowsAdapter()
+        val factory = ViewModelFactory.getInstance()
+        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
 
-        with(fragmentTvshowsBinding.rvTvShow) {
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = tvShowsAdapter
-        }
+        fragmentTvshowsBinding.rvTvShow.layoutManager = LinearLayoutManager(activity)
+        adapter = TvShowsAdapter()
+        fragmentTvshowsBinding.rvTvShow.setHasFixedSize(true)
 
-        viewModel.getTvShows.observe(viewLifecycleOwner, { handleStat(it) })
+        viewModel.getTvShows.observe(viewLifecycleOwner, Observer {
+            adapter.setTvShows(it)
+        })
+        fragmentTvshowsBinding.rvTvShow.adapter = adapter
+
+        adapter.setOnItemClickCallback(object :
+            TvShowsAdapter.OnItemClickCallback {
+            override fun onItemClicked(id: String) {
+                selectTvShow(id)
+            }
+        })
 
     }
 
-    private fun handleStat(resource: Resource<TvShowResponse>) {
-        when (resource) {
-            is Resource.Loading -> fragmentTvshowsBinding.isLoading = true
-            is Resource.Empty -> fragmentTvshowsBinding.isLoading = false
-            is Resource.Success -> {
-                fragmentTvshowsBinding.isLoading = false
-                resource.data.let { data -> adapter.data = data.results.toMutableList() }
-            }
-            is Resource.Error -> {
-                fragmentTvshowsBinding.isLoading = false
-                Toast.makeText(requireContext(), resource.errorMessage, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
+    private fun selectTvShow(id: String) {
+        val intent = Intent(context, DetailFilmActivity::class.java)
+        intent.putExtra(DetailFilmActivity.EXTRA_FILM, id)
+        intent.putExtra(DetailFilmActivity.EXTRA_CATEGORY,TV_SHOW)
 
+        requireActivity().startActivity(intent)
+    }
 }
