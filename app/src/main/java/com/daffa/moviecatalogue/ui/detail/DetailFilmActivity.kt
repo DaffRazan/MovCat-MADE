@@ -46,11 +46,11 @@ class DetailFilmActivity : AppCompatActivity() {
                 viewModel.setFilm(dataId, dataCategory.toString())
 
                 if (dataCategory == MOVIE) {
-                    viewModel.getDetailMovie().observe(this, {
+                    viewModel.getDetailMovie.observe(this, {
                         handleDataDetailMovie(it)
                     })
                 } else {
-                    viewModel.getDetailTvShow().observe(this, {
+                    viewModel.getDetailTvShow.observe(this, {
                         handleDetailTvShow(it)
                     })
                 }

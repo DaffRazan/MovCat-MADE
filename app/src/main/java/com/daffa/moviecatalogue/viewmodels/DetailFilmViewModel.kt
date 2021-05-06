@@ -37,6 +37,6 @@ class DetailFilmViewModel @Inject constructor (private val mainRepository: MainR
             }
         }
 
-        fun getDetailMovie() = detailMovie
-        fun getDetailTvShow() = detailTvShow
+        val getDetailMovie by lazy { detailMovie }
+        val getDetailTvShow by lazy { detailTvShow }
 }
