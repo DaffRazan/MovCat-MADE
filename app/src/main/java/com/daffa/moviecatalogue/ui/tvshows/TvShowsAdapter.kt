@@ -47,6 +47,7 @@ class TvShowsAdapter() : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>(
                     .into(imgPoster)
                 tvTvShowTitle.text = tvShow.name
                 tvTvShowReleaseDate.text = tvShow.first_air_date
+                tvTvShowRating.text = tvShow.vote_average.toString()
             }
             itemView.setOnClickListener { onItemClickCallback.onItemClicked(tvShow.id.toString()) }
         }

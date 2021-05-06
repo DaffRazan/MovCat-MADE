@@ -23,8 +23,8 @@ class DetailFilmViewModel @Inject constructor (private val mainRepository: MainR
             const val TV_SHOW = "tvShow"
         }
 
-        private lateinit var detailMovie: LiveData<DetailMovieResponse>
-        private lateinit var detailTvShow: LiveData<DetailTvShowResponse>
+        private lateinit var detailMovie: LiveData<Resource<DetailMovieResponse>>
+        private lateinit var detailTvShow: LiveData<Resource<DetailTvShowResponse>>
 
         fun setFilm(id: String, category: String){
             when(category) {

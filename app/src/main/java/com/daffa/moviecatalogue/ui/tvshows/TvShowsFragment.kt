@@ -18,6 +18,7 @@ import com.daffa.moviecatalogue.data.source.remote.response.model.TvShow
 import com.daffa.moviecatalogue.databinding.FragmentTvshowsBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
 import com.daffa.moviecatalogue.ui.movies.MoviesAdapter
+import com.daffa.moviecatalogue.utils.Status
 import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
@@ -52,10 +53,9 @@ class TvShowsFragment : Fragment() {
         adapter = TvShowsAdapter()
         fragmentTvshowsBinding.rvTvShow.setHasFixedSize(true)
 
-        viewModel.getTvShows.observe(viewLifecycleOwner, Observer {
-            adapter.setTvShows(it)
+        viewModel.getTvShows.observe(viewLifecycleOwner, {
+            handleData(it)
         })
-        fragmentTvshowsBinding.rvTvShow.adapter = adapter
 
         adapter.setOnItemClickCallback(object :
             TvShowsAdapter.OnItemClickCallback {
@@ -64,6 +64,22 @@ class TvShowsFragment : Fragment() {
             }
         })
 
+    }
+
+    private fun handleData(resource: Resource<TvShowResponse>) {
+        when (resource) {
+            is Resource.Loading -> fragmentTvshowsBinding.progressBar.visibility = View.VISIBLE
+            is Resource.Empty -> fragmentTvshowsBinding.progressBar.visibility = View.GONE
+            is Resource.Success -> {
+                fragmentTvshowsBinding.progressBar.visibility = View.GONE
+                resource.data.let { data -> adapter.setTvShows(data.results) }
+                fragmentTvshowsBinding.rvTvShow.adapter = adapter
+            }
+            is Resource.Error -> {
+                fragmentTvshowsBinding.progressBar.visibility = View.GONE
+                Toast.makeText(requireContext(), resource.errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun selectTvShow(id: String) {

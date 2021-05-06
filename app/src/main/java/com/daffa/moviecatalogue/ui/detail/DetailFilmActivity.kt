@@ -1,22 +1,21 @@
 package com.daffa.moviecatalogue.ui.detail
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.daffa.moviecatalogue.data.FilmEntity
+import com.daffa.moviecatalogue.R
+import com.daffa.moviecatalogue.data.source.Resource
 import com.daffa.moviecatalogue.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.DetailTvShowResponse
-import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
-import com.daffa.moviecatalogue.data.source.remote.response.model.TvShow
 import com.daffa.moviecatalogue.databinding.ActivityDetailFilmBinding
 import com.daffa.moviecatalogue.utils.Constants.API_BACKDROP_PATH
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
 import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.MOVIE
-import retrofit2.http.GET
-import javax.inject.Inject
 
 class DetailFilmActivity : AppCompatActivity() {
 
@@ -48,11 +47,11 @@ class DetailFilmActivity : AppCompatActivity() {
 
                 if (dataCategory == MOVIE) {
                     viewModel.getDetailMovie().observe(this, {
-                        populateDetailMovie(it)
+                        handleDataDetailMovie(it)
                     })
                 } else {
                     viewModel.getDetailTvShow().observe(this, {
-                        populateDetailTvShow(it)
+                        handleDetailTvShow(it)
                     })
                 }
             }
@@ -61,8 +60,40 @@ class DetailFilmActivity : AppCompatActivity() {
 
     }
 
+    private fun handleDataDetailMovie(resourceMovie: Resource<DetailMovieResponse>) {
+        when (resourceMovie) {
+            is Resource.Loading -> detailFilmBinding.progressBar.visibility = View.VISIBLE
+            is Resource.Empty -> detailFilmBinding.progressBar.visibility = View.GONE
+            is Resource.Success -> {
+                detailFilmBinding.progressBar.visibility = View.GONE
+                resourceMovie.data.let { populateDetailMovie(it) }
+            }
+            is Resource.Error -> {
+                detailFilmBinding.progressBar.visibility = View.GONE
+                Toast.makeText(this, resourceMovie.errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun handleDetailTvShow(resourceTvShow: Resource<DetailTvShowResponse>) {
+        when (resourceTvShow) {
+            is Resource.Loading -> detailFilmBinding.progressBar.visibility = View.VISIBLE
+            is Resource.Empty -> detailFilmBinding.progressBar.visibility = View.GONE
+            is Resource.Success -> {
+                detailFilmBinding.progressBar.visibility = View.GONE
+                resourceTvShow.data.let { populateDetailTvShow(it) }
+            }
+            is Resource.Error -> {
+                detailFilmBinding.progressBar.visibility = View.GONE
+                Toast.makeText(this, resourceTvShow.errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun populateDetailMovie(detailMovieResponse: DetailMovieResponse) {
         with(detailMovieResponse) {
+            val runtimeText = resources.getString(R.string.runtime_text, this.runtime.toString())
+
             Glide.with(this@DetailFilmActivity)
                 .load(API_BACKDROP_PATH + this.backdrop_path)
                 .into(detailFilmBinding.tvDetailImgBackdrop)
@@ -73,14 +104,34 @@ class DetailFilmActivity : AppCompatActivity() {
 
             detailFilmBinding.tvDetailTitle.text = this.title
             detailFilmBinding.tvDetailDesc.text = this.overview
-            detailFilmBinding.tvScore.text = this.vote_average.toString()
-            detailFilmBinding.tvReleaseDate.text = this.release_date
-            detailFilmBinding.tvGenre.text = this.genres[0].name
+            detailFilmBinding.tvDetailScore.text = this.vote_average.toString()
+            detailFilmBinding.tvDetailReleaseDate.text = this.release_date
+
+            val genreBuilder = StringBuilder()
+            val iterator = this.genres.iterator()
+            while (iterator.hasNext()) {
+                val obj = iterator.next()
+                if (iterator.hasNext()) {
+                    genreBuilder.append(obj.name)
+                    genreBuilder.append(", ")
+                } else {
+                    genreBuilder.append(obj.name)
+                }
+            }
+            detailFilmBinding.tvDetailGenre.text = genreBuilder
+
+            detailFilmBinding.tvDetailRuntime.text = runtimeText
         }
     }
 
     private fun populateDetailTvShow(detailTvShowResponse: DetailTvShowResponse) {
         with(detailTvShowResponse) {
+            val epsSeasonText = resources.getString(
+                R.string.episodeSeason_text,
+                this.number_of_episodes.toString(),
+                this.number_of_seasons.toString()
+            )
+
             Glide.with(this@DetailFilmActivity)
                 .load(API_BACKDROP_PATH + this.backdrop_path)
                 .into(detailFilmBinding.tvDetailImgBackdrop)
@@ -91,9 +142,23 @@ class DetailFilmActivity : AppCompatActivity() {
 
             detailFilmBinding.tvDetailTitle.text = this.name
             detailFilmBinding.tvDetailDesc.text = this.overview
-            detailFilmBinding.tvScore.text = this.vote_average.toString()
-            detailFilmBinding.tvReleaseDate.text = this.first_air_date
-            detailFilmBinding.tvGenre.text = this.genres[0].name
+            detailFilmBinding.tvDetailScore.text = this.vote_average.toString()
+            detailFilmBinding.tvDetailReleaseDate.text = this.first_air_date
+
+            val genreBuilder = StringBuilder()
+            val iterator = this.genres.iterator()
+            while (iterator.hasNext()) {
+                val obj = iterator.next()
+                if (iterator.hasNext()) {
+                    genreBuilder.append(obj.name)
+                    genreBuilder.append(", ")
+                } else {
+                    genreBuilder.append(obj.name)
+                }
+            }
+            detailFilmBinding.tvDetailGenre.text = genreBuilder
+
+            detailFilmBinding.tvDetailRuntime.text = epsSeasonText
         }
     }
 }

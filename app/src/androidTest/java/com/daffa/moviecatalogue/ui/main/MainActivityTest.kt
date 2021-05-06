@@ -45,13 +45,13 @@ class MainActivityTest {
         onView(withId(R.id.tv_detail_desc)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_detail_desc))
             .check(matches(withText(dummyMovie[0].description)))
-        onView(withId(R.id.tv_release_date)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_release_date))
+        onView(withId(R.id.tv_detail_release_date)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_release_date))
             .check(matches(withText(dummyMovie[0].releaseDate)))
-        onView(withId(R.id.tv_genre)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_genre)).check(matches(withText(dummyMovie[0].genre)))
-        onView(withId(R.id.tv_score)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_score)).check(matches(withText(dummyMovie[0].score)))
+        onView(withId(R.id.tv_detail_genre)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_genre)).check(matches(withText(dummyMovie[0].genre)))
+        onView(withId(R.id.tv_detail_score)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_score)).check(matches(withText(dummyMovie[0].score)))
     }
 
     @Test
@@ -78,12 +78,12 @@ class MainActivityTest {
         onView(withId(R.id.tv_detail_desc)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_detail_desc))
             .check(matches(withText(dummyTvShows[0].description)))
-        onView(withId(R.id.tv_release_date)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_release_date))
+        onView(withId(R.id.tv_detail_release_date)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_release_date))
             .check(matches(withText(dummyTvShows[0].releaseDate)))
-        onView(withId(R.id.tv_genre)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_genre)).check(matches(withText(dummyTvShows[0].genre)))
-        onView(withId(R.id.tv_score)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_score)).check(matches(withText(dummyTvShows[0].score)))
+        onView(withId(R.id.tv_detail_genre)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_genre)).check(matches(withText(dummyTvShows[0].genre)))
+        onView(withId(R.id.tv_detail_score)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_score)).check(matches(withText(dummyTvShows[0].score)))
     }
 }

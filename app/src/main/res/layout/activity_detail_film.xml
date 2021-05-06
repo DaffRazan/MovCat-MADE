@@ -12,6 +12,18 @@
         android:layout_height="wrap_content"
         tools:context=".ui.detail.DetailFilmActivity">
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="2dp"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/tv_detail_imgBackdrop"
             android:layout_width="match_parent"
@@ -19,32 +31,47 @@
             android:contentDescription="@string/image_poster_film"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/poster_hanna" />
+            android:scaleType="fitXY"
+            tools:src="@drawable/backdrop_avengers" />
 
         <ImageView
             android:id="@+id/tv_detail_imgPoster"
-            android:layout_width="250dp"
+            android:layout_width="150dp"
             android:layout_height="250dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
             android:contentDescription="@string/image_poster_film"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_detail_imgBackdrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_detail_imgBackdrop"
-            tools:src="@drawable/poster_a_start_is_born" />
+            tools:src="@drawable/poster_infinity_war" />
 
         <TextView
             android:id="@+id/tv_detail_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/nexademobold"
-            android:text="@string/detail_title"
             android:textColor="@color/white"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_release_date" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_imgPoster"
+            tools:text="@string/detail_title" />
+
+        <TextView
+            android:id="@+id/tv_detail_runtime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/nexademolight"
+            android:textColor="@color/color_rating"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_title"
+            tools:text="110 minutes" />
 
         <TextView
             android:id="@+id/tv_detail_desc"
@@ -56,58 +83,75 @@
             android:layout_marginBottom="24dp"
             android:fontFamily="@font/nexademolight"
             android:lineSpacingMultiplier="1.5"
-            android:text="@string/detail_desc"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_genre" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_genre"
+            tools:text="@string/detail_desc" />
 
         <TextView
-            android:id="@+id/tv_release_date"
+            android:id="@+id/tv_detail_release_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/label_background"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/nexademolight"
             android:padding="6dp"
-            android:text="@string/detail_release_date"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_imgPoster" />
+            android:textColor="@color/color_rating"
+            app:layout_constraintStart_toEndOf="@+id/ic_date"
+            app:layout_constraintTop_toTopOf="@+id/ic_date"
+            tools:text="@string/detail_release_date" />
+
+        <ImageView
+            android:id="@+id/ic_date"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/iv_rating"
+            android:src="@drawable/ic_date"
+            android:theme="@style/Widget.AppCompat.RatingBar"
+            app:layout_constraintStart_toEndOf="@+id/tv_detail_imgPoster"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_imgBackdrop" />
 
         <TextView
-            android:id="@+id/tv_genre"
+            android:id="@+id/tv_detail_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:fontFamily="@font/nexademolight"
+            android:padding="6dp"
+            android:textColor="@color/color_rating"
+            app:layout_constraintStart_toEndOf="@+id/rb_score"
+            app:layout_constraintTop_toTopOf="@+id/rb_score"
+            tools:text="@string/detail_score" />
+
+        <ImageView
+            android:id="@+id/rb_score"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/iv_rating"
+            android:src="@drawable/ic_rating"
+            android:theme="@style/Widget.AppCompat.RatingBar"
+            app:layout_constraintStart_toEndOf="@+id/tv_detail_imgPoster"
+            app:layout_constraintTop_toBottomOf="@+id/ic_date" />
+
+        <TextView
+            android:id="@+id/tv_detail_genre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:textSize="14sp"
             android:fontFamily="@font/nexademolight"
-            android:text="@string/detail_genre"
-            android:textColor="@color/white"
+            android:textColor="@color/text_gray"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_title" />
-
-        <TextView
-            android:id="@+id/tv_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/label_background"
-            android:fontFamily="@font/nexademolight"
-            android:padding="6dp"
-            android:text="@string/detail_score"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@+id/tv_release_date"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_imgPoster" />
-
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_runtime"
+            tools:text="@string/detail_genre" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

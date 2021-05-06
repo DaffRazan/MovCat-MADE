@@ -2,20 +2,25 @@ package com.daffa.moviecatalogue.ui.movies
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.daffa.moviecatalogue.data.source.Resource
 import com.daffa.moviecatalogue.data.source.remote.network.ApiConfig
 import com.daffa.moviecatalogue.data.source.remote.network.ApiService
+import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
 import com.daffa.moviecatalogue.databinding.FragmentMoviesBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
+import com.daffa.moviecatalogue.utils.Status
 import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.MOVIE
 import com.daffa.moviecatalogue.viewmodels.MainViewModel
@@ -44,11 +49,9 @@ class MoviesFragment : Fragment() {
         adapter = MoviesAdapter()
         fragmentMoviesBinding.rvMovie.setHasFixedSize(true)
 
-
         viewModel.getMovies.observe(viewLifecycleOwner, Observer {
-            adapter.setMovies(it)
+            handleData(it)
         })
-        fragmentMoviesBinding.rvMovie.adapter = adapter
 
         adapter.setOnItemClickCallback(object :
             MoviesAdapter.OnItemClickCallback {
@@ -58,10 +61,21 @@ class MoviesFragment : Fragment() {
         })
     }
 
-    //loading
-    private fun showLoading(state: Boolean) {
-        fragmentMoviesBinding.progressBar.isVisible = state
-        fragmentMoviesBinding.rvMovie.isGone = state
+    private fun handleData(resource: Resource<MovieResponse>) {
+        when (resource) {
+            is Resource.Loading -> fragmentMoviesBinding.progressBar.visibility = View.VISIBLE
+            is Resource.Empty -> fragmentMoviesBinding.progressBar.visibility = View.GONE
+            is Resource.Success -> {
+                fragmentMoviesBinding.progressBar.visibility = View.GONE
+                resource.data.let { data -> adapter.setMovies(data.results) }
+                Log.d("suksesData", resource.toString())
+                fragmentMoviesBinding.rvMovie.adapter = adapter
+            }
+            is Resource.Error -> {
+                fragmentMoviesBinding.progressBar.visibility = View.GONE
+                Toast.makeText(requireContext(), resource.errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun selectedMovie(id: String) {

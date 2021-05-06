@@ -10,7 +10,7 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp"
     app:cardMaxElevation="4dp"
-    app:cardBackgroundColor="@color/bc_cardview"
+    app:cardBackgroundColor="@color/bc_cardView"
     app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,28 +38,46 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:ellipsize="end"
+            android:fontFamily="@font/nexademobold"
             android:gravity="start"
             android:maxLines="2"
-            android:textSize="18sp"
-            android:textStyle="bold"
             android:textColor="@color/white"
-            android:fontFamily="@font/nexademolight"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_poster"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/movie_title" />
 
         <TextView
+            android:id="@+id/tv_movie_rating"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/nexademolight"
+            android:gravity="start"
+            android:maxLines="2"
+            android:textColor="@color/color_rating"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_poster"
+            app:layout_constraintTop_toBottomOf="@+id/tv_movie_title"
+            tools:text="80%" />
+
+        <TextView
             android:id="@+id/tv_movie_releaseDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/white"
-            android:gravity="start"
-            android:textSize="14sp"
             android:fontFamily="@font/nexademolight"
-            app:layout_constraintStart_toStartOf="@+id/tv_movie_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_movie_title"
+            android:gravity="start"
+            android:textColor="@color/text_gray"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/img_poster"
+            app:layout_constraintTop_toBottomOf="@+id/tv_movie_rating"
             tools:text="@string/movie_release_date" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

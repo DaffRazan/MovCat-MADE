@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.daffa.moviecatalogue.R
+import com.daffa.moviecatalogue.data.source.Resource
+import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
 import com.daffa.moviecatalogue.databinding.ItemsMoviesBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
@@ -45,6 +47,7 @@ class MoviesAdapter() : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
                     .into(imgPoster)
                 tvMovieTitle.text = movie.title
                 tvMovieReleaseDate.text = movie.release_date
+                tvMovieRating.text = movie.vote_average.toString()
             }
 
             itemView.setOnClickListener { onItemClickCallback.onItemClicked(movie.id.toString())  }
