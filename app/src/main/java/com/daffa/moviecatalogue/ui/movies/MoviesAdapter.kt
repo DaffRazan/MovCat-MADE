@@ -1,18 +1,13 @@
 package com.daffa.moviecatalogue.ui.movies
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.daffa.moviecatalogue.R
-import com.daffa.moviecatalogue.data.source.Resource
-import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
 import com.daffa.moviecatalogue.databinding.ItemsMoviesBinding
-import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
-import com.daffa.moviecatalogue.utils.Constants
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
 
 class MoviesAdapter() : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
@@ -50,7 +45,7 @@ class MoviesAdapter() : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
                 tvMovieRating.text = movie.vote_average.toString()
             }
 
-            itemView.setOnClickListener { onItemClickCallback.onItemClicked(movie.id.toString())  }
+            itemView.setOnClickListener { onItemClickCallback.onItemClicked(movie.id.toString()) }
         }
     }
 

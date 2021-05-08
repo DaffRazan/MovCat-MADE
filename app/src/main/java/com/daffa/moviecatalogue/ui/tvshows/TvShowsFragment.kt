@@ -7,23 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.daffa.moviecatalogue.data.source.Resource
-import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.TvShowResponse
-import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
-import com.daffa.moviecatalogue.data.source.remote.response.model.TvShow
 import com.daffa.moviecatalogue.databinding.FragmentTvshowsBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
-import com.daffa.moviecatalogue.ui.movies.MoviesAdapter
-import com.daffa.moviecatalogue.utils.Status
 import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
-import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
 import com.daffa.moviecatalogue.viewmodels.MainViewModel
-import javax.inject.Inject
 
 
 class TvShowsFragment : Fragment() {
