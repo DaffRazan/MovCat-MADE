@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.daffa.moviecatalogue.data.source.Resource
 import com.daffa.moviecatalogue.data.source.remote.RemoteDataSource
-import com.daffa.moviecatalogue.data.source.remote.RemoteDataSourceTest
 import com.daffa.moviecatalogue.data.source.remote.network.ApiResponse
 import com.daffa.moviecatalogue.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.DetailTvShowResponse
@@ -21,7 +20,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -35,16 +33,12 @@ class MainRepositoryTest {
 
     @Mock
     lateinit var remote: RemoteDataSource
-
     @Mock
     lateinit var observerMovie: Observer<Resource<MovieResponse>>
-
     @Mock
     lateinit var observerTvShow: Observer<Resource<TvShowResponse>>
-
     @Mock
     lateinit var observerDetailMovie: Observer<Resource<DetailMovieResponse>>
-
     @Mock
     lateinit var observerDetailTvShow: Observer<Resource<DetailTvShowResponse>>
 
@@ -52,6 +46,8 @@ class MainRepositoryTest {
     fun setUp() {
         repository = FakeMainRepository(remote)
     }
+
+    // Uji data lokal (dummy)
 
     // Movie Resources
     @Test
@@ -73,26 +69,6 @@ class MainRepositoryTest {
                 Assert.assertNotNull(resource.data)
                 assertEquals(dummyMovie, resource.data)
                 Assert.assertTrue(resource.data.results.isNotEmpty())
-            }
-        }
-    }
-
-    @Test
-    fun movieResourceError() {
-        `when`(remote.getMovies()).thenReturn(MutableLiveData(ApiResponse.Error(RemoteDataSourceTest.errorMessage)))
-        val resource = getValue(repository.getMovies())
-        verify(remote).getMovies()
-
-        repository.getMovies().observeForever(observerMovie)
-        verify(observerMovie).onChanged(Resource.Error(RemoteDataSourceTest.errorMessage))
-
-        Assert.assertNotNull(resource)
-        Assert.assertTrue(resource is Resource.Error)
-
-        when (resource) {
-            is Resource.Error -> {
-                Assert.assertNotNull(resource.errorMessage)
-                assertEquals(RemoteDataSourceTest.errorMessage, resource.errorMessage)
             }
         }
     }
@@ -141,27 +117,6 @@ class MainRepositoryTest {
     }
 
     @Test
-    fun tvShowResourceError() {
-        `when`(remote.getTvShows())
-            .thenReturn(MutableLiveData(ApiResponse.Error(RemoteDataSourceTest.errorMessage)))
-        val resource = getValue(repository.getTvShows())
-        verify(remote).getTvShows()
-
-        repository.getTvShows().observeForever(observerTvShow)
-        verify(observerTvShow).onChanged(Resource.Error(RemoteDataSourceTest.errorMessage))
-
-        Assert.assertNotNull(resource)
-        Assert.assertTrue(resource is Resource.Error)
-
-        when (resource) {
-            is Resource.Error -> {
-                Assert.assertNotNull(resource.errorMessage)
-                assertEquals(RemoteDataSourceTest.errorMessage, resource.errorMessage)
-            }
-        }
-    }
-
-    @Test
     fun tvShowResourceEmpty() {
         `when`(remote.getTvShows()).thenReturn(MutableLiveData(ApiResponse.Empty(null)))
         val resource = getValue(repository.getTvShows())
@@ -182,7 +137,7 @@ class MainRepositoryTest {
 
     // Detail Movie Resources
     @Test
-    fun detailMovieSourceSuccess() {
+    fun detailMovieResourceSuccess() {
         val dummyDetailMovie = DummyData.dummyDetailMovieResponse()
         val idMovie = dummyDetailMovie.id
         `when`(remote.getMovieById(idMovie)).thenReturn(MutableLiveData(ApiResponse.Success(dummyDetailMovie)))
@@ -206,28 +161,7 @@ class MainRepositoryTest {
     }
 
     @Test
-    fun detailMovieSourceError() {
-        val idMovie = DummyData.dummyDetailMovieResponse().id
-        `when`(remote.getMovieById(idMovie)).thenReturn(MutableLiveData(ApiResponse.Error(RemoteDataSourceTest.errorMessage)))
-        val resource = getValue(repository.getMovieById(idMovie))
-        verify(remote).getMovieById(idMovie)
-
-        repository.getMovieById(idMovie)
-            .observeForever(observerDetailMovie)
-        verify(observerDetailMovie).onChanged(Resource.Error(RemoteDataSourceTest.errorMessage))
-
-        Assert.assertNotNull(resource)
-        Assert.assertTrue(resource is Resource.Error)
-        when (resource) {
-            is Resource.Error -> {
-                Assert.assertNotNull(resource.errorMessage)
-                assertEquals(RemoteDataSourceTest.errorMessage, resource.errorMessage)
-            }
-        }
-    }
-
-    @Test
-    fun detailMovieSourceEmpty() {
+    fun detailMovieResourceEmpty() {
         val idMovie = -500
         `when`(remote.getMovieById(idMovie)).thenReturn(MutableLiveData(ApiResponse.Empty(null)))
         val resource = getValue(repository.getMovieById(idMovie))
@@ -248,7 +182,7 @@ class MainRepositoryTest {
 
     // Detail Tv Show Resources
     @Test
-    fun detailTvShowSourceSuccess() {
+    fun detailTvShowResourceSuccess() {
         val dummyDetailTvShow = DummyData.dummyDetailTvShowResponse()
         val idTvShow = dummyDetailTvShow.id
         `when`(remote.getTvShowById(idTvShow))
@@ -274,30 +208,7 @@ class MainRepositoryTest {
     }
 
     @Test
-    fun detailTvShowSourceError() {
-        val idTvShow = DummyData.dummyDetailTvShowResponse().id
-        `when`(remote.getTvShowById(idTvShow))
-            .thenReturn(MutableLiveData(ApiResponse.Error(RemoteDataSourceTest.errorMessage)))
-        val resource = getValue(repository.getTvShowById(idTvShow))
-
-        verify(remote).getTvShowById(idTvShow)
-
-        repository.getTvShowById(idTvShow).observeForever(observerDetailTvShow)
-        verify(observerDetailTvShow).onChanged(Resource.Error(RemoteDataSourceTest.errorMessage))
-
-        Assert.assertNotNull(resource)
-        Assert.assertTrue(resource is Resource.Error)
-
-        when (resource) {
-            is Resource.Error -> {
-                Assert.assertNotNull(resource.errorMessage)
-                assertEquals(RemoteDataSourceTest.errorMessage, resource.errorMessage)
-            }
-        }
-    }
-
-    @Test
-    fun detailTvShowSourceEmpty() {
+    fun detailTvShowResourceEmpty() {
         val idTvShow = -500
         `when`(remote.getTvShowById(idTvShow))
             .thenReturn(MutableLiveData(ApiResponse.Empty(null)))
@@ -317,5 +228,4 @@ class MainRepositoryTest {
             }
         }
     }
-
 }

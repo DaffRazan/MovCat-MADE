@@ -1,4 +1,4 @@
-package com.daffa.moviecatalogue.ui.tvshows
+package com.daffa.moviecatalogue.ui.main.tvshows
 
 import android.content.Intent
 import android.os.Bundle

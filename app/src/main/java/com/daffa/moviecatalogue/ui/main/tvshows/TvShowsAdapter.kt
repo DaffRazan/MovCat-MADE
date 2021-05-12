@@ -1,4 +1,4 @@
-package com.daffa.moviecatalogue.ui.tvshows
+package com.daffa.moviecatalogue.ui.main.tvshows
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

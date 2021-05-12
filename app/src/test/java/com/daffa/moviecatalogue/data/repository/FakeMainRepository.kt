@@ -9,7 +9,6 @@ import com.daffa.moviecatalogue.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.DetailTvShowResponse
 import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.TvShowResponse
-import org.junit.Assert.*
 
 class FakeMainRepository(private val remoteDataSource: RemoteDataSource) {
 
@@ -41,7 +40,7 @@ class FakeMainRepository(private val remoteDataSource: RemoteDataSource) {
         )
     }
 
-    private fun <T> result (
+    private fun <T> result(
         result: MediatorLiveData<Resource<T>>, response: LiveData<ApiResponse<T>>
     ): LiveData<Resource<T>> {
         result.postValue(Resource.Loading())

@@ -121,7 +121,9 @@ object DummyData {
             episode_run_time = listOf(60),
             first_air_date = "2011-04-17",
             genres = listOf(
-                Genre(10765, "Sci-Fi & Fantasy"), Genre(18, "Drama"), Genre(10759, "Action & Adventure")
+                Genre(10765, "Sci-Fi & Fantasy"),
+                Genre(18, "Drama"),
+                Genre(10759, "Action & Adventure")
             ),
             homepage = "http://www.hbo.com/game-of-thrones",
             id = 1399,

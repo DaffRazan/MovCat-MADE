@@ -1,4 +1,4 @@
-package com.daffa.moviecatalogue.ui.movies
+package com.daffa.moviecatalogue.ui.main.movies
 
 import android.content.Intent
 import android.os.Bundle

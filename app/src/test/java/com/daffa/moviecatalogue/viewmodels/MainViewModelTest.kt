@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.daffa.moviecatalogue.data.repository.MainRepository
 import com.daffa.moviecatalogue.data.source.Resource
-import com.daffa.moviecatalogue.data.source.remote.RemoteDataSourceTest.Companion.errorMessage
 import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.TvShowResponse
 import com.daffa.moviecatalogue.utils.DummyData
@@ -31,8 +30,10 @@ class MainViewModelTest {
 
     @Mock
     lateinit var mainRepository: MainRepository
+
     @Mock
     lateinit var observerMovie: Observer<Resource<MovieResponse>>
+
     @Mock
     lateinit var observerTvShow: Observer<Resource<TvShowResponse>>
 
@@ -44,7 +45,9 @@ class MainViewModelTest {
         mainViewModel = MainViewModel(mainRepository)
     }
 
-    // Resource Movie (Success, Error, Empty)
+    // Uji data lokal (dummy)
+
+    // Resource Movie
     @Test
     fun getResourceMovieSuccess() {
         `when`(mainRepository.getMovies())
@@ -63,22 +66,6 @@ class MainViewModelTest {
     }
 
     @Test
-    fun getResourceMovieError() {
-        `when`(mainRepository.getMovies()).thenReturn(MutableLiveData(Resource.Error(errorMessage)))
-        val resource = getValue(mainViewModel.getMovies)
-        verify(mainRepository).getMovies()
-        assertTrue(resource is Resource.Error)
-        when (resource) {
-            is Resource.Error -> {
-                assertEquals(errorMessage, resource.errorMessage)
-            }
-        }
-
-        mainViewModel.getMovies.observeForever(observerMovie)
-        verify(observerMovie).onChanged(Resource.Error(errorMessage))
-    }
-
-    @Test
     fun getResourceMovieEmpty() {
         `when`(mainRepository.getMovies()).thenReturn(MutableLiveData(Resource.Empty(null)))
         val resource = getValue(mainViewModel.getMovies)
@@ -94,7 +81,7 @@ class MainViewModelTest {
         verify(observerMovie).onChanged(Resource.Empty(null))
     }
 
-    //Resource TV Shows (Success, Error, Empty)
+    //Resource TV Shows
     @Test
     fun getResourceTvShowSuccess() {
         `when`(mainRepository.getTvShows()).thenReturn(
@@ -117,21 +104,6 @@ class MainViewModelTest {
         verify(observerTvShow).onChanged(Resource.Success(dummyDataTvShow))
     }
 
-    @Test
-    fun getResourceTvShowError() {
-        `when`(mainRepository.getTvShows()).thenReturn(MutableLiveData(Resource.Error(errorMessage)))
-        val resource = getValue(mainViewModel.getTvShows)
-        verify(mainRepository).getTvShows()
-        Assert.assertTrue(resource is Resource.Error)
-        when (resource) {
-            is Resource.Error -> {
-                assertEquals(errorMessage, resource.errorMessage)
-            }
-        }
-
-        mainViewModel.getTvShows.observeForever(observerTvShow)
-        verify(observerTvShow).onChanged(Resource.Error(errorMessage))
-    }
 
     @Test
     fun getResourceTvShowEmpty() {

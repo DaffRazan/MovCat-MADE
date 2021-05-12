@@ -16,7 +16,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -44,7 +44,7 @@ class DetailFilmViewModelTest {
         val idMovie = dummyData.id
         val categoryMovie = DetailFilmViewModel.MOVIE
 
-        Mockito.`when`(repository.getMovieById(idMovie))
+        `when`(repository.getMovieById(idMovie))
             .thenReturn(MutableLiveData(Resource.Success(dummyData)))
 
         viewModel.setFilm(idMovie.toString(), categoryMovie)
@@ -72,7 +72,7 @@ class DetailFilmViewModelTest {
         val idTvShow = dummyData.id
         val categoryTvShow = DetailFilmViewModel.TV_SHOW
 
-        Mockito.`when`(repository.getTvShowById(idTvShow))
+        `when`(repository.getTvShowById(idTvShow))
             .thenReturn(MutableLiveData(Resource.Success(dummyData)))
 
         viewModel.setFilm(idTvShow.toString(), categoryTvShow)
