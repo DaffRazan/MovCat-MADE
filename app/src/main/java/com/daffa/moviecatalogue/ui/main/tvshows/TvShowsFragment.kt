@@ -44,6 +44,7 @@ class TvShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
+            showLoading(true)
             val factory = ViewModelFactory.getInstance(requireContext())
             viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
 

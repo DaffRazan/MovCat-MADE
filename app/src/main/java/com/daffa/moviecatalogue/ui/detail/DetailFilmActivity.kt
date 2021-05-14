@@ -1,6 +1,7 @@
 package com.daffa.moviecatalogue.ui.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +39,8 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
         detailFilmBinding = ActivityDetailFilmBinding.inflate(layoutInflater)
         setContentView(detailFilmBinding.root)
 
+        showLoading(true)
+
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[DetailFilmViewModel::class.java]
 
@@ -50,6 +53,8 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
 
             if (dataId != null && dataCategory != null) {
                 viewModel.setFilm(dataId, dataCategory.toString())
+
+                setupState()
 
                 if (dataCategory == MOVIE) {
                     viewModel.getDetailMovie.observe(this, {
@@ -163,7 +168,7 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
                         if (tvShow.data != null) {
                             showLoading(false)
                             val state = tvShow.data.isFav
-                            showLoading(state)
+                            setFavoriteFilm(state)
                         }
                     }
                     Status.ERROR -> {
@@ -186,7 +191,7 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
     private fun onFavButtonClicked() {
         if (dataCategory == MOVIE) {
             viewModel.setFavoriteMovie()
-        } else {
+        } else if (dataCategory == TV_SHOW) {
             viewModel.setFavoriteTvShow()
         }
     }
@@ -194,8 +199,10 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
     private fun setFavoriteFilm(state: Boolean) {
         if (state) {
             detailFilmBinding.fbFavorite.setImageResource(R.drawable.ic_favorite_filled)
+            Log.d("set fav", "setFavoriteFilm: ")
         } else {
             detailFilmBinding.fbFavorite.setImageResource(R.drawable.ic_favorite_unfilled)
+            Log.d("unfav", "setFavoriteFilm: ")
         }
     }
 
