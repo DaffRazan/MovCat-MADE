@@ -25,5 +25,9 @@
     <string name="bn_tv_show">TV Shows</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_movie_title">Explore trending Movies</string>
+    <string name="fragment_tvShow_title">Explore trending Tv Shows</string>
+    <string name="fragment_favorite_title">Your Favorite Films</string>
+    <string name="cd_favorite">favorite film</string>
 
 </resources>

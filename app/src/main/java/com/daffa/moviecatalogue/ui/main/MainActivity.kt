@@ -26,9 +26,18 @@ class MainActivity : AppCompatActivity() {
 
         activityMainBinding.bottomNav.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.menu_movie -> makeCurrentFragment(moviesFragment)
-                R.id.menu_tv_show -> makeCurrentFragment(tvShowFragment)
-                R.id.menu_favorite -> makeCurrentFragment(favoriteFragment)
+                R.id.menu_movie -> {
+                    activityMainBinding.mainAppText.setText(getString(R.string.fragment_movie_title))
+                    makeCurrentFragment(moviesFragment)
+                }
+                R.id.menu_tv_show -> {
+                    activityMainBinding.mainAppText.setText(getString(R.string.fragment_tvShow_title))
+                    makeCurrentFragment(tvShowFragment)
+                }
+                R.id.menu_favorite -> {
+                    activityMainBinding.mainAppText.setText(getString(R.string.fragment_favorite_title))
+                    makeCurrentFragment(favoriteFragment)
+                }
             }
             true
         }

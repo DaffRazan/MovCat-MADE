@@ -2,17 +2,30 @@ package com.daffa.moviecatalogue.ui.main.movies
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.daffa.moviecatalogue.R
-import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
+import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
 import com.daffa.moviecatalogue.databinding.ItemsMoviesBinding
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
 
-class MoviesAdapter() : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
+class MoviesAdapter() :
+    PagedListAdapter<MovieEntity, MoviesAdapter.MoviesViewHolder>(DIFF_CALLBACK) {
 
-    var data: List<Movie> = arrayListOf()
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
+            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -24,14 +37,9 @@ class MoviesAdapter() : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
         fun onItemClicked(id: String)
     }
 
-    fun setMovies(movies: List<Movie>) {
-        this.data = movies
-        notifyDataSetChanged()
-    }
-
     inner class MoviesViewHolder(private val binding: ItemsMoviesBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: Movie) {
+        fun bind(movie: MovieEntity) {
             with(binding) {
                 Glide.with(itemView.context)
                     .load(API_POSTER_PATH + movie.poster_path)
@@ -59,9 +67,9 @@ class MoviesAdapter() : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MoviesAdapter.MoviesViewHolder, position: Int) {
-        val movies = data[position]
-        holder.bind(movies)
+        val movies = getItem(position)
+        if (movies != null) {
+            holder.bind(movies)
+        }
     }
-
-    override fun getItemCount(): Int = data.size
 }

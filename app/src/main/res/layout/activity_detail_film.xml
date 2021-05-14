@@ -24,14 +24,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/fb_favorite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_favorite_unfilled"
+            android:contentDescription="@string/cd_favorite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_imgPoster" />
+
         <ImageView
             android:id="@+id/tv_detail_imgBackdrop"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:contentDescription="@string/image_poster_film"
+            android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="fitXY"
             tools:src="@drawable/backdrop_avengers" />
 
         <ImageView
@@ -57,7 +68,7 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_detail_imgPoster"
+            app:layout_constraintTop_toBottomOf="@+id/fb_favorite"
             tools:text="@string/detail_title" />
 
         <TextView

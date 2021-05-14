@@ -87,7 +87,6 @@ object DummyData {
         return DetailMovieResponse(
             adult = false,
             backdrop_path = "/pcDc2WJAYGJTTvRSEIpRZwM3Ola.jpg",
-            belongs_to_collection = null,
             budget = 70000000,
             genres = listOf(
                 Genre(28, "Action"),

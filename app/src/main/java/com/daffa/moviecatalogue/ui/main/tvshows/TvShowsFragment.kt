@@ -6,16 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.daffa.moviecatalogue.data.source.Resource
-import com.daffa.moviecatalogue.data.source.remote.response.TvShowResponse
+import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.daffa.moviecatalogue.databinding.FragmentTvshowsBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
+import com.daffa.moviecatalogue.utils.SortUtils
 import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
 import com.daffa.moviecatalogue.viewmodels.MainViewModel
+import com.daffa.moviecatalogue.vo.Status
 
 
 class TvShowsFragment : Fragment() {
@@ -37,39 +43,40 @@ class TvShowsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (activity != null) {
+            val factory = ViewModelFactory.getInstance(requireContext())
+            viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
 
-        val factory = ViewModelFactory.getInstance()
-        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
+            adapter = TvShowsAdapter()
 
-        fragmentTvshowsBinding.rvTvShow.layoutManager = LinearLayoutManager(activity)
-        adapter = TvShowsAdapter()
-        fragmentTvshowsBinding.rvTvShow.setHasFixedSize(true)
+            viewModel.getTvShows(SortUtils.RELEASE_DATE_ASC).observe(viewLifecycleOwner, handleData)
 
-        viewModel.getTvShows.observe(viewLifecycleOwner, {
-            handleData(it)
-        })
-
-        adapter.setOnItemClickCallback(object :
-            TvShowsAdapter.OnItemClickCallback {
-            override fun onItemClicked(id: String) {
-                selectTvShow(id)
-            }
-        })
+            fragmentTvshowsBinding.rvTvShow.layoutManager = LinearLayoutManager(context)
+            fragmentTvshowsBinding.rvTvShow.setHasFixedSize(true)
+            fragmentTvshowsBinding.rvTvShow.adapter = adapter
+        }
 
     }
 
-    private fun handleData(resource: Resource<TvShowResponse>) {
-        when (resource) {
-            is Resource.Loading -> fragmentTvshowsBinding.progressBar.visibility = View.VISIBLE
-            is Resource.Empty -> fragmentTvshowsBinding.progressBar.visibility = View.GONE
-            is Resource.Success -> {
-                fragmentTvshowsBinding.progressBar.visibility = View.GONE
-                resource.data.let { data -> adapter.setTvShows(data.results) }
-                fragmentTvshowsBinding.rvTvShow.adapter = adapter
-            }
-            is Resource.Error -> {
-                fragmentTvshowsBinding.progressBar.visibility = View.GONE
-                Toast.makeText(requireContext(), resource.errorMessage, Toast.LENGTH_SHORT).show()
+    private val handleData = Observer<Resource<PagedList<TvShowEntity>>> {
+        if (it != null) {
+            when (it.status) {
+                Status.LOADING -> showLoading(true)
+                Status.SUCCESS -> {
+                    showLoading(false)
+                    adapter.submitList(it.data)
+                    adapter.setOnItemClickCallback(object :
+                        TvShowsAdapter.OnItemClickCallback {
+                        override fun onItemClicked(id: String) {
+                            selectTvShow(id)
+                        }
+                    })
+                    adapter.notifyDataSetChanged()
+                }
+                Status.ERROR -> {
+                    showLoading(false)
+                    Toast.makeText(context, "Something goes wrong...", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -77,8 +84,13 @@ class TvShowsFragment : Fragment() {
     private fun selectTvShow(id: String) {
         val intent = Intent(context, DetailFilmActivity::class.java)
         intent.putExtra(DetailFilmActivity.EXTRA_FILM, id)
-        intent.putExtra(DetailFilmActivity.EXTRA_CATEGORY,TV_SHOW)
+        intent.putExtra(DetailFilmActivity.EXTRA_CATEGORY, TV_SHOW)
 
         requireActivity().startActivity(intent)
+    }
+
+    private fun showLoading(state: Boolean) {
+        fragmentTvshowsBinding.progressBar.isVisible = state
+        fragmentTvshowsBinding.rvTvShow.isGone = state
     }
 }

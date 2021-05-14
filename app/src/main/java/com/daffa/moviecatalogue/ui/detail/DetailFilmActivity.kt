@@ -4,20 +4,24 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.daffa.moviecatalogue.R
-import com.daffa.moviecatalogue.data.source.Resource
+import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
+import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.daffa.moviecatalogue.data.source.remote.response.DetailMovieResponse
-import com.daffa.moviecatalogue.data.source.remote.response.DetailTvShowResponse
 import com.daffa.moviecatalogue.databinding.ActivityDetailFilmBinding
 import com.daffa.moviecatalogue.utils.Constants.API_BACKDROP_PATH
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
 import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.MOVIE
+import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
+import com.daffa.moviecatalogue.vo.Status
 
-class DetailFilmActivity : AppCompatActivity() {
+class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         const val EXTRA_FILM = "extra_film"
@@ -34,8 +38,10 @@ class DetailFilmActivity : AppCompatActivity() {
         detailFilmBinding = ActivityDetailFilmBinding.inflate(layoutInflater)
         setContentView(detailFilmBinding.root)
 
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[DetailFilmViewModel::class.java]
+
+        detailFilmBinding.fbFavorite.setOnClickListener(this)
 
         val extras = intent.extras
         if (extras != null) {
@@ -47,11 +53,35 @@ class DetailFilmActivity : AppCompatActivity() {
 
                 if (dataCategory == MOVIE) {
                     viewModel.getDetailMovie.observe(this, {
-                        handleDataDetailMovie(it)
+                        when(it.status) {
+                            Status.LOADING -> showLoading(true)
+                            Status.SUCCESS -> {
+                                if (it.data != null) {
+                                    showLoading(false)
+                                    handleDataDetailMovie(it.data)
+                                }
+                            }
+                            Status.ERROR -> {
+                                showLoading(false)
+                                Toast.makeText(applicationContext, "Something goes wrong...", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     })
                 } else {
                     viewModel.getDetailTvShow.observe(this, {
-                        handleDetailTvShow(it)
+                        when(it.status) {
+                            Status.LOADING -> showLoading(true)
+                            Status.SUCCESS -> {
+                                if (it.data != null) {
+                                    showLoading(false)
+                                    handleDetailTvShow(it.data)
+                                }
+                            }
+                            Status.ERROR -> {
+                                showLoading(false)
+                                Toast.makeText(applicationContext, "Something goes wrong...", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     })
                 }
             }
@@ -60,38 +90,15 @@ class DetailFilmActivity : AppCompatActivity() {
 
     }
 
-    private fun handleDataDetailMovie(resourceMovie: Resource<DetailMovieResponse>) {
-        when (resourceMovie) {
-            is Resource.Loading -> detailFilmBinding.progressBar.visibility = View.VISIBLE
-            is Resource.Empty -> detailFilmBinding.progressBar.visibility = View.GONE
-            is Resource.Success -> {
-                detailFilmBinding.progressBar.visibility = View.GONE
-                resourceMovie.data.let { populateDetailMovie(it) }
-            }
-            is Resource.Error -> {
-                detailFilmBinding.progressBar.visibility = View.GONE
-                Toast.makeText(this, resourceMovie.errorMessage, Toast.LENGTH_SHORT).show()
-            }
-        }
+    private fun showLoading(state: Boolean) {
+        detailFilmBinding.progressBar.isVisible = state
+        detailFilmBinding.fbFavorite.isGone = state
+        detailFilmBinding.icDate.isGone = state
+        detailFilmBinding.rbScore.isGone = state
     }
 
-    private fun handleDetailTvShow(resourceTvShow: Resource<DetailTvShowResponse>) {
-        when (resourceTvShow) {
-            is Resource.Loading -> detailFilmBinding.progressBar.visibility = View.VISIBLE
-            is Resource.Empty -> detailFilmBinding.progressBar.visibility = View.GONE
-            is Resource.Success -> {
-                detailFilmBinding.progressBar.visibility = View.GONE
-                resourceTvShow.data.let { populateDetailTvShow(it) }
-            }
-            is Resource.Error -> {
-                detailFilmBinding.progressBar.visibility = View.GONE
-                Toast.makeText(this, resourceTvShow.errorMessage, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun populateDetailMovie(detailMovieResponse: DetailMovieResponse) {
-        with(detailMovieResponse) {
+    private fun handleDataDetailMovie(movie: MovieEntity) {
+        with (movie) {
             val runtimeText = resources.getString(R.string.runtime_text, this.runtime.toString())
 
             Glide.with(this@DetailFilmActivity)
@@ -106,59 +113,91 @@ class DetailFilmActivity : AppCompatActivity() {
             detailFilmBinding.tvDetailDesc.text = this.overview
             detailFilmBinding.tvDetailScore.text = this.vote_average.toString()
             detailFilmBinding.tvDetailReleaseDate.text = this.release_date
-
-            val genreBuilder = StringBuilder()
-            val iterator = this.genres.iterator()
-            while (iterator.hasNext()) {
-                val obj = iterator.next()
-                if (iterator.hasNext()) {
-                    genreBuilder.append(obj.name)
-                    genreBuilder.append(", ")
-                } else {
-                    genreBuilder.append(obj.name)
-                }
-            }
-            detailFilmBinding.tvDetailGenre.text = genreBuilder
-
+            detailFilmBinding.tvDetailGenre.text = this.genres
             detailFilmBinding.tvDetailRuntime.text = runtimeText
         }
     }
 
-    private fun populateDetailTvShow(detailTvShowResponse: DetailTvShowResponse) {
-        with(detailTvShowResponse) {
-            val epsSeasonText = resources.getString(
-                R.string.episodeSeason_text,
-                this.number_of_episodes.toString(),
-                this.number_of_seasons.toString()
-            )
-
-            Glide.with(this@DetailFilmActivity)
-                .load(API_BACKDROP_PATH + this.backdrop_path)
+    private fun handleDetailTvShow(tvShow: TvShowEntity) {
+        with(tvShow) {
+            com.bumptech.glide.Glide.with(this@DetailFilmActivity)
+                .load(com.daffa.moviecatalogue.utils.Constants.API_BACKDROP_PATH + this.backdrop_path)
                 .into(detailFilmBinding.tvDetailImgBackdrop)
 
-            Glide.with(this@DetailFilmActivity)
-                .load(API_POSTER_PATH + this.poster_path)
+            com.bumptech.glide.Glide.with(this@DetailFilmActivity)
+                .load(com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH + this.poster_path)
                 .into(detailFilmBinding.tvDetailImgPoster)
 
-            detailFilmBinding.tvDetailTitle.text = this.name
+            detailFilmBinding.tvDetailTitle.text = this.title
             detailFilmBinding.tvDetailDesc.text = this.overview
             detailFilmBinding.tvDetailScore.text = this.vote_average.toString()
-            detailFilmBinding.tvDetailReleaseDate.text = this.first_air_date
-
-            val genreBuilder = StringBuilder()
-            val iterator = this.genres.iterator()
-            while (iterator.hasNext()) {
-                val obj = iterator.next()
-                if (iterator.hasNext()) {
-                    genreBuilder.append(obj.name)
-                    genreBuilder.append(", ")
-                } else {
-                    genreBuilder.append(obj.name)
-                }
-            }
-            detailFilmBinding.tvDetailGenre.text = genreBuilder
-
-            detailFilmBinding.tvDetailRuntime.text = epsSeasonText
+            detailFilmBinding.tvDetailReleaseDate.text = this.release_date
+            detailFilmBinding.tvDetailGenre.text = this.genres
+            detailFilmBinding.tvDetailRuntime.text = this.runtime
         }
     }
+
+    private fun setupState() {
+        if (dataCategory == MOVIE) {
+             viewModel.getDetailMovie.observe(this, { movie ->
+                 when(movie.status) {
+                     Status.LOADING -> showLoading(true)
+                     Status.SUCCESS -> {
+                         if (movie.data != null) {
+                             showLoading(false)
+                             val state = movie.data.isFav
+                             setFavoriteFilm(state)
+                         }
+                     }
+                     Status.ERROR -> {
+                         showLoading(false)
+                         Toast.makeText(applicationContext, "Something goes wrong...", Toast.LENGTH_SHORT).show()
+                     }
+                 }
+             })
+        } else if (dataCategory == TV_SHOW) {
+            viewModel.getDetailTvShow.observe(this, { tvShow ->
+                when (tvShow.status) {
+                    Status.LOADING -> showLoading(true)
+                    Status.SUCCESS -> {
+                        if (tvShow.data != null) {
+                            showLoading(false)
+                            val state = tvShow.data.isFav
+                            showLoading(state)
+                        }
+                    }
+                    Status.ERROR -> {
+                        showLoading(false)
+                        Toast.makeText(applicationContext, "Something goes wrong...", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id) {
+            R.id.fb_favorite -> {
+                onFavButtonClicked()
+            }
+        }
+    }
+
+    private fun onFavButtonClicked() {
+        if (dataCategory == MOVIE) {
+            viewModel.setFavoriteMovie()
+        } else {
+            viewModel.setFavoriteTvShow()
+        }
+    }
+
+    private fun setFavoriteFilm(state: Boolean) {
+        if (state) {
+            detailFilmBinding.fbFavorite.setImageResource(R.drawable.ic_favorite_filled)
+        } else {
+            detailFilmBinding.fbFavorite.setImageResource(R.drawable.ic_favorite_unfilled)
+        }
+    }
+
+
 }

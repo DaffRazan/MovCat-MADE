@@ -2,17 +2,29 @@ package com.daffa.moviecatalogue.ui.main.tvshows
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.daffa.moviecatalogue.R
-import com.daffa.moviecatalogue.data.source.remote.response.model.TvShow
+import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.daffa.moviecatalogue.databinding.ItemsTvshowsBinding
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
 
-class TvShowsAdapter() : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() {
+class TvShowsAdapter() : PagedListAdapter<TvShowEntity, TvShowsAdapter.TvShowsViewHolder>((DIFF_CALLBACK)) {
 
-    var data: List<TvShow> = arrayListOf()
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {
+            override fun areItemsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -24,14 +36,10 @@ class TvShowsAdapter() : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>(
         fun onItemClicked(id: String)
     }
 
-    fun setTvShows(tvShows: List<TvShow>) {
-        this.data = tvShows
-        notifyDataSetChanged()
-    }
 
     inner class TvShowsViewHolder(private val binding: ItemsTvshowsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(tvShow: TvShow) {
+        fun bind(tvShow: TvShowEntity) {
             with(binding) {
                 Glide.with(itemView.context)
                     .load(API_POSTER_PATH + tvShow.poster_path)
@@ -40,8 +48,8 @@ class TvShowsAdapter() : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>(
                             .error(R.drawable.ic_error)
                     )
                     .into(imgPoster)
-                tvTvShowTitle.text = tvShow.name
-                tvTvShowReleaseDate.text = tvShow.first_air_date
+                tvTvShowTitle.text = tvShow.title
+                tvTvShowReleaseDate.text = tvShow.release_date
                 tvTvShowRating.text = tvShow.vote_average.toString()
             }
             itemView.setOnClickListener { onItemClickCallback.onItemClicked(tvShow.id.toString()) }
@@ -58,11 +66,9 @@ class TvShowsAdapter() : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>(
     }
 
     override fun onBindViewHolder(holder: TvShowsAdapter.TvShowsViewHolder, position: Int) {
-        val tvShows = data[position]
-        holder.bind(tvShows)
+        val tvShows = getItem(position)
+        if (tvShows != null) {
+            holder.bind(tvShows)
+        }
     }
-
-    override fun getItemCount(): Int = data.size
-
-
 }
