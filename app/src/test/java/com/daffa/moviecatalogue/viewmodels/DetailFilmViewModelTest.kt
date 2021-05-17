@@ -5,10 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.daffa.moviecatalogue.data.repository.MainRepository
 import com.daffa.moviecatalogue.data.source.Resource
+import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
+import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.daffa.moviecatalogue.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.DetailTvShowResponse
 import com.daffa.moviecatalogue.utils.DummyData
 import com.daffa.moviecatalogue.utils.LiveDataTestUtil.getValue
+import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.MOVIE
+import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.*
 import org.junit.Before
@@ -23,75 +27,80 @@ import org.mockito.junit.MockitoJUnitRunner
 class DetailFilmViewModelTest {
     private lateinit var viewModel: DetailFilmViewModel
 
+    // prepare dummy data movies and tv show
+    private val dummyMovie = DummyData.getDetailMovie()
+    private val dummyMovieId = dummyMovie.id
+
+    private val dummyTvShow = DummyData.getDetailMovie()
+    private val dummyTvShowId = dummyTvShow.id
+
+    // mock
     @Mock
     lateinit var repository: MainRepository
+
     @Mock
-    lateinit var observerDetailMovie: Observer<Resource<DetailMovieResponse>>
+    lateinit var observerDetailMovie: Observer<Resource<MovieEntity>>
+
     @Mock
-    lateinit var observerDetailTvShow: Observer<Resource<DetailTvShowResponse>>
+    lateinit var observerDetailTvShow: Observer<Resource<TvShowEntity>>
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    // Detail movie testing
     @Before
     fun setUp() {
         viewModel = DetailFilmViewModel(repository)
     }
 
     @Test
-    fun getDetailMovieResourceSuccess() {
-        val dummyData = DummyData.dummyDetailMovieResponse()
-        val idMovie = dummyData.id
-        val categoryMovie = DetailFilmViewModel.MOVIE
+    fun getDetailMovie() {
+        val dummyDetailMovie = Resource.success(DummyData.getDetailMovie())
+        val movie = MutableLiveData<Resource<MovieEntity>>()
+        movie.value = dummyDetailMovie
 
-        `when`(repository.getMovieById(idMovie))
-            .thenReturn(MutableLiveData(Resource.Success(dummyData)))
-
-        viewModel.setFilm(idMovie.toString(), categoryMovie)
-
-        verify(repository).getMovieById(idMovie)
-        assertNotNull(viewModel.detailMovie)
-
-        viewModel.detailMovie.observeForever(observerDetailMovie)
-        verify(observerDetailMovie).onChanged(Resource.Success(dummyData))
-
-        val resource = getValue(viewModel.getDetailMovie)
-        assertNotNull(resource)
-        assertTrue(resource is Resource.Success)
-        when (resource) {
-            is Resource.Success -> {
-                assertEquals(dummyData, resource.data)
-                assertEquals(idMovie, resource.data.id)
-            }
-        }
+        `when`(repository.getMovieById(dummyMovieId)).thenReturn(movie)
+        viewModel.setFilm(dummyMovieId.toString(), MOVIE)
+        viewModel.getDetailMovie.observeForever(observerDetailMovie)
+        verify(observerDetailMovie).onChanged(dummyDetailMovie)
     }
 
     @Test
-    fun getDetailTvShowResourceSuccess() {
-        val dummyData = DummyData.dummyDetailTvShowResponse()
-        val idTvShow = dummyData.id
-        val categoryTvShow = DetailFilmViewModel.TV_SHOW
+    fun setFavoriteMovie() {
+        val dummyDetailMovie = Resource.success(DummyData.getDetailMovie())
+        val movie = MutableLiveData<Resource<MovieEntity>>()
+        movie.value = dummyDetailMovie
 
-        `when`(repository.getTvShowById(idTvShow))
-            .thenReturn(MutableLiveData(Resource.Success(dummyData)))
+        `when`(repository.getMovieById(dummyMovieId)).thenReturn(movie)
+        viewModel.setFilm(dummyMovieId.toString(), MOVIE)
+        viewModel.setFavoriteMovie()
+        verify(repository).setFavoriteMovies(movie.value!!.data as MovieEntity, true)
 
-        viewModel.setFilm(idTvShow.toString(), categoryTvShow)
+    }
 
-        verify(repository).getTvShowById(idTvShow)
-        assertNotNull(viewModel.detailTvShow)
+    // Detail TV Show testing
+    @Test
+    fun getDetailTvShow() {
+        val dummyDetailTvShow = Resource.success(DummyData.getDetailTvShow())
+        val tvShow = MutableLiveData<Resource<TvShowEntity>>()
+        tvShow.value = dummyDetailTvShow
+        `when`(repository.getTvShowById(dummyTvShowId)).thenReturn(tvShow)
 
-        viewModel.detailTvShow.observeForever(observerDetailTvShow)
-        verify(observerDetailTvShow).onChanged(Resource.Success(dummyData))
+        viewModel.setFilm(dummyTvShowId.toString(), TV_SHOW)
+        viewModel.getDetailTvShow.observeForever(observerDetailTvShow)
+        verify(observerDetailTvShow).onChanged(dummyDetailTvShow)
+    }
 
-        val resource = getValue(viewModel.getDetailTvShow)
-        assertNotNull(resource)
-        assertTrue(resource is Resource.Success)
-        when (resource) {
-            is Resource.Success -> {
-                assertEquals(dummyData, resource.data)
-                assertEquals(idTvShow, resource.data.id)
-            }
-        }
+    @Test
+    fun setFavoriteTvShow() {
+        val dummyDetailTvShow = Resource.success(DummyData.getDetailTvShow())
+        val tvShow = MutableLiveData<Resource<TvShowEntity>>()
+        tvShow.value = dummyDetailTvShow
+        `when`(repository.getTvShowById(dummyTvShowId)).thenReturn(tvShow)
+
+        viewModel.setFilm(dummyTvShowId.toString(), TV_SHOW)
+        viewModel.setFavoriteTvShow()
+        verify(repository).setFavoriteTvShow(tvShow.value!!.data as TvShowEntity, true)
     }
 
 }

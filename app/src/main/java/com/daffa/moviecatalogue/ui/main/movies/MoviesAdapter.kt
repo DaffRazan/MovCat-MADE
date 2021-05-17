@@ -72,4 +72,6 @@ class MoviesAdapter() :
             holder.bind(movies)
         }
     }
+
+    fun getSwipedData(swipedPosition: Int): MovieEntity? = getItem(swipedPosition)
 }

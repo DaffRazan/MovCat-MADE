@@ -1,5 +1,6 @@
 package com.daffa.moviecatalogue.ui.detail
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -39,6 +40,8 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
         detailFilmBinding = ActivityDetailFilmBinding.inflate(layoutInflater)
         setContentView(detailFilmBinding.root)
 
+        supportActionBar?.hide()
+
         showLoading(true)
 
         val factory = ViewModelFactory.getInstance(this)
@@ -68,7 +71,7 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
                             }
                             Status.ERROR -> {
                                 showLoading(false)
-                                Toast.makeText(applicationContext, "Something goes wrong...", Toast.LENGTH_SHORT).show()
+                                toast("Something goes wrong")
                             }
                         }
                     })
@@ -100,6 +103,10 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
         detailFilmBinding.fbFavorite.isGone = state
         detailFilmBinding.icDate.isGone = state
         detailFilmBinding.rbScore.isGone = state
+    }
+
+    private fun Context.toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun handleDataDetailMovie(movie: MovieEntity) {

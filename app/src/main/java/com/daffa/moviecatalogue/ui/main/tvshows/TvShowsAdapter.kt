@@ -71,4 +71,6 @@ class TvShowsAdapter() : PagedListAdapter<TvShowEntity, TvShowsAdapter.TvShowsVi
             holder.bind(tvShows)
         }
     }
+
+    fun getSwipedData(swipedPosition: Int): TvShowEntity? = getItem(swipedPosition)
 }

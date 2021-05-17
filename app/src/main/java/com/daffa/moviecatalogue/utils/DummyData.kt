@@ -1,5 +1,7 @@
 package com.daffa.moviecatalogue.utils
 
+import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
+import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.daffa.moviecatalogue.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.DetailTvShowResponse
 import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
@@ -9,8 +11,126 @@ import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
 import com.daffa.moviecatalogue.data.source.remote.response.model.TvShow
 
 object DummyData {
-    fun dummyMovieResponse(): MovieResponse {
-        val list: List<Movie> = listOf(
+    fun getMovies(): List<MovieEntity> {
+        return listOf(
+            MovieEntity(
+                813258,
+                false,
+                "/c7dFSqZQYqNNJVpacpIGZe3gkLW.jpg",
+                "Animation, Comedy, Fantasy",
+                "Drac tries out some new monster pets to help occupy Tinkles for playtime.",
+                "/dkokENeY5Ka30BFgWAqk14mbnGs.jpg",
+                "2021-04-02",
+                6,
+                "Monster Pets: A Hotel Transylvania Short",
+                7.7f,
+                false
+            ),
+            MovieEntity(
+                458576,
+                false,
+                "/z8TvnEVRenMSTemxYZwLGqFofgF.jpg",
+                "Fantasy, Action, Adventure",
+                "A portal transports Cpt. Artemis and an elite unit of soldiers to a strange world where powerful monsters rule with deadly ferocity. Faced with relentless danger, the team encounters a mysterious hunter who may be their only hope to find a way home.",
+                "/1UCOF11QCw8kcqvce8LKOO6pimh.jpg",
+                "2020-12-03",
+                104,
+                "Monster Hunter",
+                7f,
+                false
+            ),
+            MovieEntity(
+                544401,
+                false,
+                "/uQtqiAu2bBlokqjlURVLEha6zoi.jpg",
+                "Crime, Drama",
+                "Cherry drifts from college dropout to army medic in Iraq - anchored only by his true love, Emily. But after returning from the war with PTSD, his life spirals into drugs and crime as he struggles to find his place in the world.",
+                "/pwDvkDyaHEU9V7cApQhbcSJMG1w.jpg",
+                "2021-02-26",
+                140,
+                "Cherry",
+                7.5f,
+                false
+            )
+        )
+    }
+
+    fun getTvShows(): List<TvShowEntity> {
+        return listOf(
+            TvShowEntity(
+                93484,
+                "/braALW3UODI3aUV3wfrXpvvVzBl.jpg",
+                "Sci-Fi & Fantasy, Action & Adventure, Drama",
+                "When the world's first generation of superheroes received their powers in the 1930s become the revered elder guard in the present, their superpowered children struggle to live up to the legendary feats of their parents.",
+                "/9yxep7oJdkj3Pla9TD9gKflRApY.jpg",
+                "2021-05-07",
+                "8 Episodes | 1 Season(s)",
+                "Jupiter's Legacy",
+                7.5f,
+                false
+            ),
+            TvShowEntity(
+                71712,
+                "/vooNH1WxdhedzGsLnITpged75wJ.jpg",
+                "Drama",
+                "A young surgeon with Savant syndrome is recruited into the surgical unit of a prestigious hospital. The question will arise: can a person who doesn't have the ability to relate to people actually save their lives",
+                "/6tfT03sGp9k4c0J3dypjrI8TSAI.jpg",
+                "2017-09-25",
+                "76 Episodes | 4 Season(s)",
+                "The Good Doctor",
+                8.6f,
+                false
+            ),
+            TvShowEntity(
+                105971,
+                "/sjxtIUCWR74yPPcZFfTsToepfWm.jpg",
+                "Sci-Fi & Fantasy, Action & Adventure, Animation",
+                "Follow the elite and experimental Clones of the Bad Batch as they find their way in a rapidly changing galaxy in the aftermath of the Clone Wars.",
+                "/WjQmEWFrOf98nT5aEfUfVYz9N2.jpg",
+                "2021-05-04",
+                "16 Episodes | 1 Season(s)",
+                "The Bad Batch",
+                9f,
+                false
+            )
+        )
+    }
+
+    fun getDetailMovie(): MovieEntity {
+        return MovieEntity(
+            804435,
+            false,
+            "/mYM8x2Atv4MaLulaV0KVJWI1Djv.jpg",
+            "Action, Crime, Thriller",
+            "Victoria is a young mother trying to put her dark past as a Russian drug courier behind her, but retired cop Damon forces Victoria to do his bidding by holding her daughter hostage. Now, Victoria must use guns, guts and a motorcycle to take out a series of violent gangsters—or she may never see her child again.",
+            "/AoWY1gkcNzabh229Icboa1Ff0BM.jpg",
+            "2021-04-16",
+            96,
+            "Vanquish",
+            6.3f,
+            false
+        )
+    }
+
+    fun getDetailTvShow(): TvShowEntity {
+        return TvShowEntity(
+            85271,
+            "/1i1N0AVRb54H6ZFPDTwbo9MLxSF.jpg",
+            "Sci-Fi & Fantasy, Mystery, Drama",
+            "Wanda Maximoff and Vision—two super-powered beings living idealized suburban lives—begin to suspect that everything is not as it seems.",
+            "/glKDfE6btIRcVB5zrjspRIs4r52.jpg",
+            "2021-01-15",
+            "9 Episodes | 1 Season(s)",
+            "WandaVision",
+            8.4f,
+            false
+        )
+    }
+
+
+    //remote
+    fun getRemoteMovies(): List<Movie> {
+        return listOf(
             Movie(
                 adult = false,
                 backdrop_path = "/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg",
@@ -42,13 +162,33 @@ object DummyData {
                 video = false,
                 vote_average = 8.1f,
                 vote_count = 5285
+            ),
+            Movie(
+                adult = false,
+                backdrop_path = "/fPGeS6jgdLovQAKunNHX8l0avCy.jpg",
+                genre_ids = listOf(
+                    28,
+                    12,
+                    53,
+                    10752
+                ),
+                id = 567189,
+                original_language = "en",
+                original_title = "Tom Clancy's Without Remorse",
+                overview = "An elite Navy SEAL uncovers an international conspiracy while seeking justice for the murder of his pregnant wife.",
+                popularity = 4006.705,
+                poster_path = "/rEm96ib0sPiZBADNKBHKBv5bve9.jpg",
+                release_date = "2021-04-29",
+                title = "Tom Clancy's Without Remorse",
+                video = false,
+                vote_average = 7.3f,
+                vote_count = 856
             )
         )
-        return MovieResponse(1, (list.size - 1), 1, list)
     }
 
-    fun dummyTvShowsResponse(): TvShowResponse {
-        val list: List<TvShow> = listOf(
+    fun getRemoteTvShows(): List<TvShow> {
+        return listOf(
             TvShow(
                 backdrop_path = "/b0WmHGc8LHTdGCVzxRb3IBMur57.jpg",
                 first_air_date = "2021-03-19",
@@ -78,71 +218,88 @@ object DummyData {
                 poster_path = "/yDWJYRAwMNKbIYT8ZB33qy84uzO.jpg",
                 vote_average = 8.9f,
                 vote_count = 1283
+            ),
+            TvShow(
+                backdrop_path = "/edmk8xjGBsYVIf4QtLY9WMaMcXZ.jpg",
+                first_air_date = "2005-03-27",
+                genre_ids = listOf(18),
+                id = 1416,
+                name = "Grey's Anatomy",
+                origin_country = listOf("US"),
+                original_language = "en",
+                original_name = "Grey's Anatomy",
+                overview = "Follows the personal and professional lives of a group of doctors at Seattle’s Grey Sloan Memorial Hospital.",
+                popularity = 745.316,
+                poster_path = "/clnyhPqj1SNgpAdeSS6a6fwE6Bo.jpg",
+                vote_average = 8.2f,
+                vote_count = 6042
             )
         )
-        return TvShowResponse(1, (list.size - 1), 1, list)
+
     }
 
-    fun dummyDetailMovieResponse(): DetailMovieResponse {
+    fun getRemoteDetailMovie(): DetailMovieResponse {
         return DetailMovieResponse(
             adult = false,
-            backdrop_path = "/pcDc2WJAYGJTTvRSEIpRZwM3Ola.jpg",
-            budget = 70000000,
+            backdrop_path = "/mYM8x2Atv4MaLulaV0KVJWI1Djv.jpg",
+            budget = 0,
             genres = listOf(
                 Genre(28, "Action"),
-                Genre(12, "Adventure"),
-                Genre(14, "Fantasy"),
-                Genre(878, "Science Fiction")
+                Genre(80, "Crime"),
+                Genre(53, "Thriller")
             ),
-            homepage = "https://www.hbomax.com/zacksnydersjusticeleague",
-            id = 791373,
-            imdb_id = "tt12361974",
+            homepage = "https://www.lionsgate.com/movies/vanquish",
+            id = 804435,
+            imdb_id = "tt5932368",
             original_language = "en",
-            original_title = "Zack Snyder's Justice League",
-            overview = "Determined to ensure Superman's ultimate sacrifice was not in vain, Bruce Wayne aligns forces with Diana Prince with plans to recruit a team of metahumans to protect the world from an approaching threat of catastrophic proportions.",
-            popularity = 1435.879,
-            poster_path = "/tnAuB8q5vv7Ax9UAEje5Xi4BXik.jpg",
-            release_date = "2021-03-18",
+            original_title = "Vanquish",
+            overview = "Victoria is a young mother trying to put her dark past as a Russian drug courier behind her, but retired cop Damon forces Victoria to do his bidding by holding her daughter hostage. Now, Victoria must use guns, guts and a motorcycle to take out a series of violent gangsters—or she may never see her child again.",
+            popularity = 1346.949,
+            poster_path = "/AoWY1gkcNzabh229Icboa1Ff0BM.jpg",
+            release_date = "2021-04-16",
             revenue = 0,
-            runtime = 242,
+            runtime = 96,
             status = "Released",
-            tagline = "",
-            title = "Zack Snyder's Justice League",
+            tagline = "She's got one night to save her life.",
+            title = "Vanquish",
             video = false,
-            vote_average = 8.5f,
-            vote_count = 5318
+            vote_average = 6.3f,
+            vote_count = 82
         )
     }
 
-    fun dummyDetailTvShowResponse(): DetailTvShowResponse {
+    fun getRemoteDetailTvShow(): DetailTvShowResponse {
         return DetailTvShowResponse(
-            backdrop_path = "/suopoADq0k8YZr4dQXcU6pToj6s.jpg",
-            episode_run_time = listOf(60),
-            first_air_date = "2011-04-17",
+            backdrop_path = "/1i1N0AVRb54H6ZFPDTwbo9MLxSF.jpg",
+            episode_run_time = listOf(
+                36,
+                30
+            ),
+            first_air_date = "2021-01-15",
             genres = listOf(
                 Genre(10765, "Sci-Fi & Fantasy"),
-                Genre(18, "Drama"),
-                Genre(10759, "Action & Adventure")
+                Genre(9648, "Mystery"),
+                Genre(18, "Drama")
             ),
-            homepage = "http://www.hbo.com/game-of-thrones",
-            id = 1399,
+            homepage = "https://www.disneyplus.com/series/wandavision/4SrN28ZjDLwH",
+            id = 85271,
             in_production = false,
             languages = listOf("en"),
-            last_air_date = "2019-05-19",
-            name = "Game of Thrones",
-            number_of_episodes = 73,
-            number_of_seasons = 8,
+            last_air_date = "2021-03-05",
+            name = "WandaVision",
+            number_of_episodes = 9,
+            number_of_seasons = 1,
             origin_country = listOf("US"),
             original_language = "en",
-            original_name = "Game of Thrones",
-            overview = "Seven noble families fight for control of the mythical land of Westeros. Friction between the houses leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war, a neglected military order of misfits, the Night's Watch, is all that stands between the realms of men and icy horrors beyond.",
-            popularity = 582.288,
-            poster_path = "/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg",
+            original_name = "WandaVision",
+            overview = "Wanda Maximoff and Vision—two super-powered beings living idealized suburban lives—begin to suspect that everything is not as it seems.",
+            popularity = 432.02,
+            poster_path = "/glKDfE6btIRcVB5zrjspRIs4r52.jpg",
             status = "Ended",
-            tagline = "Winter Is Coming",
-            type = "Scripted",
+            tagline = "Experience a new vision of reality.",
+            type = "Miniseries",
             vote_average = 8.4f,
-            vote_count = 14247
+            vote_count = 8430
         )
     }
 }

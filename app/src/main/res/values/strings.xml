@@ -2,7 +2,6 @@
     <string name="app_name">MovieCatalogue</string>
     <string name="movies">Movies</string>
     <string name="tvshows">Tv Shows</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="movie_title">Avengers Infinity War</string>
     <string name="tvShow_title">The Flash</string>
     <string name="movie_release_date">movie release date</string>
@@ -23,11 +22,16 @@
     <string name="bn_movie">Movies</string>
     <string name="bn_favorite">Favorite</string>
     <string name="bn_tv_show">TV Shows</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fragment_movie_title">Explore trending Movies</string>
     <string name="fragment_tvShow_title">Explore trending Tv Shows</string>
     <string name="fragment_favorite_title">Your Favorite Films</string>
     <string name="cd_favorite">favorite film</string>
+    <string name="confirm_undo">Yes!</string>
+    <string name="undo">Undo action?</string>
+    <string name="menu_new_release">Newest Release</string>
+    <string name="menu_oldest_release">Oldest Release</string>
+    <string name="menu_best_vote">Best Vote</string>
+    <string name="menu_worst_vote">Worst Vote</string>
 
 </resources>
