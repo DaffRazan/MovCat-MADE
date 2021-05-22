@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -91,8 +89,11 @@ class TvShowsFragment : Fragment() {
     }
 
     private fun showLoading(state: Boolean) {
-        fragmentTvshowsBinding.progressBar.isVisible = state
-        fragmentTvshowsBinding.rvTvShow.isGone = state
+        if (state) {
+            fragmentTvshowsBinding.progressBar.visibility = View.VISIBLE
+        } else {
+            fragmentTvshowsBinding.progressBar.visibility = View.GONE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

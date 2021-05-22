@@ -4,8 +4,6 @@ import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
 import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.daffa.moviecatalogue.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.DetailTvShowResponse
-import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
-import com.daffa.moviecatalogue.data.source.remote.response.TvShowResponse
 import com.daffa.moviecatalogue.data.source.remote.response.model.Genre
 import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
 import com.daffa.moviecatalogue.data.source.remote.response.model.TvShow

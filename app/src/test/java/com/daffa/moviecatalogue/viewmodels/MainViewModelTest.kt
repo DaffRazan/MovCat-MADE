@@ -8,12 +8,8 @@ import com.daffa.moviecatalogue.data.repository.MainRepository
 import com.daffa.moviecatalogue.data.source.Resource
 import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
 import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
-import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
-import com.daffa.moviecatalogue.data.source.remote.response.TvShowResponse
-import com.daffa.moviecatalogue.utils.DummyData
-import com.daffa.moviecatalogue.utils.LiveDataTestUtil.getValue
-import junit.framework.Assert.*
-import org.junit.Assert
+import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

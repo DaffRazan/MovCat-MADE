@@ -12,7 +12,7 @@ import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
 import com.daffa.moviecatalogue.databinding.ItemsMoviesBinding
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
 
-class MoviesAdapter() :
+class MoviesAdapter :
     PagedListAdapter<MovieEntity, MoviesAdapter.MoviesViewHolder>(DIFF_CALLBACK) {
 
     companion object {

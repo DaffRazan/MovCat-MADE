@@ -1,7 +1,6 @@
 package com.daffa.moviecatalogue.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.daffa.moviecatalogue.data.NetworkBoundResource
@@ -14,8 +13,6 @@ import com.daffa.moviecatalogue.data.source.remote.RemoteDataSource
 import com.daffa.moviecatalogue.data.source.remote.network.ApiResponse
 import com.daffa.moviecatalogue.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.data.source.remote.response.DetailTvShowResponse
-import com.daffa.moviecatalogue.data.source.remote.response.MovieResponse
-import com.daffa.moviecatalogue.data.source.remote.response.TvShowResponse
 import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
 import com.daffa.moviecatalogue.data.source.remote.response.model.TvShow
 import com.daffa.moviecatalogue.utils.AppExecutors
@@ -58,7 +55,7 @@ class FakeMainRepository constructor(
                         runtime = 0,
                         title = response.title,
                         vote_average = response.vote_average,
-                        isFav = false
+                        isFavorite = false
                     )
                     movieList.add(movie)
                 }
@@ -101,7 +98,7 @@ class FakeMainRepository constructor(
                         runtime = "",
                         title = response.name,
                         vote_average = response.vote_average,
-                        isFav = false
+                        isFavorite = false
                     )
                     tvShowList.add(tvShow)
                 }
@@ -145,7 +142,7 @@ class FakeMainRepository constructor(
                     runtime = data.runtime,
                     title = data.title,
                     vote_average = data.vote_average,
-                    isFav = false
+                    isFavorite = false
                 )
                 localDataSource.updateMovie(movieDetail, false)
             }
@@ -190,7 +187,7 @@ class FakeMainRepository constructor(
                     runtime = epsSeasonText,
                     title = data.name,
                     vote_average = data.vote_average,
-                    isFav = false
+                    isFavorite = false
                 )
                 localDataSource.updateTvShow(tvShowDetail, false)
             }
@@ -204,7 +201,7 @@ class FakeMainRepository constructor(
             .setPageSize(4)
             .build()
 
-        return LivePagedListBuilder(localDataSource.getFavMovies(), config).build()
+        return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
     }
 
     override fun getFavoriteTvShows(): LiveData<PagedList<TvShowEntity>> {
@@ -214,15 +211,15 @@ class FakeMainRepository constructor(
             .setPageSize(4)
             .build()
 
-        return LivePagedListBuilder(localDataSource.getFavTvShow(), config).build()
+        return LivePagedListBuilder(localDataSource.getFavoriteTvShow(), config).build()
     }
 
     override fun setFavoriteMovies(movie: MovieEntity, state: Boolean) {
-            localDataSource.setFavoriteMovie(movie, state)
+        localDataSource.setFavoriteMovie(movie, state)
     }
 
     override fun setFavoriteTvShow(tvShow: TvShowEntity, state: Boolean) {
-            localDataSource.setFavoriteTvShow(tvShow, state)
+        localDataSource.setFavoriteTvShow(tvShow, state)
     }
 
 

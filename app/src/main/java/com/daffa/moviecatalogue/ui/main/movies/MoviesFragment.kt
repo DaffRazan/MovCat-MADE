@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -94,8 +92,11 @@ class MoviesFragment : Fragment() {
     }
 
     private fun showLoading(state: Boolean) {
-        fragmentMoviesBinding.progressBar.isVisible = state
-        fragmentMoviesBinding.rvMovie.isGone = state
+        if (state) {
+            fragmentMoviesBinding.progressBar.visibility = View.VISIBLE
+        } else {
+            fragmentMoviesBinding.progressBar.visibility = View.GONE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -7,14 +7,10 @@ import com.daffa.moviecatalogue.data.repository.MainRepository
 import com.daffa.moviecatalogue.data.source.Resource
 import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
 import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
-import com.daffa.moviecatalogue.data.source.remote.response.DetailMovieResponse
-import com.daffa.moviecatalogue.data.source.remote.response.DetailTvShowResponse
 import com.daffa.moviecatalogue.utils.DummyData
-import com.daffa.moviecatalogue.utils.LiveDataTestUtil.getValue
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.MOVIE
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
 import com.nhaarman.mockitokotlin2.verify
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -47,12 +43,12 @@ class DetailFilmViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    // Detail movie testing
     @Before
     fun setUp() {
         viewModel = DetailFilmViewModel(repository)
     }
 
+    // Detail movie testing
     @Test
     fun getDetailMovie() {
         val dummyDetailMovie = Resource.success(DummyData.getDetailMovie())

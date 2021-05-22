@@ -12,7 +12,7 @@ import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
 import com.daffa.moviecatalogue.databinding.ItemsTvshowsBinding
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
 
-class TvShowsAdapter() : PagedListAdapter<TvShowEntity, TvShowsAdapter.TvShowsViewHolder>((DIFF_CALLBACK)) {
+class TvShowsAdapter : PagedListAdapter<TvShowEntity, TvShowsAdapter.TvShowsViewHolder>((DIFF_CALLBACK)) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {

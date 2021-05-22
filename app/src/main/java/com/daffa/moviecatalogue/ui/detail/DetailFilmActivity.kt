@@ -1,8 +1,6 @@
 package com.daffa.moviecatalogue.ui.detail
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -51,17 +49,17 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
 
         val extras = intent.extras
         if (extras != null) {
-            val dataId = extras.getString(EXTRA_FILM)
+            val dataFilm = extras.getString(EXTRA_FILM)
             dataCategory = extras.getString(EXTRA_CATEGORY)
 
-            if (dataId != null && dataCategory != null) {
-                viewModel.setFilm(dataId, dataCategory.toString())
+            if (dataFilm != null && dataCategory != null) {
+                viewModel.setFilm(dataFilm, dataCategory.toString())
 
-                setupState()
+                setupData()
 
                 if (dataCategory == MOVIE) {
                     viewModel.getDetailMovie.observe(this, {
-                        when(it.status) {
+                        when (it.status) {
                             Status.LOADING -> showLoading(true)
                             Status.SUCCESS -> {
                                 if (it.data != null) {
@@ -71,13 +69,17 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
                             }
                             Status.ERROR -> {
                                 showLoading(false)
-                                toast("Something goes wrong")
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Something goes wrong...",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     })
                 } else {
                     viewModel.getDetailTvShow.observe(this, {
-                        when(it.status) {
+                        when (it.status) {
                             Status.LOADING -> showLoading(true)
                             Status.SUCCESS -> {
                                 if (it.data != null) {
@@ -87,7 +89,11 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
                             }
                             Status.ERROR -> {
                                 showLoading(false)
-                                Toast.makeText(applicationContext, "Something goes wrong...", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Something goes wrong...",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     })
@@ -105,12 +111,8 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
         detailFilmBinding.rbScore.isGone = state
     }
 
-    private fun Context.toast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
     private fun handleDataDetailMovie(movie: MovieEntity) {
-        with (movie) {
+        with(movie) {
             val runtimeText = resources.getString(R.string.runtime_text, this.runtime.toString())
 
             Glide.with(this@DetailFilmActivity)
@@ -149,24 +151,28 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun setupState() {
+    private fun setupData() {
         if (dataCategory == MOVIE) {
-             viewModel.getDetailMovie.observe(this, { movie ->
-                 when(movie.status) {
-                     Status.LOADING -> showLoading(true)
-                     Status.SUCCESS -> {
-                         if (movie.data != null) {
-                             showLoading(false)
-                             val state = movie.data.isFav
-                             setFavoriteFilm(state)
-                         }
-                     }
-                     Status.ERROR -> {
-                         showLoading(false)
-                         Toast.makeText(applicationContext, "Something goes wrong...", Toast.LENGTH_SHORT).show()
-                     }
-                 }
-             })
+            viewModel.getDetailMovie.observe(this, { movie ->
+                when (movie.status) {
+                    Status.LOADING -> showLoading(true)
+                    Status.SUCCESS -> {
+                        if (movie.data != null) {
+                            showLoading(false)
+                            val state = movie.data.isFavorite
+                            setFavoriteFilm(state)
+                        }
+                    }
+                    Status.ERROR -> {
+                        showLoading(false)
+                        Toast.makeText(
+                            applicationContext,
+                            "Something goes wrong...",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            })
         } else if (dataCategory == TV_SHOW) {
             viewModel.getDetailTvShow.observe(this, { tvShow ->
                 when (tvShow.status) {
@@ -174,13 +180,17 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
                     Status.SUCCESS -> {
                         if (tvShow.data != null) {
                             showLoading(false)
-                            val state = tvShow.data.isFav
+                            val state = tvShow.data.isFavorite
                             setFavoriteFilm(state)
                         }
                     }
                     Status.ERROR -> {
                         showLoading(false)
-                        Toast.makeText(applicationContext, "Something goes wrong...", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            applicationContext,
+                            "Something goes wrong...",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             })
@@ -188,7 +198,7 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.fb_favorite -> {
                 onFavButtonClicked()
             }
@@ -206,10 +216,8 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
     private fun setFavoriteFilm(state: Boolean) {
         if (state) {
             detailFilmBinding.fbFavorite.setImageResource(R.drawable.ic_favorite_filled)
-            Log.d("set fav", "setFavoriteFilm: ")
         } else {
             detailFilmBinding.fbFavorite.setImageResource(R.drawable.ic_favorite_unfilled)
-            Log.d("unfav", "setFavoriteFilm: ")
         }
     }
 
