@@ -22,7 +22,9 @@ import com.google.android.material.snackbar.Snackbar
 
 class FavoriteTvShowsFragment : Fragment() {
 
-    private lateinit var favTvShowsBinding: FragmentFavoriteTvShowsBinding
+    private var _binding: FragmentFavoriteTvShowsBinding? = null
+    private val favTvShowsBinding get() = _binding!!
+
     private lateinit var viewModel: FavoriteViewModel
     private lateinit var adapter: TvShowsAdapter
 
@@ -30,8 +32,14 @@ class FavoriteTvShowsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        favTvShowsBinding = FragmentFavoriteTvShowsBinding.inflate(layoutInflater, container, false)
-        return favTvShowsBinding.root
+        _binding = FragmentFavoriteTvShowsBinding.inflate(layoutInflater, container, false)
+        val view = favTvShowsBinding.root
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

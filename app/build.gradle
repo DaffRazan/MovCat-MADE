@@ -6,6 +6,10 @@ plugins {
 
 apply plugin: 'kotlin-kapt'
 
+// Define Variable API Key
+def STRING = 'String'
+def THEMOVIEDB_API_KEY = '"' + API_KEY + '"' ?: '"Define your The Movie DB API Key!"'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -17,6 +21,10 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+
+        each { type ->
+            type.buildConfigField STRING, 'API_KEY', THEMOVIEDB_API_KEY
+        }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

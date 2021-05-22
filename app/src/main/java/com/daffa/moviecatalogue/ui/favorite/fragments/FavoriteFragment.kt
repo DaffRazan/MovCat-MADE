@@ -11,15 +11,22 @@ import com.daffa.moviecatalogue.ui.favorite.SectionsPagerAdapter
 
 class FavoriteFragment : Fragment() {
 
-    private lateinit var favoriteBinding: FragmentFavoriteBinding
+    private var _binding: FragmentFavoriteBinding? = null
+    private val favoriteBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        favoriteBinding = FragmentFavoriteBinding.inflate(layoutInflater, container, false)
-        return favoriteBinding.root
+        _binding = FragmentFavoriteBinding.inflate(layoutInflater, container, false)
+        val view = favoriteBinding.root
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

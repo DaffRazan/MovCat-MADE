@@ -26,15 +26,22 @@ class MoviesFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: MoviesAdapter
-    private lateinit var fragmentMoviesBinding: FragmentMoviesBinding
+
+    private var _binding: FragmentMoviesBinding? = null
+    private val fragmentMoviesBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentMoviesBinding = FragmentMoviesBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentMoviesBinding.inflate(layoutInflater, container, false)
         setHasOptionsMenu(true)
         return fragmentMoviesBinding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

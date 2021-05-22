@@ -21,7 +21,9 @@ import com.google.android.material.snackbar.Snackbar
 
 class FavoriteMoviesFragment : Fragment() {
 
-    private lateinit var favMoviesBinding: FragmentFavoriteMoviesBinding
+    private var _binding: FragmentFavoriteMoviesBinding? = null
+    private val favMoviesBinding get() = _binding!!
+
     private lateinit var viewModel: FavoriteViewModel
     private lateinit var adapter: MoviesAdapter
 
@@ -30,8 +32,14 @@ class FavoriteMoviesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        favMoviesBinding = FragmentFavoriteMoviesBinding.inflate(layoutInflater, container, false)
-        return favMoviesBinding.root
+        _binding = FragmentFavoriteMoviesBinding.inflate(layoutInflater, container, false)
+        val view = favMoviesBinding.root
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

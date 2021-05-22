@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "movie_entities")
-@Parcelize
 data class MovieEntity(
     @PrimaryKey
     @NonNull
@@ -44,4 +43,4 @@ data class MovieEntity(
 
     @ColumnInfo(name = "isFavorite")
     var isFavorite: Boolean = false
-) : Parcelable
+)

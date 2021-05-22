@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "tv_show_entities")
-@Parcelize
 data class TvShowEntity(
     @PrimaryKey
     @NonNull
@@ -41,4 +40,4 @@ data class TvShowEntity(
 
     @ColumnInfo(name = "isFavorite")
     var isFavorite: Boolean = false
-) : Parcelable
+)

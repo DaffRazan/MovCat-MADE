@@ -27,16 +27,22 @@ class TvShowsFragment : Fragment() {
 
     private lateinit var adapter: TvShowsAdapter
 
-    private lateinit var fragmentTvshowsBinding: FragmentTvshowsBinding
+    private var _binding: FragmentTvshowsBinding? = null
+    private val fragmentTvShowsBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        fragmentTvshowsBinding = FragmentTvshowsBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentTvshowsBinding.inflate(layoutInflater, container, false)
         setHasOptionsMenu(true)
-        return fragmentTvshowsBinding.root
+        return fragmentTvShowsBinding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,9 +56,9 @@ class TvShowsFragment : Fragment() {
 
             viewModel.getTvShows(SortUtils.NEWEST_RELEASE).observe(viewLifecycleOwner, handleData)
 
-            fragmentTvshowsBinding.rvTvShow.layoutManager = LinearLayoutManager(context)
-            fragmentTvshowsBinding.rvTvShow.setHasFixedSize(true)
-            fragmentTvshowsBinding.rvTvShow.adapter = adapter
+            fragmentTvShowsBinding.rvTvShow.layoutManager = LinearLayoutManager(context)
+            fragmentTvShowsBinding.rvTvShow.setHasFixedSize(true)
+            fragmentTvShowsBinding.rvTvShow.adapter = adapter
         }
 
     }
@@ -90,9 +96,9 @@ class TvShowsFragment : Fragment() {
 
     private fun showLoading(state: Boolean) {
         if (state) {
-            fragmentTvshowsBinding.progressBar.visibility = View.VISIBLE
+            fragmentTvShowsBinding.progressBar.visibility = View.VISIBLE
         } else {
-            fragmentTvshowsBinding.progressBar.visibility = View.GONE
+            fragmentTvShowsBinding.progressBar.visibility = View.GONE
         }
     }
 
