@@ -2,31 +2,23 @@ package com.daffa.moviecatalogue.ui.main.tvshows
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.daffa.moviecatalogue.R
-import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
+import com.daffa.moviecatalogue.core.domain.model.TvShow
 import com.daffa.moviecatalogue.databinding.ItemsTvshowsBinding
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
 
-class TvShowsAdapter : PagedListAdapter<TvShowEntity, TvShowsAdapter.TvShowsViewHolder>((DIFF_CALLBACK)) {
+class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() {
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {
-            override fun areItemsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
-
+    var listTvShow: List<TvShow> = arrayListOf()
     private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun setTvShow(tvShows: List<TvShow>) {
+        this.listTvShow = tvShows
+        notifyDataSetChanged()
+    }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
@@ -36,10 +28,9 @@ class TvShowsAdapter : PagedListAdapter<TvShowEntity, TvShowsAdapter.TvShowsView
         fun onItemClicked(id: String)
     }
 
-
     inner class TvShowsViewHolder(private val binding: ItemsTvshowsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(tvShow: TvShowEntity) {
+        fun bind(tvShow: TvShow) {
             with(binding) {
                 Glide.with(itemView.context)
                     .load(API_POSTER_PATH + tvShow.poster_path)
@@ -66,11 +57,9 @@ class TvShowsAdapter : PagedListAdapter<TvShowEntity, TvShowsAdapter.TvShowsView
     }
 
     override fun onBindViewHolder(holder: TvShowsAdapter.TvShowsViewHolder, position: Int) {
-        val tvShows = getItem(position)
-        if (tvShows != null) {
-            holder.bind(tvShows)
-        }
+        val tvShows = listTvShow[position]
+        holder.bind(tvShows)
     }
 
-    fun getSwipedData(swipedPosition: Int): TvShowEntity? = getItem(swipedPosition)
+    override fun getItemCount() = listTvShow.size
 }

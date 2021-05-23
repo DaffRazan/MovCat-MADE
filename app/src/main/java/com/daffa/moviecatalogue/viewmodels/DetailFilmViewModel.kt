@@ -2,13 +2,13 @@ package com.daffa.moviecatalogue.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.daffa.moviecatalogue.data.repository.MainRepository
-import com.daffa.moviecatalogue.data.source.Resource
-import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
-import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
+import com.daffa.moviecatalogue.core.data.source.Resource
+import com.daffa.moviecatalogue.core.domain.model.Movie
+import com.daffa.moviecatalogue.core.domain.model.TvShow
+import com.daffa.moviecatalogue.core.domain.usecase.MainUseCase
 import javax.inject.Inject
 
-class DetailFilmViewModel @Inject constructor(private val mainRepository: MainRepository) :
+class DetailFilmViewModel (private val mainUseCase: MainUseCase) :
     ViewModel() {
 
     companion object {
@@ -16,36 +16,26 @@ class DetailFilmViewModel @Inject constructor(private val mainRepository: MainRe
         const val TV_SHOW = "tvShow"
     }
 
-    lateinit var detailMovie: LiveData<Resource<MovieEntity>>
-    lateinit var detailTvShow: LiveData<Resource<TvShowEntity>>
+    lateinit var detailMovie: LiveData<Resource<Movie>>
+    lateinit var detailTvShow: LiveData<Resource<TvShow>>
 
     fun setFilm(id: String, category: String) {
         when (category) {
             MOVIE -> {
-                detailMovie = mainRepository.getMovieById(id.toInt())
+                detailMovie = mainUseCase.getMovieById(id.toInt())
             }
             TV_SHOW -> {
-                detailTvShow = mainRepository.getTvShowById(id.toInt())
+                detailTvShow = mainUseCase.getTvShowById(id.toInt())
             }
         }
     }
 
-    fun setFavoriteMovie() {
-        val detailMovieValue = detailMovie.value
-
-        if (detailMovieValue?.data != null) {
-            val newState = !detailMovieValue.data.isFavorite
-            mainRepository.setFavoriteMovies(detailMovieValue.data, newState)
-        }
+    fun setFavoriteMovie(movie: Movie, newState: Boolean) {
+        mainUseCase.setFavoriteMovies(movie, newState)
     }
 
-    fun setFavoriteTvShow() {
-        val detailTvShowValue = detailTvShow.value
-
-        if (detailTvShowValue?.data != null) {
-            val newState = !detailTvShowValue.data.isFavorite
-            mainRepository.setFavoriteTvShow(detailTvShowValue.data, newState)
-        }
+    fun setFavoriteTvShow(tvShow: TvShow, newState: Boolean) {
+        mainUseCase.setFavoriteTvShow(tvShow, newState)
     }
 
     val getDetailMovie by lazy { detailMovie }

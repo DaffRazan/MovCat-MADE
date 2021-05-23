@@ -32,5 +32,6 @@
     <string name="menu_worst_vote">Worst Vote</string>
     <string name="tv_show_poster">Tv Show Poster</string>
     <string name="movie_poster">Movie Poster</string>
+    <string name="no_movie_found">No Movie Found</string>
 
 </resources>

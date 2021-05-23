@@ -1,12 +1,12 @@
 package com.daffa.moviecatalogue.utils
 
-import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
-import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
-import com.daffa.moviecatalogue.data.source.remote.response.DetailMovieResponse
-import com.daffa.moviecatalogue.data.source.remote.response.DetailTvShowResponse
-import com.daffa.moviecatalogue.data.source.remote.response.model.Genre
-import com.daffa.moviecatalogue.data.source.remote.response.model.Movie
-import com.daffa.moviecatalogue.data.source.remote.response.model.TvShow
+import com.daffa.moviecatalogue.core.data.source.local.entity.MovieEntity
+import com.daffa.moviecatalogue.core.data.source.local.entity.TvShowEntity
+import com.daffa.moviecatalogue.core.data.source.remote.response.DetailMovieResponse
+import com.daffa.moviecatalogue.core.data.source.remote.response.DetailTvShowResponse
+import com.daffa.moviecatalogue.core.data.source.remote.response.model.Genre
+import com.daffa.moviecatalogue.core.data.source.remote.response.model.Movie
+import com.daffa.moviecatalogue.core.data.source.remote.response.model.TvShow
 
 object DummyData {
     fun getMovies(): List<MovieEntity> {

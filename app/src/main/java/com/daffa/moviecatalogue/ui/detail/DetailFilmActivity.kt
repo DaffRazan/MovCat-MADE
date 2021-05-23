@@ -1,17 +1,17 @@
 package com.daffa.moviecatalogue.ui.detail
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.daffa.moviecatalogue.R
-import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
-import com.daffa.moviecatalogue.data.source.local.entity.TvShowEntity
-import com.daffa.moviecatalogue.data.source.remote.response.DetailMovieResponse
+import com.daffa.moviecatalogue.core.data.source.remote.response.DetailMovieResponse
+import com.daffa.moviecatalogue.core.domain.model.Movie
+import com.daffa.moviecatalogue.core.domain.model.TvShow
 import com.daffa.moviecatalogue.databinding.ActivityDetailFilmBinding
 import com.daffa.moviecatalogue.utils.Constants.API_BACKDROP_PATH
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
@@ -21,7 +21,7 @@ import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.MOVIE
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
 import com.daffa.moviecatalogue.vo.Status
 
-class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
+class DetailFilmActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_FILM = "extra_film"
@@ -45,8 +45,6 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[DetailFilmViewModel::class.java]
 
-        detailFilmBinding.fbFavorite.setOnClickListener(this)
-
         val extras = intent.extras
         if (extras != null) {
             val dataFilm = extras.getString(EXTRA_FILM)
@@ -55,7 +53,7 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
             if (dataFilm != null && dataCategory != null) {
                 viewModel.setFilm(dataFilm, dataCategory.toString())
 
-                setupData()
+                setupFavorite()
 
                 if (dataCategory == MOVIE) {
                     viewModel.getDetailMovie.observe(this, {
@@ -111,7 +109,7 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
         detailFilmBinding.rbScore.isGone = state
     }
 
-    private fun handleDataDetailMovie(movie: MovieEntity) {
+    private fun handleDataDetailMovie(movie: Movie) {
         with(movie) {
             val runtimeText = resources.getString(R.string.runtime_text, this.runtime.toString())
 
@@ -132,7 +130,7 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun handleDetailTvShow(tvShow: TvShowEntity) {
+    private fun handleDetailTvShow(tvShow: TvShow) {
         with(tvShow) {
             com.bumptech.glide.Glide.with(this@DetailFilmActivity)
                 .load(com.daffa.moviecatalogue.utils.Constants.API_BACKDROP_PATH + this.backdrop_path)
@@ -151,7 +149,7 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun setupData() {
+    private fun setupFavorite() {
         if (dataCategory == MOVIE) {
             viewModel.getDetailMovie.observe(this, { movie ->
                 when (movie.status) {
@@ -159,8 +157,13 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
                     Status.SUCCESS -> {
                         if (movie.data != null) {
                             showLoading(false)
-                            val state = movie.data.isFavorite
-                            setFavoriteFilm(state)
+                            var statusFavoriteMovie = movie.data.isFavorite
+                            setFavoriteFilm(statusFavoriteMovie)
+                            detailFilmBinding.fbFavorite.setOnClickListener {
+                                statusFavoriteMovie = !statusFavoriteMovie
+                                viewModel.setFavoriteMovie(movie.data, statusFavoriteMovie)
+                                setFavoriteFilm(statusFavoriteMovie)
+                            }
                         }
                     }
                     Status.ERROR -> {
@@ -180,8 +183,13 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
                     Status.SUCCESS -> {
                         if (tvShow.data != null) {
                             showLoading(false)
-                            val state = tvShow.data.isFavorite
-                            setFavoriteFilm(state)
+                            var statusFavoriteTvShow = tvShow.data.isFavorite
+                            setFavoriteFilm(statusFavoriteTvShow)
+                            detailFilmBinding.fbFavorite.setOnClickListener {
+                                statusFavoriteTvShow = !statusFavoriteTvShow
+                                viewModel.setFavoriteTvShow(tvShow.data, statusFavoriteTvShow)
+                                setFavoriteFilm(statusFavoriteTvShow)
+                            }
                         }
                     }
                     Status.ERROR -> {
@@ -197,29 +205,12 @@ class DetailFilmActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.fb_favorite -> {
-                onFavButtonClicked()
-            }
-        }
-    }
-
-    private fun onFavButtonClicked() {
-        if (dataCategory == MOVIE) {
-            viewModel.setFavoriteMovie()
-        } else if (dataCategory == TV_SHOW) {
-            viewModel.setFavoriteTvShow()
-        }
-    }
-
     private fun setFavoriteFilm(state: Boolean) {
         if (state) {
-            detailFilmBinding.fbFavorite.setImageResource(R.drawable.ic_favorite_filled)
+            detailFilmBinding.fbFavorite.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_favorite_filled))
         } else {
-            detailFilmBinding.fbFavorite.setImageResource(R.drawable.ic_favorite_unfilled)
+            detailFilmBinding.fbFavorite.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_favorite_unfilled))
         }
     }
-
 
 }

@@ -3,20 +3,18 @@ package com.daffa.moviecatalogue.ui.main.movies
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.daffa.moviecatalogue.R
-import com.daffa.moviecatalogue.data.source.Resource
-import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
+import com.daffa.moviecatalogue.core.data.source.Resource
+import com.daffa.moviecatalogue.core.domain.model.Movie
 import com.daffa.moviecatalogue.databinding.FragmentMoviesBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
-import com.daffa.moviecatalogue.utils.SortUtils
-import com.daffa.moviecatalogue.utils.SortUtils.NEWEST_RELEASE
 import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.MOVIE
 import com.daffa.moviecatalogue.viewmodels.MainViewModel
@@ -57,19 +55,19 @@ class MoviesFragment : Fragment() {
             fragmentMoviesBinding.rvMovie.setHasFixedSize(true)
             fragmentMoviesBinding.rvMovie.adapter = adapter
 
-            viewModel.getMovies(NEWEST_RELEASE).observe(viewLifecycleOwner, handleData)
+            viewModel.getMovies.observe(viewLifecycleOwner, handleData)
 
         }
 
     }
 
-    private val handleData = Observer<Resource<PagedList<MovieEntity>>> {
+    private val handleData = Observer<Resource<List<Movie>>> {
         if (it != null) {
             when (it.status) {
                 Status.LOADING -> showLoading(true)
                 Status.SUCCESS -> {
                     showLoading(false)
-                    adapter.submitList(it.data)
+                    it.data?.let { data -> adapter.setMovies(data) }
                     adapter.setOnItemClickCallback(object :
                         MoviesAdapter.OnItemClickCallback {
                         override fun onItemClicked(id: String) {
@@ -104,27 +102,5 @@ class MoviesFragment : Fragment() {
         } else {
             fragmentMoviesBinding.progressBar.visibility = View.GONE
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        activity?.menuInflater?.inflate(R.menu.menu_main, menu)
-        return super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        var sort = ""
-
-        when (item.itemId) {
-            R.id.action_newest_release -> sort = SortUtils.NEWEST_RELEASE
-            R.id.action_oldest_release -> sort = SortUtils.OLDEST_RELEASE
-            R.id.action_best_vote -> sort = SortUtils.BEST_VOTE
-            R.id.action_worst_vote -> sort = SortUtils.WORST_VOTE
-        }
-
-        viewModel.getMovies(sort).observe(viewLifecycleOwner, handleData)
-        item.isChecked = true
-
-        return super.onOptionsItemSelected(item)
     }
 }

@@ -2,34 +2,26 @@ package com.daffa.moviecatalogue.ui.main.movies
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.daffa.moviecatalogue.R
-import com.daffa.moviecatalogue.data.source.local.entity.MovieEntity
+import com.daffa.moviecatalogue.core.domain.model.Movie
 import com.daffa.moviecatalogue.databinding.ItemsMoviesBinding
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
 
 class MoviesAdapter :
-    PagedListAdapter<MovieEntity, MoviesAdapter.MoviesViewHolder>(DIFF_CALLBACK) {
+    RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
-            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
-                return oldItem.id == newItem.id
-            }
+    var listMovie: List<Movie> = arrayListOf()
+    private lateinit var onItemClickCallback: MoviesAdapter.OnItemClickCallback
 
-            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
-                return oldItem == newItem
-            }
-        }
+    fun setMovies(movies: List<Movie>) {
+        this.listMovie = movies
+        notifyDataSetChanged()
     }
 
-    private lateinit var onItemClickCallback: OnItemClickCallback
-
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+    fun setOnItemClickCallback(onItemClickCallback: MoviesAdapter.OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
@@ -39,7 +31,7 @@ class MoviesAdapter :
 
     inner class MoviesViewHolder(private val binding: ItemsMoviesBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: MovieEntity) {
+        fun bind(movie: Movie) {
             with(binding) {
                 Glide.with(itemView.context)
                     .load(API_POSTER_PATH + movie.poster_path)
@@ -67,11 +59,10 @@ class MoviesAdapter :
     }
 
     override fun onBindViewHolder(holder: MoviesAdapter.MoviesViewHolder, position: Int) {
-        val movies = getItem(position)
-        if (movies != null) {
-            holder.bind(movies)
-        }
+        val movies = listMovie[position]
+        holder.bind(movies)
     }
 
-    fun getSwipedData(swipedPosition: Int): MovieEntity? = getItem(swipedPosition)
+    override fun getItemCount() = listMovie.size
+
 }
