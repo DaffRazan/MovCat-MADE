@@ -20,5 +20,6 @@
     <string name="fragment_favorite_title">Your Favorite Films</string>
     <string name="cd_favorite">favorite film</string>
     <string name="no_movie_found">No Movie Found</string>
+    <string name="title_favorite">Favorite</string>
 
 </resources>

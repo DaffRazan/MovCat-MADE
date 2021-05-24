@@ -1,4 +1,4 @@
-package com.daffa.moviecatalogue.viewmodels
+package com.daffa.moviecatalogue.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData

@@ -1,11 +1,11 @@
 package com.daffa.moviecatalogue.ui.main
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.daffa.moviecatalogue.R
 import com.daffa.moviecatalogue.databinding.ActivityMainBinding
-import com.daffa.moviecatalogue.ui.favorite.fragments.FavoriteFragment
 import com.daffa.moviecatalogue.ui.main.movies.MoviesFragment
 import com.daffa.moviecatalogue.ui.main.tvshows.TvShowsFragment
 
@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
 
         val moviesFragment = MoviesFragment()
         val tvShowFragment = TvShowsFragment()
-        val favoriteFragment = FavoriteFragment()
 
         makeCurrentFragment(moviesFragment)
 
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.menu_favorite -> {
                     activityMainBinding.mainAppText.setText(getString(R.string.fragment_favorite_title))
-                    makeCurrentFragment(favoriteFragment)
+                    goToFavoriteModule()
                 }
             }
             true
@@ -48,5 +47,24 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.fl_wrapper, fragment)
             commit()
         }
+
+    private fun goToFavoriteModule() {
+        val fragment = instantiateFavoriteFragment(pathModule)
+        if (fragment!=null) {
+            makeCurrentFragment(fragment)
+        }
+    }
+
+    private fun instantiateFavoriteFragment(className: String): Fragment? {
+        return try {
+            Class.forName(className).newInstance() as Fragment
+        } catch (e: Exception) {
+            Toast.makeText(this, "Module not found", Toast.LENGTH_SHORT).show()
+            null
+        }
+    }
+
+    private val pathModule: String
+        get() = "com.daffa.moviecatalogue.favorite.fragments.FavoriteFragment"
 
 }

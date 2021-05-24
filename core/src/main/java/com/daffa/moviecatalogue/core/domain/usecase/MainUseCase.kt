@@ -13,11 +13,11 @@ interface MainUseCase {
     fun getMovieById(id: Int): Flow<com.daffa.moviecatalogue.core.data.source.Resource<Movie>>
     fun getTvShowById(id: Int): Flow<com.daffa.moviecatalogue.core.data.source.Resource<TvShow>>
 
-    // get favorite movies and tv shows
+    // get com.daffa.moviecatalogue.favorite movies and tv shows
     fun getFavoriteMovies(): Flow<List<Movie>>
     fun getFavoriteTvShows(): Flow<List<TvShow>>
 
-    // set favorite movies and tv shows
+    // set com.daffa.moviecatalogue.favorite movies and tv shows
     fun setFavoriteMovies(movie: Movie, state: Boolean)
     fun setFavoriteTvShow(tvShow: TvShow, state: Boolean)
 }

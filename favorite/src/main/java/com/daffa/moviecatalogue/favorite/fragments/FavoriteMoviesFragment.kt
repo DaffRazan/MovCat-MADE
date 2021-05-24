@@ -1,4 +1,4 @@
-package com.daffa.moviecatalogue.ui.favorite.fragments
+package com.daffa.moviecatalogue.favorite.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.daffa.moviecatalogue.core.ui.MoviesAdapter
-import com.daffa.moviecatalogue.databinding.FragmentFavoriteMoviesBinding
+import com.daffa.moviecatalogue.favorite.FavoriteViewModel
+import com.daffa.moviecatalogue.favorite.databinding.FragmentFavoriteMoviesBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
-import com.daffa.moviecatalogue.viewmodels.FavoriteViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class FavoriteMoviesFragment : Fragment() {

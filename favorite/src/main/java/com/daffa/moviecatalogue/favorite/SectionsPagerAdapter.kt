@@ -1,4 +1,4 @@
-package com.daffa.moviecatalogue.ui.favorite
+package com.daffa.moviecatalogue.favorite
 
 import android.content.Context
 import androidx.annotation.StringRes
@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.daffa.moviecatalogue.R
-import com.daffa.moviecatalogue.ui.favorite.fragments.FavoriteMoviesFragment
-import com.daffa.moviecatalogue.ui.favorite.fragments.FavoriteTvShowsFragment
+import com.daffa.moviecatalogue.favorite.fragments.FavoriteMoviesFragment
+import com.daffa.moviecatalogue.favorite.fragments.FavoriteTvShowsFragment
 
 class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

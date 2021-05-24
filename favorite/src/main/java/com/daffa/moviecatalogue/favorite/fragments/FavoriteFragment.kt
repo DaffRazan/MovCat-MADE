@@ -1,13 +1,14 @@
-package com.daffa.moviecatalogue.ui.favorite.fragments
+package com.daffa.moviecatalogue.favorite.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.daffa.moviecatalogue.databinding.FragmentFavoriteBinding
-import com.daffa.moviecatalogue.ui.favorite.SectionsPagerAdapter
-
+import com.daffa.moviecatalogue.favorite.SectionsPagerAdapter
+import com.daffa.moviecatalogue.favorite.databinding.FragmentFavoriteBinding
+import com.daffa.moviecatalogue.favorite.favoriteModule
+import org.koin.core.context.loadKoinModules
 
 class FavoriteFragment : Fragment() {
 
@@ -31,6 +32,8 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        loadKoinModules(favoriteModule)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(requireActivity(), childFragmentManager)
         favoriteBinding.viewPager.adapter = sectionsPagerAdapter
