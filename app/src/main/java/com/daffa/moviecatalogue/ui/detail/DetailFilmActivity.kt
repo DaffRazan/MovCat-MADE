@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.daffa.moviecatalogue.R
+import com.daffa.moviecatalogue.core.data.source.Resource
 import com.daffa.moviecatalogue.core.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.core.domain.model.Movie
 import com.daffa.moviecatalogue.core.domain.model.TvShow
@@ -57,15 +58,15 @@ class DetailFilmActivity : AppCompatActivity() {
 
                 if (dataCategory == MOVIE) {
                     viewModel.getDetailMovie.observe(this, {
-                        when (it.status) {
-                            Status.LOADING -> showLoading(true)
-                            Status.SUCCESS -> {
+                        when (it) {
+                            is Resource.Loading -> showLoading(true)
+                            is Resource.Success -> {
                                 if (it.data != null) {
                                     showLoading(false)
                                     handleDataDetailMovie(it.data)
                                 }
                             }
-                            Status.ERROR -> {
+                            is Resource.Error -> {
                                 showLoading(false)
                                 Toast.makeText(
                                     applicationContext,
@@ -77,15 +78,15 @@ class DetailFilmActivity : AppCompatActivity() {
                     })
                 } else {
                     viewModel.getDetailTvShow.observe(this, {
-                        when (it.status) {
-                            Status.LOADING -> showLoading(true)
-                            Status.SUCCESS -> {
+                        when (it) {
+                            is Resource.Loading -> showLoading(true)
+                            is Resource.Success -> {
                                 if (it.data != null) {
                                     showLoading(false)
                                     handleDetailTvShow(it.data)
                                 }
                             }
-                            Status.ERROR -> {
+                            is Resource.Error -> {
                                 showLoading(false)
                                 Toast.makeText(
                                     applicationContext,
@@ -152,9 +153,9 @@ class DetailFilmActivity : AppCompatActivity() {
     private fun setupFavorite() {
         if (dataCategory == MOVIE) {
             viewModel.getDetailMovie.observe(this, { movie ->
-                when (movie.status) {
-                    Status.LOADING -> showLoading(true)
-                    Status.SUCCESS -> {
+                when (movie) {
+                    is Resource.Loading -> showLoading(true)
+                    is Resource.Success -> {
                         if (movie.data != null) {
                             showLoading(false)
                             var statusFavoriteMovie = movie.data.isFavorite
@@ -166,7 +167,7 @@ class DetailFilmActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    Status.ERROR -> {
+                    is Resource.Error -> {
                         showLoading(false)
                         Toast.makeText(
                             applicationContext,
@@ -178,9 +179,9 @@ class DetailFilmActivity : AppCompatActivity() {
             })
         } else if (dataCategory == TV_SHOW) {
             viewModel.getDetailTvShow.observe(this, { tvShow ->
-                when (tvShow.status) {
-                    Status.LOADING -> showLoading(true)
-                    Status.SUCCESS -> {
+                when (tvShow) {
+                    is Resource.Loading -> showLoading(true)
+                    is Resource.Success -> {
                         if (tvShow.data != null) {
                             showLoading(false)
                             var statusFavoriteTvShow = tvShow.data.isFavorite
@@ -192,7 +193,7 @@ class DetailFilmActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    Status.ERROR -> {
+                    is Resource.Error -> {
                         showLoading(false)
                         Toast.makeText(
                             applicationContext,

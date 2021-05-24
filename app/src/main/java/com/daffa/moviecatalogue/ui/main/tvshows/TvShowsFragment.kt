@@ -17,7 +17,6 @@ import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
 import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
 import com.daffa.moviecatalogue.viewmodels.MainViewModel
-import com.daffa.moviecatalogue.vo.Status
 
 
 class TvShowsFragment : Fragment() {
@@ -64,9 +63,9 @@ class TvShowsFragment : Fragment() {
 
     private val handleData = Observer<Resource<List<TvShow>>> {
         if (it != null) {
-            when (it.status) {
-                Status.LOADING -> showLoading(true)
-                Status.SUCCESS -> {
+            when (it) {
+                is Resource.Loading -> showLoading(true)
+                is Resource.Success -> {
                     showLoading(false)
                     it.data?.let { data -> adapter.setTvShow(data) }
                     adapter.setOnItemClickCallback(object :
@@ -77,7 +76,7 @@ class TvShowsFragment : Fragment() {
                     })
                     adapter.notifyDataSetChanged()
                 }
-                Status.ERROR -> {
+                is Resource.Error -> {
                     showLoading(false)
                     Toast.makeText(context, "Something goes wrong...", Toast.LENGTH_SHORT).show()
                 }

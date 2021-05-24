@@ -1,39 +1,39 @@
 package com.daffa.moviecatalogue.core.data.source.local.room.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.daffa.moviecatalogue.core.data.source.local.entity.MovieEntity
 import com.daffa.moviecatalogue.core.data.source.local.entity.TvShowEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FilmDao {
     @Query("SELECT * FROM movie_entities")
-    fun getMovies(): LiveData<List<MovieEntity>>
+    fun getMovies(): Flow<List<MovieEntity>>
 
     @Query("SELECT * FROM tv_show_entities")
-    fun getTvShows(): LiveData<List<TvShowEntity>>
+    fun getTvShows(): Flow<List<TvShowEntity>>
 
     @Query("SELECT * FROM movie_entities WHERE id = :id")
-    fun getMovieById(id: Int): LiveData<MovieEntity>
+    fun getMovieById(id: Int): Flow<MovieEntity>
 
     @Query("SELECT * FROM tv_show_entities WHERE id = :id")
-    fun getTvShowById(id: Int): LiveData<TvShowEntity>
+    fun getTvShowById(id: Int): Flow<TvShowEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMovies(movies: List<MovieEntity>)
+    suspend fun insertMovies(movies: List<MovieEntity>)
 
     @Update
     fun updateMovie(movie: MovieEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTvShows(tvShows: List<TvShowEntity>)
+    suspend fun insertTvShows(tvShows: List<TvShowEntity>)
 
     @Update
     fun updateTvShow(tvShow: TvShowEntity)
 
     @Query("SELECT * FROM movie_entities WHERE isFavorite = 1")
-    fun getFavMovies(): LiveData<List<MovieEntity>>
+    fun getFavMovies(): Flow<List<MovieEntity>>
 
     @Query("SELECT * FROM tv_show_entities WHERE isFavorite = 1")
-    fun getFavTvShows(): LiveData<List<TvShowEntity>>
+    fun getFavTvShows(): Flow<List<TvShowEntity>>
 }

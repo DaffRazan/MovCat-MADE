@@ -1,9 +1,9 @@
 package com.daffa.moviecatalogue.core.data.source.local
 
-import androidx.lifecycle.LiveData
 import com.daffa.moviecatalogue.core.data.source.local.entity.MovieEntity
 import com.daffa.moviecatalogue.core.data.source.local.entity.TvShowEntity
 import com.daffa.moviecatalogue.core.data.source.local.room.local.FilmDao
+import kotlinx.coroutines.flow.Flow
 
 class LocalDataSource(private val mFilmDao: FilmDao) {
     companion object {
@@ -13,15 +13,15 @@ class LocalDataSource(private val mFilmDao: FilmDao) {
             INSTANCE ?: LocalDataSource(filmDao)
     }
 
-    fun getAllMovies(): LiveData<List<MovieEntity>> =
+    fun getAllMovies(): Flow<List<MovieEntity>> =
         mFilmDao.getMovies()
 
-    fun getAllTvShows(): LiveData<List<TvShowEntity>> =
+    fun getAllTvShows(): Flow<List<TvShowEntity>> =
         mFilmDao.getTvShows()
 
-    fun getMovieById(id: Int): LiveData<MovieEntity> = mFilmDao.getMovieById(id)
+    fun getMovieById(id: Int): Flow<MovieEntity> = mFilmDao.getMovieById(id)
 
-    fun getTvShowById(id: Int): LiveData<TvShowEntity> = mFilmDao.getTvShowById(id)
+    fun getTvShowById(id: Int): Flow<TvShowEntity> = mFilmDao.getTvShowById(id)
 
     fun setFavoriteMovie(movie: MovieEntity, newState: Boolean) {
         movie.isFavorite = newState
@@ -43,11 +43,11 @@ class LocalDataSource(private val mFilmDao: FilmDao) {
         mFilmDao.updateTvShow(tvShow)
     }
 
-    fun getFavoriteMovies(): LiveData<List<MovieEntity>> = mFilmDao.getFavMovies()
+    fun getFavoriteMovies(): Flow<List<MovieEntity>> = mFilmDao.getFavMovies()
 
-    fun getFavoriteTvShow(): LiveData<List<TvShowEntity>> = mFilmDao.getFavTvShows()
+    fun getFavoriteTvShow(): Flow<List<TvShowEntity>> = mFilmDao.getFavTvShows()
 
-    fun insertMovies(movies: List<MovieEntity>) = mFilmDao.insertMovies(movies)
+    suspend fun insertMovies(movies: List<MovieEntity>) = mFilmDao.insertMovies(movies)
 
-    fun insertTvShows(tvShows: List<TvShowEntity>) = mFilmDao.insertTvShows(tvShows)
+    suspend fun insertTvShows(tvShows: List<TvShowEntity>) = mFilmDao.insertTvShows(tvShows)
 }

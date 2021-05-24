@@ -2,11 +2,11 @@ package com.daffa.moviecatalogue.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.daffa.moviecatalogue.core.data.source.Resource
 import com.daffa.moviecatalogue.core.domain.model.Movie
 import com.daffa.moviecatalogue.core.domain.model.TvShow
 import com.daffa.moviecatalogue.core.domain.usecase.MainUseCase
-import javax.inject.Inject
 
 class DetailFilmViewModel (private val mainUseCase: MainUseCase) :
     ViewModel() {
@@ -22,10 +22,10 @@ class DetailFilmViewModel (private val mainUseCase: MainUseCase) :
     fun setFilm(id: String, category: String) {
         when (category) {
             MOVIE -> {
-                detailMovie = mainUseCase.getMovieById(id.toInt())
+                detailMovie = mainUseCase.getMovieById(id.toInt()).asLiveData()
             }
             TV_SHOW -> {
-                detailTvShow = mainUseCase.getTvShowById(id.toInt())
+                detailTvShow = mainUseCase.getTvShowById(id.toInt()).asLiveData()
             }
         }
     }
