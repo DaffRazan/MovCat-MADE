@@ -55,14 +55,16 @@ class DetailFilmActivity : AppCompatActivity() {
                 if (dataCategory == MOVIE) {
                     viewModel.getDetailMovie.observe(this, {
                         when (it) {
-                            is Resource.Loading -> showLoading(true)
-                            is Resource.Success -> {
+                            is com.daffa.moviecatalogue.core.data.source.Resource.Loading -> showLoading(
+                                true
+                            )
+                            is com.daffa.moviecatalogue.core.data.source.Resource.Success -> {
                                 if (it.data != null) {
                                     showLoading(false)
-                                    handleDataDetailMovie(it.data)
+                                    it.data?.let { detailMovie -> handleDataDetailMovie(detailMovie) }
                                 }
                             }
-                            is Resource.Error -> {
+                            is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
                                 showLoading(false)
                                 Toast.makeText(
                                     applicationContext,
@@ -75,14 +77,16 @@ class DetailFilmActivity : AppCompatActivity() {
                 } else {
                     viewModel.getDetailTvShow.observe(this, {
                         when (it) {
-                            is Resource.Loading -> showLoading(true)
-                            is Resource.Success -> {
+                            is com.daffa.moviecatalogue.core.data.source.Resource.Loading -> showLoading(
+                                true
+                            )
+                            is com.daffa.moviecatalogue.core.data.source.Resource.Success -> {
                                 if (it.data != null) {
                                     showLoading(false)
-                                    handleDetailTvShow(it.data)
+                                    it.data?.let { detailTvShow -> handleDetailTvShow(detailTvShow) }
                                 }
                             }
-                            is Resource.Error -> {
+                            is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
                                 showLoading(false)
                                 Toast.makeText(
                                     applicationContext,
@@ -150,20 +154,22 @@ class DetailFilmActivity : AppCompatActivity() {
         if (dataCategory == MOVIE) {
             viewModel.getDetailMovie.observe(this, { movie ->
                 when (movie) {
-                    is Resource.Loading -> showLoading(true)
-                    is Resource.Success -> {
+                    is com.daffa.moviecatalogue.core.data.source.Resource.Loading -> showLoading(
+                        true
+                    )
+                    is com.daffa.moviecatalogue.core.data.source.Resource.Success -> {
                         if (movie.data != null) {
                             showLoading(false)
-                            var statusFavoriteMovie = movie.data.isFavorite
+                            var statusFavoriteMovie = movie.data!!.isFavorite
                             setFavoriteFilm(statusFavoriteMovie)
                             detailFilmBinding.fbFavorite.setOnClickListener {
                                 statusFavoriteMovie = !statusFavoriteMovie
-                                viewModel.setFavoriteMovie(movie.data, statusFavoriteMovie)
+                                viewModel.setFavoriteMovie(movie.data!!, statusFavoriteMovie)
                                 setFavoriteFilm(statusFavoriteMovie)
                             }
                         }
                     }
-                    is Resource.Error -> {
+                    is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
                         showLoading(false)
                         Toast.makeText(
                             applicationContext,
@@ -176,20 +182,22 @@ class DetailFilmActivity : AppCompatActivity() {
         } else if (dataCategory == TV_SHOW) {
             viewModel.getDetailTvShow.observe(this, { tvShow ->
                 when (tvShow) {
-                    is Resource.Loading -> showLoading(true)
-                    is Resource.Success -> {
+                    is com.daffa.moviecatalogue.core.data.source.Resource.Loading -> showLoading(
+                        true
+                    )
+                    is com.daffa.moviecatalogue.core.data.source.Resource.Success -> {
                         if (tvShow.data != null) {
                             showLoading(false)
-                            var statusFavoriteTvShow = tvShow.data.isFavorite
+                            var statusFavoriteTvShow = tvShow.data!!.isFavorite
                             setFavoriteFilm(statusFavoriteTvShow)
                             detailFilmBinding.fbFavorite.setOnClickListener {
                                 statusFavoriteTvShow = !statusFavoriteTvShow
-                                viewModel.setFavoriteTvShow(tvShow.data, statusFavoriteTvShow)
+                                viewModel.setFavoriteTvShow(tvShow.data!!, statusFavoriteTvShow)
                                 setFavoriteFilm(statusFavoriteTvShow)
                             }
                         }
                     }
-                    is Resource.Error -> {
+                    is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
                         showLoading(false)
                         Toast.makeText(
                             applicationContext,
@@ -204,9 +212,19 @@ class DetailFilmActivity : AppCompatActivity() {
 
     private fun setFavoriteFilm(state: Boolean) {
         if (state) {
-            detailFilmBinding.fbFavorite.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_favorite_filled))
+            detailFilmBinding.fbFavorite.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.ic_favorite_filled
+                )
+            )
         } else {
-            detailFilmBinding.fbFavorite.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_favorite_unfilled))
+            detailFilmBinding.fbFavorite.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.ic_favorite_unfilled
+                )
+            )
         }
     }
 

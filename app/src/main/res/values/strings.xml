@@ -2,10 +2,6 @@
     <string name="app_name">Movcat</string>
     <string name="movies">Movies</string>
     <string name="tvshows">Tv Shows</string>
-    <string name="movie_title">Avengers Infinity War</string>
-    <string name="tvShow_title">The Flash</string>
-    <string name="movie_release_date">movie release date</string>
-    <string name="tv_show_release_date">TV Show release date</string>
     <string name="runtime_text">%s Minutes</string>
     <string name="detail_title">Avengers Infinity War</string>
     <string name="detail_desc">detail desc</string>
@@ -16,7 +12,6 @@
     <string name="tv_splash_screen">MovieCatalogue</string>
     <string name="logo_app">Logo</string>
     <string name="iv_rating">rating</string>
-    <string name="tv_show_rating">90%</string>
     <string name="bn_movie">Movies</string>
     <string name="bn_favorite">Favorite</string>
     <string name="bn_tv_show">TV Shows</string>
@@ -30,8 +25,6 @@
     <string name="menu_oldest_release">Oldest Release</string>
     <string name="menu_best_vote">Best Vote</string>
     <string name="menu_worst_vote">Worst Vote</string>
-    <string name="tv_show_poster">Tv Show Poster</string>
-    <string name="movie_poster">Movie Poster</string>
     <string name="no_movie_found">No Movie Found</string>
 
 </resources>

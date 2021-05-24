@@ -16,8 +16,8 @@ class DetailFilmViewModel (private val mainUseCase: MainUseCase) :
         const val TV_SHOW = "tvShow"
     }
 
-    lateinit var detailMovie: LiveData<Resource<Movie>>
-    lateinit var detailTvShow: LiveData<Resource<TvShow>>
+    lateinit var detailMovie: LiveData<com.daffa.moviecatalogue.core.data.source.Resource<Movie>>
+    lateinit var detailTvShow: LiveData<com.daffa.moviecatalogue.core.data.source.Resource<TvShow>>
 
     fun setFilm(id: String, category: String) {
         when (category) {

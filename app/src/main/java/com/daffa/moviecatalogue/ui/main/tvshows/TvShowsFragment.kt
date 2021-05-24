@@ -58,11 +58,11 @@ class TvShowsFragment : Fragment() {
 
     }
 
-    private val handleData = Observer<Resource<List<TvShow>>> {
+    private val handleData = Observer<com.daffa.moviecatalogue.core.data.source.Resource<List<TvShow>>> {
         if (it != null) {
             when (it) {
-                is Resource.Loading -> showLoading(true)
-                is Resource.Success -> {
+                is com.daffa.moviecatalogue.core.data.source.Resource.Loading -> showLoading(true)
+                is com.daffa.moviecatalogue.core.data.source.Resource.Success -> {
                     showLoading(false)
                     it.data?.let { data -> adapter.setTvShow(data) }
                     adapter.setOnItemClickCallback(object :
@@ -73,7 +73,7 @@ class TvShowsFragment : Fragment() {
                     })
                     adapter.notifyDataSetChanged()
                 }
-                is Resource.Error -> {
+                is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
                     showLoading(false)
                     Toast.makeText(context, "Something goes wrong...", Toast.LENGTH_SHORT).show()
                 }
