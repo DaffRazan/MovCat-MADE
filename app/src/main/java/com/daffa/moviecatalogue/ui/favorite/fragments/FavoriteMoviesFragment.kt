@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.daffa.moviecatalogue.databinding.FragmentFavoriteMoviesBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
-import com.daffa.moviecatalogue.ui.main.movies.MoviesAdapter
-import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
+import com.daffa.moviecatalogue.core.ui.MoviesAdapter
+import com.daffa.moviecatalogue.core.ui.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
 import com.daffa.moviecatalogue.viewmodels.FavoriteViewModel
 

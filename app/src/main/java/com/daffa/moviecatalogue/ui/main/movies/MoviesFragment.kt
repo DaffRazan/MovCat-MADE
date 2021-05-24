@@ -13,9 +13,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.daffa.moviecatalogue.core.data.source.Resource
 import com.daffa.moviecatalogue.core.domain.model.Movie
+import com.daffa.moviecatalogue.core.ui.MoviesAdapter
 import com.daffa.moviecatalogue.databinding.FragmentMoviesBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
-import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
+import com.daffa.moviecatalogue.core.ui.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.MOVIE
 import com.daffa.moviecatalogue.viewmodels.MainViewModel
 

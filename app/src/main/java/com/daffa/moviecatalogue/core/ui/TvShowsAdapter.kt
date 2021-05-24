@@ -1,4 +1,4 @@
-package com.daffa.moviecatalogue.ui.main.tvshows
+package com.daffa.moviecatalogue.core.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -50,13 +50,13 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): TvShowsAdapter.TvShowsViewHolder {
+    ): TvShowsViewHolder {
         val itemsTvshowsBinding =
             ItemsTvshowsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TvShowsViewHolder(itemsTvshowsBinding)
     }
 
-    override fun onBindViewHolder(holder: TvShowsAdapter.TvShowsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TvShowsViewHolder, position: Int) {
         val tvShows = listTvShow[position]
         holder.bind(tvShows)
     }

@@ -1,10 +1,10 @@
-package com.daffa.moviecatalogue.viewmodel
+package com.daffa.moviecatalogue.core.ui
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.daffa.moviecatalogue.core.domain.usecase.MainUseCase
-import com.daffa.moviecatalogue.di.Injection
+import com.daffa.moviecatalogue.core.di.Injection
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
 import com.daffa.moviecatalogue.viewmodels.FavoriteViewModel
 import com.daffa.moviecatalogue.viewmodels.MainViewModel

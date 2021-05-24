@@ -12,9 +12,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.daffa.moviecatalogue.core.data.source.Resource
 import com.daffa.moviecatalogue.core.domain.model.TvShow
+import com.daffa.moviecatalogue.core.ui.TvShowsAdapter
 import com.daffa.moviecatalogue.databinding.FragmentTvshowsBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
-import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
+import com.daffa.moviecatalogue.core.ui.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
 import com.daffa.moviecatalogue.viewmodels.MainViewModel
 

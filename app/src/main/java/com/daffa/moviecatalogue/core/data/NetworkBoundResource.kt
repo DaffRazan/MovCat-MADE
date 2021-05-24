@@ -32,11 +32,10 @@ abstract class NetworkBoundResource<ResultType, RequestType>(private val executo
 
     }
 
-    protected open fun onFetchFailed() {}
-
-    protected abstract fun loadFromDb(): Flow<ResultType>
     protected abstract fun shouldFetch(data: ResultType?): Boolean
     protected abstract suspend fun createCall(): Flow<ApiResponse<RequestType>>
+    protected open fun onFetchFailed() {}
+    protected abstract fun loadFromDb(): Flow<ResultType>
     protected abstract suspend fun saveCallResult(data: RequestType)
 
     fun asFlow(): Flow<Resource<ResultType>> = result

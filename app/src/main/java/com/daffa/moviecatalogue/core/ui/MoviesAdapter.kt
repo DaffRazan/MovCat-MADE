@@ -1,4 +1,4 @@
-package com.daffa.moviecatalogue.ui.main.movies
+package com.daffa.moviecatalogue.core.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,14 +14,14 @@ class MoviesAdapter :
     RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
     var listMovie: List<Movie> = arrayListOf()
-    private lateinit var onItemClickCallback: MoviesAdapter.OnItemClickCallback
+    private lateinit var onItemClickCallback: OnItemClickCallback
 
     fun setMovies(movies: List<Movie>) {
         this.listMovie = movies
         notifyDataSetChanged()
     }
 
-    fun setOnItemClickCallback(onItemClickCallback: MoviesAdapter.OnItemClickCallback) {
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
@@ -52,13 +52,13 @@ class MoviesAdapter :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MoviesAdapter.MoviesViewHolder {
+    ): MoviesViewHolder {
         val itemsMoviesBinding =
             ItemsMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MoviesViewHolder(itemsMoviesBinding)
     }
 
-    override fun onBindViewHolder(holder: MoviesAdapter.MoviesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
         val movies = listMovie[position]
         holder.bind(movies)
     }

@@ -16,11 +16,10 @@ import com.daffa.moviecatalogue.core.domain.model.TvShow
 import com.daffa.moviecatalogue.databinding.ActivityDetailFilmBinding
 import com.daffa.moviecatalogue.utils.Constants.API_BACKDROP_PATH
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
-import com.daffa.moviecatalogue.viewmodel.ViewModelFactory
+import com.daffa.moviecatalogue.core.ui.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.MOVIE
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
-import com.daffa.moviecatalogue.vo.Status
 
 class DetailFilmActivity : AppCompatActivity() {
 

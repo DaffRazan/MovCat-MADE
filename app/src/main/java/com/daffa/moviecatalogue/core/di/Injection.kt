@@ -1,4 +1,4 @@
-package com.daffa.moviecatalogue.di
+package com.daffa.moviecatalogue.core.di
 
 import android.content.Context
 import com.daffa.moviecatalogue.core.data.repository.MainRepository
