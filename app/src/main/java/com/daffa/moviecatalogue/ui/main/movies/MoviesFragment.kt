@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.daffa.moviecatalogue.core.data.source.Resource
 import com.daffa.moviecatalogue.core.domain.model.Movie
 import com.daffa.moviecatalogue.core.ui.MoviesAdapter
 import com.daffa.moviecatalogue.databinding.FragmentMoviesBinding

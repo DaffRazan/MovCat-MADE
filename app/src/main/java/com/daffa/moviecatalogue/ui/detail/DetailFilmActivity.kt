@@ -8,7 +8,6 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.daffa.moviecatalogue.R
-import com.daffa.moviecatalogue.core.data.source.Resource
 import com.daffa.moviecatalogue.core.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.core.domain.model.Movie
 import com.daffa.moviecatalogue.core.domain.model.TvShow

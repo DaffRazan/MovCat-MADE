@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="placeholder">#6FB6B6B6</color>
     <color name="bc_cardView">#151515</color>
+    <color name="rv_backgroundColor">#252a34</color>
+    <color name="detailActivity_background">#151515</color>
     <color name="text_gray">#808080</color>
     <color name="color_rating">#98ddca</color>
-    <color name="black">#000000</color>
+
 </resources>

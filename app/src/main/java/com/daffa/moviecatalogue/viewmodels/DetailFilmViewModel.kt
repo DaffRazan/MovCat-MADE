@@ -3,7 +3,6 @@ package com.daffa.moviecatalogue.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.daffa.moviecatalogue.core.data.source.Resource
 import com.daffa.moviecatalogue.core.domain.model.Movie
 import com.daffa.moviecatalogue.core.domain.model.TvShow
 import com.daffa.moviecatalogue.core.domain.usecase.MainUseCase
