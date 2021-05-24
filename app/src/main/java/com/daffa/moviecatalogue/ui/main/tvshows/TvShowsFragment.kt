@@ -8,21 +8,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.daffa.moviecatalogue.core.data.source.Resource
 import com.daffa.moviecatalogue.core.domain.model.TvShow
 import com.daffa.moviecatalogue.core.ui.TvShowsAdapter
 import com.daffa.moviecatalogue.databinding.FragmentTvshowsBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
-import com.daffa.moviecatalogue.core.ui.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
 import com.daffa.moviecatalogue.viewmodels.MainViewModel
-
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class TvShowsFragment : Fragment() {
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModel()
 
     private lateinit var adapter: TvShowsAdapter
 
@@ -48,8 +46,6 @@ class TvShowsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
             showLoading(true)
-            val factory = ViewModelFactory.getInstance(requireContext())
-            viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
 
             adapter = TvShowsAdapter()
 

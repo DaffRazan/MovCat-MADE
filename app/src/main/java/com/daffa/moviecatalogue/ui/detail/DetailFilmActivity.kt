@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.daffa.moviecatalogue.R
 import com.daffa.moviecatalogue.core.data.source.Resource
@@ -16,10 +15,10 @@ import com.daffa.moviecatalogue.core.domain.model.TvShow
 import com.daffa.moviecatalogue.databinding.ActivityDetailFilmBinding
 import com.daffa.moviecatalogue.utils.Constants.API_BACKDROP_PATH
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
-import com.daffa.moviecatalogue.core.ui.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.MOVIE
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel.Companion.TV_SHOW
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailFilmActivity : AppCompatActivity() {
 
@@ -28,7 +27,8 @@ class DetailFilmActivity : AppCompatActivity() {
         const val EXTRA_CATEGORY = "extra_category"
     }
 
-    private lateinit var viewModel: DetailFilmViewModel
+    private val viewModel: DetailFilmViewModel by viewModel()
+
     private lateinit var detailFilmBinding: ActivityDetailFilmBinding
     private lateinit var detailMovieResponse: DetailMovieResponse
     private var dataCategory: String? = null
@@ -41,9 +41,6 @@ class DetailFilmActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         showLoading(true)
-
-        val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory)[DetailFilmViewModel::class.java]
 
         val extras = intent.extras
         if (extras != null) {

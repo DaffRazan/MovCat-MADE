@@ -15,28 +15,11 @@ import com.daffa.moviecatalogue.utils.AppExecutors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class MainRepository private constructor(
+class MainRepository(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val executorsApp: AppExecutors
 ) : IMainRepository {
-    companion object {
-        @Volatile
-        private var instance: MainRepository? = null
-
-        fun getInstance(
-            remoteData: RemoteDataSource,
-            localDataSource: LocalDataSource,
-            executorsApp: AppExecutors
-        ): MainRepository =
-            instance ?: synchronized(this) {
-                instance ?: MainRepository(
-                    remoteData,
-                    localDataSource,
-                    executorsApp
-                ).apply { instance = this }
-            }
-    }
 
     override fun getMovies(): Flow<Resource<List<Movie>>> =
         object :

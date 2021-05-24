@@ -7,13 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
-class LocalDataSource private constructor(private val mFilmDao: FilmDao) {
-    companion object {
-        private var INSTANCE: LocalDataSource? = null
-
-        fun getInstance(filmDao: FilmDao): LocalDataSource =
-            INSTANCE ?: LocalDataSource(filmDao)
-    }
+class LocalDataSource(private val mFilmDao: FilmDao) {
 
     fun getAllMovies(): Flow<List<MovieEntity>> =
         mFilmDao.getMovies()

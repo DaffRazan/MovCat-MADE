@@ -6,21 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.daffa.moviecatalogue.core.ui.TvShowsAdapter
 import com.daffa.moviecatalogue.databinding.FragmentFavoriteTvShowsBinding
 import com.daffa.moviecatalogue.ui.detail.DetailFilmActivity
-import com.daffa.moviecatalogue.core.ui.TvShowsAdapter
-import com.daffa.moviecatalogue.core.ui.ViewModelFactory
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
 import com.daffa.moviecatalogue.viewmodels.FavoriteViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class FavoriteTvShowsFragment : Fragment() {
 
     private var _binding: FragmentFavoriteTvShowsBinding? = null
     private val favTvShowsBinding get() = _binding!!
 
-    private lateinit var viewModel: FavoriteViewModel
+    private val viewModel: FavoriteViewModel by viewModel()
     private lateinit var adapter: TvShowsAdapter
 
     override fun onCreateView(
@@ -41,8 +40,7 @@ class FavoriteTvShowsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val factory = ViewModelFactory.getInstance(requireActivity())
-            viewModel = ViewModelProvider(this, factory)[FavoriteViewModel::class.java]
+
             adapter = TvShowsAdapter()
             adapter.setOnItemClickCallback(object :
                 TvShowsAdapter.OnItemClickCallback {

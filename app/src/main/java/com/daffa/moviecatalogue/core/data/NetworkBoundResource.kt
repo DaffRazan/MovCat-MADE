@@ -4,7 +4,6 @@ import com.daffa.moviecatalogue.core.data.source.Resource
 import com.daffa.moviecatalogue.core.data.source.remote.network.ApiResponse
 import com.daffa.moviecatalogue.utils.AppExecutors
 import kotlinx.coroutines.flow.*
-import java.util.concurrent.Executors
 
 abstract class NetworkBoundResource<ResultType, RequestType>(private val executors: AppExecutors) {
 
