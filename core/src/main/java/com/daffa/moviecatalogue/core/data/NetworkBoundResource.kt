@@ -1,31 +1,32 @@
 package com.daffa.moviecatalogue.core.data
 
+import com.daffa.moviecatalogue.core.data.source.Resource
 import com.daffa.moviecatalogue.core.data.source.remote.network.ApiResponse
 import com.daffa.moviecatalogue.core.utils.AppExecutors
 import kotlinx.coroutines.flow.*
 
 abstract class NetworkBoundResource<ResultType, RequestType>(private val executors: AppExecutors) {
 
-    private var result: Flow<com.daffa.moviecatalogue.core.data.source.Resource<ResultType>> = flow {
-        emit(com.daffa.moviecatalogue.core.data.source.Resource.Loading())
+    private var result: Flow<Resource<ResultType>> = flow {
+        emit(Resource.Loading())
         val dbSource = loadFromDb().first()
         if (shouldFetch(dbSource)) {
-            emit(com.daffa.moviecatalogue.core.data.source.Resource.Loading())
+            emit(Resource.Loading())
             when (val apiResponse = createCall().first()) {
                 is ApiResponse.Success -> {
                     saveCallResult(apiResponse.data)
-                    emitAll(loadFromDb().map { com.daffa.moviecatalogue.core.data.source.Resource.Success(it) })
+                    emitAll(loadFromDb().map { Resource.Success(it) })
                 }
                 is ApiResponse.Empty -> {
-                    emitAll(loadFromDb().map { com.daffa.moviecatalogue.core.data.source.Resource.Success(it) })
+                    emitAll(loadFromDb().map { Resource.Success(it) })
                 }
                 is ApiResponse.Error -> {
                     onFetchFailed()
-                    emit(com.daffa.moviecatalogue.core.data.source.Resource.Error<ResultType>(apiResponse.errorMessage))
+                    emit(Resource.Error<ResultType>(apiResponse.errorMessage))
                 }
             }
         } else {
-            emitAll(loadFromDb().map { com.daffa.moviecatalogue.core.data.source.Resource.Success(it) })
+            emitAll(loadFromDb().map { Resource.Success(it) })
         }
 
     }
@@ -36,5 +37,5 @@ abstract class NetworkBoundResource<ResultType, RequestType>(private val executo
     protected abstract fun loadFromDb(): Flow<ResultType>
     protected abstract suspend fun saveCallResult(data: RequestType)
 
-    fun asFlow(): Flow<com.daffa.moviecatalogue.core.data.source.Resource<ResultType>> = result
+    fun asFlow(): Flow<Resource<ResultType>> = result
 }

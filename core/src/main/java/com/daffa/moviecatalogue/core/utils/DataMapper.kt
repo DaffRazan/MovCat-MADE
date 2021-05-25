@@ -1,12 +1,14 @@
 package com.daffa.moviecatalogue.core.utils
 
+import com.daffa.moviecatalogue.core.data.source.local.entity.MovieEntity
+import com.daffa.moviecatalogue.core.data.source.local.entity.TvShowEntity
 import com.daffa.moviecatalogue.core.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.core.data.source.remote.response.DetailTvShowResponse
 import com.daffa.moviecatalogue.core.domain.model.Movie
 import com.daffa.moviecatalogue.core.domain.model.TvShow
 
 object DataMapper {
-    fun mapMovieEntitiesToDomain(input: List<com.daffa.moviecatalogue.core.data.source.local.entity.MovieEntity>): List<Movie> =
+    fun mapMovieEntitiesToDomain(input: List<MovieEntity>): List<Movie> =
         input.map {
             Movie(
                 id = it.id,
@@ -24,7 +26,7 @@ object DataMapper {
         }
 
     fun mapMovieDomainToEntities(input: Movie) =
-        com.daffa.moviecatalogue.core.data.source.local.entity.MovieEntity(
+        MovieEntity(
             id = input.id,
             adult = input.adult,
             backdrop_path = input.backdrop_path,
@@ -38,10 +40,10 @@ object DataMapper {
             isFavorite = input.isFavorite
         )
 
-    fun mapMovieResponseToEntities(input: List<com.daffa.moviecatalogue.core.data.source.remote.response.model.Movie>): List<com.daffa.moviecatalogue.core.data.source.local.entity.MovieEntity> {
-        val movieList = ArrayList<com.daffa.moviecatalogue.core.data.source.local.entity.MovieEntity>()
+    fun mapMovieResponseToEntities(input: List<com.daffa.moviecatalogue.core.data.source.remote.response.model.Movie>): List<MovieEntity> {
+        val movieList = ArrayList<MovieEntity>()
         input.map {
-            val movie = com.daffa.moviecatalogue.core.data.source.local.entity.MovieEntity(
+            val movie = MovieEntity(
                 id = it.id,
                 backdrop_path = it.backdrop_path,
                 genres = "",
@@ -58,7 +60,7 @@ object DataMapper {
         return movieList
     }
 
-    fun mapTvShowEntityToDomain(input: List<com.daffa.moviecatalogue.core.data.source.local.entity.TvShowEntity>): List<TvShow> =
+    fun mapTvShowEntityToDomain(input: List<TvShowEntity>): List<TvShow> =
         input.map {
             TvShow(
                 id = it.id,
@@ -75,7 +77,7 @@ object DataMapper {
         }
 
     fun mapTvShowDomainToEntities(input: TvShow) =
-        com.daffa.moviecatalogue.core.data.source.local.entity.TvShowEntity(
+       TvShowEntity(
             id = input.id,
             backdrop_path = input.backdrop_path,
             genres = input.genres,
@@ -88,10 +90,10 @@ object DataMapper {
             isFavorite = input.isFavorite
         )
 
-    fun mapTvShowResponseToEntities(input: List<com.daffa.moviecatalogue.core.data.source.remote.response.model.TvShow>): List<com.daffa.moviecatalogue.core.data.source.local.entity.TvShowEntity> {
-        val tvShowList = ArrayList<com.daffa.moviecatalogue.core.data.source.local.entity.TvShowEntity>()
+    fun mapTvShowResponseToEntities(input: List<com.daffa.moviecatalogue.core.data.source.remote.response.model.TvShow>): List<TvShowEntity> {
+        val tvShowList = ArrayList<TvShowEntity>()
         input.map {
-            val tvShow = com.daffa.moviecatalogue.core.data.source.local.entity.TvShowEntity(
+            val tvShow = TvShowEntity(
                 id = it.id,
                 backdrop_path = it.backdrop_path,
                 genres = "",
@@ -108,7 +110,7 @@ object DataMapper {
         return tvShowList
     }
 
-    fun mapDetailMovieEntityToDomain(input: com.daffa.moviecatalogue.core.data.source.local.entity.MovieEntity) =
+    fun mapDetailMovieEntityToDomain(input: MovieEntity) =
         Movie(
             id = input.id,
             adult = input.adult,
@@ -123,7 +125,7 @@ object DataMapper {
             isFavorite = input.isFavorite
         )
 
-    fun mapDetailTvShowEntityToDomain(input: com.daffa.moviecatalogue.core.data.source.local.entity.TvShowEntity) =
+    fun mapDetailTvShowEntityToDomain(input: TvShowEntity) =
         TvShow(
             id = input.id,
             backdrop_path = input.backdrop_path,
@@ -137,7 +139,7 @@ object DataMapper {
             isFavorite = input.isFavorite
         )
 
-    fun mapDetailMovieResponseToEntity(input: DetailMovieResponse): com.daffa.moviecatalogue.core.data.source.local.entity.MovieEntity {
+    fun mapDetailMovieResponseToEntity(input: DetailMovieResponse): MovieEntity {
         val genreBuilder = StringBuilder()
 
         val iterator = input.genres.iterator()
@@ -151,7 +153,7 @@ object DataMapper {
             }
         }
 
-        val movieDetail = com.daffa.moviecatalogue.core.data.source.local.entity.MovieEntity(
+        val movieDetail = MovieEntity(
             id = input.id,
             backdrop_path = input.backdrop_path,
             genres = genreBuilder.toString(),
@@ -166,7 +168,7 @@ object DataMapper {
         return movieDetail
     }
 
-    fun mapDetailTvShowResponseToEntity(input: DetailTvShowResponse): com.daffa.moviecatalogue.core.data.source.local.entity.TvShowEntity {
+    fun mapDetailTvShowResponseToEntity(input: DetailTvShowResponse): TvShowEntity {
         val genreBuilder = StringBuilder()
         val epsSeasonText =
             "${input.number_of_episodes} Episodes | ${input.number_of_seasons} Season(s)"
@@ -182,7 +184,7 @@ object DataMapper {
             }
         }
 
-        val tvShowDetail = com.daffa.moviecatalogue.core.data.source.local.entity.TvShowEntity(
+        val tvShowDetail = TvShowEntity(
             id = input.id,
             backdrop_path = input.backdrop_path,
             genres = genreBuilder.toString(),

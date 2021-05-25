@@ -1,5 +1,9 @@
 package com.daffa.moviecatalogue.core.data.repository
 
+import com.daffa.moviecatalogue.core.data.NetworkBoundResource
+import com.daffa.moviecatalogue.core.data.source.Resource
+import com.daffa.moviecatalogue.core.data.source.local.LocalDataSource
+import com.daffa.moviecatalogue.core.data.source.remote.RemoteDataSource
 import com.daffa.moviecatalogue.core.data.source.remote.network.ApiResponse
 import com.daffa.moviecatalogue.core.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.core.data.source.remote.response.DetailTvShowResponse
@@ -12,14 +16,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class MainRepository(
-    private val remoteDataSource: com.daffa.moviecatalogue.core.data.source.remote.RemoteDataSource,
-    private val localDataSource: com.daffa.moviecatalogue.core.data.source.local.LocalDataSource,
+    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource,
     private val executorsApp: AppExecutors
 ) : IMainRepository {
 
-    override fun getMovies(): Flow<com.daffa.moviecatalogue.core.data.source.Resource<List<Movie>>> =
+    override fun getMovies(): Flow<Resource<List<Movie>>> =
         object :
-            com.daffa.moviecatalogue.core.data.NetworkBoundResource<List<Movie>, List<com.daffa.moviecatalogue.core.data.source.remote.response.model.Movie>>(
+           NetworkBoundResource<List<Movie>, List<com.daffa.moviecatalogue.core.data.source.remote.response.model.Movie>>(
                 executorsApp
             ) {
             override fun loadFromDb(): Flow<List<Movie>> {
@@ -39,9 +43,9 @@ class MainRepository(
             }
         }.asFlow()
 
-    override fun getTvShows(): Flow<com.daffa.moviecatalogue.core.data.source.Resource<List<TvShow>>> =
+    override fun getTvShows(): Flow<Resource<List<TvShow>>> =
         object :
-            com.daffa.moviecatalogue.core.data.NetworkBoundResource<List<TvShow>, List<com.daffa.moviecatalogue.core.data.source.remote.response.model.TvShow>>(
+            NetworkBoundResource<List<TvShow>, List<com.daffa.moviecatalogue.core.data.source.remote.response.model.TvShow>>(
                 executorsApp
             ) {
             override fun loadFromDb(): Flow<List<TvShow>> {
@@ -61,9 +65,9 @@ class MainRepository(
             }
         }.asFlow()
 
-    override fun getMovieById(id: Int): Flow<com.daffa.moviecatalogue.core.data.source.Resource<Movie>> =
+    override fun getMovieById(id: Int): Flow<Resource<Movie>> =
         object :
-            com.daffa.moviecatalogue.core.data.NetworkBoundResource<Movie, DetailMovieResponse>(executorsApp) {
+            NetworkBoundResource<Movie, DetailMovieResponse>(executorsApp) {
 
             override fun loadFromDb(): Flow<Movie> {
                 return localDataSource.getMovieById(id)
@@ -82,7 +86,7 @@ class MainRepository(
             }
         }.asFlow()
 
-    override fun getTvShowById(id: Int): Flow<com.daffa.moviecatalogue.core.data.source.Resource<TvShow>> =
+    override fun getTvShowById(id: Int): Flow<Resource<TvShow>> =
         object :
             com.daffa.moviecatalogue.core.data.NetworkBoundResource<TvShow, DetailTvShowResponse>(executorsApp) {
             override fun loadFromDb(): Flow<TvShow> {

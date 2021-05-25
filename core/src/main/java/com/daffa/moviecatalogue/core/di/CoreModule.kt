@@ -1,6 +1,10 @@
 package com.daffa.moviecatalogue.core.di
 
 import androidx.room.Room
+import com.daffa.moviecatalogue.core.data.repository.MainRepository
+import com.daffa.moviecatalogue.core.data.source.local.LocalDataSource
+import com.daffa.moviecatalogue.core.data.source.local.room.local.FilmDatabase
+import com.daffa.moviecatalogue.core.data.source.remote.RemoteDataSource
 import com.daffa.moviecatalogue.core.data.source.remote.network.ApiService
 import com.daffa.moviecatalogue.core.domain.repository.IMainRepository
 import com.daffa.moviecatalogue.core.utils.AppExecutors
@@ -14,12 +18,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 val databaseModule = module {
-    factory { get<com.daffa.moviecatalogue.core.data.source.local.room.local.FilmDatabase>().filmDao() }
+    factory { get<FilmDatabase>().filmDao() }
 
     single {
         Room.databaseBuilder(
             androidContext(),
-            com.daffa.moviecatalogue.core.data.source.local.room.local.FilmDatabase::class.java,
+            FilmDatabase::class.java,
             "Film.db"
         ).fallbackToDestructiveMigration().build()
     }
@@ -45,11 +49,11 @@ val networkModule = module {
 }
 
 val repositoryModule = module {
-    single { com.daffa.moviecatalogue.core.data.source.local.LocalDataSource(get()) }
-    single { com.daffa.moviecatalogue.core.data.source.remote.RemoteDataSource(get()) }
+    single { LocalDataSource(get()) }
+    single { RemoteDataSource(get()) }
     factory { AppExecutors() }
     single<IMainRepository> {
-        com.daffa.moviecatalogue.core.data.repository.MainRepository(
+       MainRepository(
             get(),
             get(),
             get()
