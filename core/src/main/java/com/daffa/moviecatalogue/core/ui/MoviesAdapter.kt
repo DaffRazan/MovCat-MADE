@@ -2,6 +2,8 @@ package com.daffa.moviecatalogue.core.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.AnimationUtils.loadAnimation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -46,6 +48,7 @@ class MoviesAdapter :
             }
 
             itemView.setOnClickListener { onItemClickCallback.onItemClicked(movie.id.toString()) }
+            itemView.animation = loadAnimation(itemView.context, R.anim.item_anim)
         }
     }
 

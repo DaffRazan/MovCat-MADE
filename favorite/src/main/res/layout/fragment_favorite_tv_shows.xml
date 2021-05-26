@@ -22,6 +22,6 @@
         android:layout_gravity="center"
         android:textColor="@color/white"
         android:fontFamily="@font/nexademobold"
-        android:textSize="24sp"/>
+        android:textSize="20sp"/>
 
 </FrameLayout>

@@ -21,7 +21,7 @@
         android:fontFamily="@font/nexademobold"
         android:text="@string/no_movie_found"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="20sp"
         tools:visibility="visible" />
 
 </FrameLayout>

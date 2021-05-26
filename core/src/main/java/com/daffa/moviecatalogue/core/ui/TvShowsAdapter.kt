@@ -2,6 +2,7 @@ package com.daffa.moviecatalogue.core.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -44,6 +45,7 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() 
                 tvTvShowRating.text = tvShow.vote_average.toString()
             }
             itemView.setOnClickListener { onItemClickCallback.onItemClicked(tvShow.id.toString()) }
+            itemView.animation = AnimationUtils.loadAnimation(itemView.context, R.anim.item_anim)
         }
     }
 
