@@ -121,7 +121,7 @@ class DetailFilmActivity : AppCompatActivity() {
                 .load(API_POSTER_PATH + this.poster_path)
                 .into(detailFilmBinding.tvDetailImgPoster)
 
-            detailFilmBinding.tvDetailTitle.text = this.title
+            detailFilmBinding.collapsingToolbar.title = this.title
             detailFilmBinding.tvDetailDesc.text = this.overview
             detailFilmBinding.tvDetailScore.text = this.vote_average.toString()
             detailFilmBinding.tvDetailReleaseDate.text = this.release_date
@@ -140,7 +140,7 @@ class DetailFilmActivity : AppCompatActivity() {
                 .load(com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH + this.poster_path)
                 .into(detailFilmBinding.tvDetailImgPoster)
 
-            detailFilmBinding.tvDetailTitle.text = this.title
+            detailFilmBinding.collapsingToolbar.title = this.title
             detailFilmBinding.tvDetailDesc.text = this.overview
             detailFilmBinding.tvDetailScore.text = this.vote_average.toString()
             detailFilmBinding.tvDetailReleaseDate.text = this.release_date

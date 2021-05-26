@@ -9,7 +9,7 @@
     <string name="detail_genre">detail genre</string>
     <string name="detail_score">detail score</string>
     <string name="image_poster_film">image poster film</string>
-    <string name="tv_splash_screen">MovieCatalogue</string>
+    <string name="tv_splash_screen">Movcat</string>
     <string name="logo_app">Logo</string>
     <string name="iv_rating">rating</string>
     <string name="bn_movie">Movies</string>
@@ -21,5 +21,6 @@
     <string name="cd_favorite">favorite film</string>
     <string name="no_movie_found">No Movie Found</string>
     <string name="title_favorite">Favorite</string>
+    <string name="fab">floating action button</string>
 
 </resources>
