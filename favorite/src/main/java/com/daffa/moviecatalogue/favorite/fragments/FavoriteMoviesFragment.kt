@@ -49,11 +49,12 @@ class FavoriteMoviesFragment : Fragment() {
             favMoviesBinding.rvFavoriteMovie.adapter = adapter
 
             viewModel.getFavoriteMovies.observe(viewLifecycleOwner, { favMovies ->
-                if (favMovies != null) {
-                    noFilmFound(false)
+                if (favMovies.isNotEmpty()) {
                     adapter.setMovies(favMovies)
+                    favMoviesBinding.tvFilmNotFound.visibility = View.GONE
                 } else {
-                    noFilmFound(true)
+                    favMoviesBinding.tvFilmNotFound.visibility = View.VISIBLE
+                    favMoviesBinding.rvFavoriteMovie.visibility = View.GONE
                 }
             })
 
@@ -69,11 +70,12 @@ class FavoriteMoviesFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.getFavoriteMovies.observe(viewLifecycleOwner, { favMovies ->
-            if (favMovies != null) {
-                noFilmFound(false)
+            if (favMovies.isNotEmpty()) {
                 adapter.setMovies(favMovies)
+                favMoviesBinding.tvFilmNotFound.visibility = View.GONE
             } else {
-                noFilmFound(true)
+                favMoviesBinding.tvFilmNotFound.visibility = View.VISIBLE
+                favMoviesBinding.rvFavoriteMovie.visibility = View.GONE
             }
         })
     }
@@ -84,13 +86,5 @@ class FavoriteMoviesFragment : Fragment() {
         intent.putExtra(DetailFilmActivity.EXTRA_CATEGORY, DetailFilmViewModel.MOVIE)
 
         requireActivity().startActivity(intent)
-    }
-
-    private fun noFilmFound(state: Boolean) {
-        if (state) {
-            favMoviesBinding.rvFavoriteMovie.visibility = View.GONE
-        } else {
-            favMoviesBinding.rvFavoriteMovie.visibility = View.VISIBLE
-        }
     }
 }

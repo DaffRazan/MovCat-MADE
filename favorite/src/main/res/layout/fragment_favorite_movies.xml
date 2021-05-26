@@ -3,53 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="fragments.FavoriteMoviesFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_favorite_movie"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_favorite_movie"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/rv_backgroundColor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/items_movies" />
+        android:layout_height="match_parent"
+        android:background="@color/rv_backgroundColor"
+        tools:listitem="@layout/items_movies" />
 
-        <ImageView
-            android:id="@+id/img_film_not_found"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/no_movie_found"
-            android:src="@drawable/no_movie"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_film_not_found"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/nexademobold"
-            android:text="@string/no_movie_found"
-            android:textColor="#fff"
-            android:textSize="24sp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_film_not_found" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
+    <TextView
+        android:id="@+id/tv_film_not_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="5dp"
+        android:fontFamily="@font/nexademobold"
+        android:text="@string/no_movie_found"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        tools:visibility="visible" />
 
 </FrameLayout>

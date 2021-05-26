@@ -2,11 +2,13 @@ package com.daffa.moviecatalogue.favorite.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.daffa.moviecatalogue.core.domain.model.TvShow
 import com.daffa.moviecatalogue.core.ui.TvShowsAdapter
 import com.daffa.moviecatalogue.favorite.FavoriteViewModel
 import com.daffa.moviecatalogue.favorite.databinding.FragmentFavoriteTvShowsBinding
@@ -40,7 +42,6 @@ class FavoriteTvShowsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-
             adapter = TvShowsAdapter()
             adapter.setOnItemClickCallback(object :
                 TvShowsAdapter.OnItemClickCallback {
@@ -50,8 +51,12 @@ class FavoriteTvShowsFragment : Fragment() {
             })
 
             viewModel.getFavoriteTvShows.observe(viewLifecycleOwner, { favTvShows ->
-                if (favTvShows != null) {
+                if (favTvShows.isNotEmpty()) {
                     adapter.setTvShow(favTvShows)
+                    favTvShowsBinding.tvFilmNotFound.visibility = View.GONE
+                } else {
+                    favTvShowsBinding.rvFavoriteTvShow.visibility = View.GONE
+                    favTvShowsBinding.tvFilmNotFound.visibility = View.VISIBLE
                 }
             })
 
@@ -70,11 +75,16 @@ class FavoriteTvShowsFragment : Fragment() {
         requireActivity().startActivity(intent)
     }
 
+
     override fun onResume() {
         super.onResume()
         viewModel.getFavoriteTvShows.observe(viewLifecycleOwner, { favTvShows ->
-            if (favTvShows != null) {
+            if (favTvShows.isNotEmpty()) {
                 adapter.setTvShow(favTvShows)
+                favTvShowsBinding.tvFilmNotFound.visibility = View.GONE
+            } else {
+                favTvShowsBinding.rvFavoriteTvShow.visibility = View.GONE
+                favTvShowsBinding.tvFilmNotFound.visibility = View.VISIBLE
             }
         })
     }

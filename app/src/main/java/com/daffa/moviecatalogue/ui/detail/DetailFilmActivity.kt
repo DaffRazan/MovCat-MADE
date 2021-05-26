@@ -8,10 +8,12 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.daffa.moviecatalogue.R
+import com.daffa.moviecatalogue.core.data.source.Resource
 import com.daffa.moviecatalogue.core.data.source.remote.response.DetailMovieResponse
 import com.daffa.moviecatalogue.core.domain.model.Movie
 import com.daffa.moviecatalogue.core.domain.model.TvShow
 import com.daffa.moviecatalogue.databinding.ActivityDetailFilmBinding
+import com.daffa.moviecatalogue.utils.Constants
 import com.daffa.moviecatalogue.utils.Constants.API_BACKDROP_PATH
 import com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH
 import com.daffa.moviecatalogue.viewmodels.DetailFilmViewModel
@@ -54,16 +56,16 @@ class DetailFilmActivity : AppCompatActivity() {
                 if (dataCategory == MOVIE) {
                     viewModel.getDetailMovie.observe(this, {
                         when (it) {
-                            is com.daffa.moviecatalogue.core.data.source.Resource.Loading -> showLoading(
+                            is Resource.Loading -> showLoading(
                                 true
                             )
-                            is com.daffa.moviecatalogue.core.data.source.Resource.Success -> {
+                            is Resource.Success -> {
                                 if (it.data != null) {
                                     showLoading(false)
                                     it.data?.let { detailMovie -> handleDataDetailMovie(detailMovie) }
                                 }
                             }
-                            is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
+                            is Resource.Error -> {
                                 showLoading(false)
                                 Toast.makeText(
                                     applicationContext,
@@ -76,16 +78,16 @@ class DetailFilmActivity : AppCompatActivity() {
                 } else {
                     viewModel.getDetailTvShow.observe(this, {
                         when (it) {
-                            is com.daffa.moviecatalogue.core.data.source.Resource.Loading -> showLoading(
+                            is Resource.Loading -> showLoading(
                                 true
                             )
-                            is com.daffa.moviecatalogue.core.data.source.Resource.Success -> {
+                            is Resource.Success -> {
                                 if (it.data != null) {
                                     showLoading(false)
                                     it.data?.let { detailTvShow -> handleDetailTvShow(detailTvShow) }
                                 }
                             }
-                            is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
+                            is Resource.Error -> {
                                 showLoading(false)
                                 Toast.makeText(
                                     applicationContext,
@@ -133,11 +135,11 @@ class DetailFilmActivity : AppCompatActivity() {
     private fun handleDetailTvShow(tvShow: TvShow) {
         with(tvShow) {
             com.bumptech.glide.Glide.with(this@DetailFilmActivity)
-                .load(com.daffa.moviecatalogue.utils.Constants.API_BACKDROP_PATH + this.backdrop_path)
+                .load(Constants.API_BACKDROP_PATH + this.backdrop_path)
                 .into(detailFilmBinding.tvDetailImgBackdrop)
 
             com.bumptech.glide.Glide.with(this@DetailFilmActivity)
-                .load(com.daffa.moviecatalogue.utils.Constants.API_POSTER_PATH + this.poster_path)
+                .load(Constants.API_POSTER_PATH + this.poster_path)
                 .into(detailFilmBinding.tvDetailImgPoster)
 
             detailFilmBinding.collapsingToolbar.title = this.title
@@ -153,10 +155,10 @@ class DetailFilmActivity : AppCompatActivity() {
         if (dataCategory == MOVIE) {
             viewModel.getDetailMovie.observe(this, { movie ->
                 when (movie) {
-                    is com.daffa.moviecatalogue.core.data.source.Resource.Loading -> showLoading(
+                    is Resource.Loading -> showLoading(
                         true
                     )
-                    is com.daffa.moviecatalogue.core.data.source.Resource.Success -> {
+                    is Resource.Success -> {
                         if (movie.data != null) {
                             showLoading(false)
                             var statusFavoriteMovie = movie.data!!.isFavorite
@@ -168,7 +170,7 @@ class DetailFilmActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
+                    is Resource.Error -> {
                         showLoading(false)
                         Toast.makeText(
                             applicationContext,
@@ -181,10 +183,10 @@ class DetailFilmActivity : AppCompatActivity() {
         } else if (dataCategory == TV_SHOW) {
             viewModel.getDetailTvShow.observe(this, { tvShow ->
                 when (tvShow) {
-                    is com.daffa.moviecatalogue.core.data.source.Resource.Loading -> showLoading(
+                    is Resource.Loading -> showLoading(
                         true
                     )
-                    is com.daffa.moviecatalogue.core.data.source.Resource.Success -> {
+                    is Resource.Success -> {
                         if (tvShow.data != null) {
                             showLoading(false)
                             var statusFavoriteTvShow = tvShow.data!!.isFavorite
@@ -196,7 +198,7 @@ class DetailFilmActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
+                    is Resource.Error -> {
                         showLoading(false)
                         Toast.makeText(
                             applicationContext,

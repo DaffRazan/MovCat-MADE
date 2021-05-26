@@ -12,4 +12,16 @@
         android:background="@color/rv_backgroundColor"
         tools:listitem="@layout/items_tvshows"/>
 
+    <TextView
+        android:id="@+id/tv_film_not_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_tv_shown"
+        android:elevation="5dp"
+        android:visibility="visible"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:fontFamily="@font/nexademobold"
+        android:textSize="24sp"/>
+
 </FrameLayout>
