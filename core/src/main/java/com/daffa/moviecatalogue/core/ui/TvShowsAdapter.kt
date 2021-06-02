@@ -13,7 +13,7 @@ import com.daffa.moviecatalogue.core.utils.Constants.API_POSTER_PATH
 
 class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() {
 
-    var listTvShow: List<TvShow> = arrayListOf()
+    private var listTvShow: List<TvShow> = arrayListOf()
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     fun setTvShow(tvShows: List<TvShow>) {

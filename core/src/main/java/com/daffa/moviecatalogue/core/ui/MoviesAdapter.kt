@@ -15,7 +15,7 @@ import com.daffa.moviecatalogue.core.utils.Constants.API_POSTER_PATH
 class MoviesAdapter :
     RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
-    var listMovie: List<Movie> = arrayListOf()
+    private var listMovie: List<Movie> = arrayListOf()
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     fun setMovies(movies: List<Movie>) {
