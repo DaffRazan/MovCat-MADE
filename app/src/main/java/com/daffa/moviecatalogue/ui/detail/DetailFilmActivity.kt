@@ -23,11 +23,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailFilmActivity : AppCompatActivity() {
 
-    companion object {
-        const val EXTRA_FILM = "extra_film"
-        const val EXTRA_CATEGORY = "extra_category"
-    }
-
     private val viewModel: DetailFilmViewModel by viewModel()
 
     private lateinit var detailFilmBinding: ActivityDetailFilmBinding
@@ -229,4 +224,8 @@ class DetailFilmActivity : AppCompatActivity() {
         }
     }
 
+    companion object {
+        const val EXTRA_FILM = "extra_film"
+        const val EXTRA_CATEGORY = "extra_category"
+    }
 }

@@ -9,6 +9,7 @@ import com.daffa.moviecatalogue.favorite.SectionsPagerAdapter
 import com.daffa.moviecatalogue.favorite.databinding.FragmentFavoriteBinding
 import com.daffa.moviecatalogue.favorite.favoriteModule
 import org.koin.core.context.loadKoinModules
+import org.koin.core.context.unloadKoinModules
 
 class FavoriteFragment : Fragment() {
 
@@ -27,6 +28,7 @@ class FavoriteFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        unloadKoinModules(favoriteModule)
         _binding = null
     }
 
