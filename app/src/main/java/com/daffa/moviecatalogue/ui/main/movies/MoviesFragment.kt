@@ -74,7 +74,7 @@ class MoviesFragment : Fragment() {
                 }
                 is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
                     showLoading(false)
-                    activity?.toast("Something goes wrong")
+                    activity?.toast("Something goes wrong!")
                 }
             }
         }

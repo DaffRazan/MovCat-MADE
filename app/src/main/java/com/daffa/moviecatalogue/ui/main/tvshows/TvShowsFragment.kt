@@ -74,7 +74,7 @@ class TvShowsFragment : Fragment() {
                 }
                 is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
                     showLoading(false)
-                    Toast.makeText(context, "Something goes wrong...", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Something goes wrong!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
