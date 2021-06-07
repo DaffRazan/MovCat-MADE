@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.daffa.moviecatalogue.core.data.source.Resource
 import com.daffa.moviecatalogue.core.domain.model.Movie
 import com.daffa.moviecatalogue.core.ui.MoviesAdapter
 import com.daffa.moviecatalogue.databinding.FragmentMoviesBinding
@@ -20,64 +21,67 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class MoviesFragment : Fragment() {
 
-    private val viewModel: MainViewModel by viewModel()
-    private lateinit var adapter: MoviesAdapter
-
     private var _binding: FragmentMoviesBinding? = null
     private val fragmentMoviesBinding get() = _binding!!
+
+    private val viewModel: MainViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMoviesBinding.inflate(layoutInflater, container, false)
-        setHasOptionsMenu(true)
-        return fragmentMoviesBinding.root
+        _binding = FragmentMoviesBinding.inflate(inflater, container, false)
+        val view = fragmentMoviesBinding.root
+        return view
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        with(fragmentMoviesBinding.rvMovie) {
+            if (this.adapter != null) {
+                this.adapter = null
+            }
+        }
+
         _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (activity != null) {
-            showLoading(true)
 
-            adapter = MoviesAdapter()
+        val adapter = MoviesAdapter()
 
-            fragmentMoviesBinding.rvMovie.layoutManager = LinearLayoutManager(context)
-            fragmentMoviesBinding.rvMovie.setHasFixedSize(true)
-            fragmentMoviesBinding.rvMovie.adapter = adapter
+        showLoading(true)
 
-            viewModel.getMovies.observe(viewLifecycleOwner, handleData)
+        fragmentMoviesBinding.rvMovie.layoutManager = LinearLayoutManager(context)
+        fragmentMoviesBinding.rvMovie.setHasFixedSize(true)
+        fragmentMoviesBinding.rvMovie.adapter = adapter
 
-        }
-
-    }
-
-    private val handleData = Observer<com.daffa.moviecatalogue.core.data.source.Resource<List<Movie>>> {
-        if (it != null) {
-            when (it) {
-                is com.daffa.moviecatalogue.core.data.source.Resource.Loading -> showLoading(true)
-                is com.daffa.moviecatalogue.core.data.source.Resource.Success -> {
-                    showLoading(false)
-                    it.data?.let { data -> adapter.setMovies(data) }
-                    adapter.setOnItemClickCallback(object :
-                        MoviesAdapter.OnItemClickCallback {
-                        override fun onItemClicked(id: String) {
-                            selectedMovie(id)
-                        }
-                    })
-                    adapter.notifyDataSetChanged()
-                }
-                is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
-                    showLoading(false)
-                    activity?.toast("Something goes wrong!")
+        viewModel.getMovies.observe(viewLifecycleOwner, {
+            if (it != null) {
+                when (it) {
+                    is Resource.Loading -> showLoading(
+                        true
+                    )
+                    is Resource.Success -> {
+                        showLoading(false)
+                        it.data?.let { data -> adapter.setMovies(data) }
+                        adapter.setOnItemClickCallback(object :
+                            MoviesAdapter.OnItemClickCallback {
+                            override fun onItemClicked(id: String) {
+                                selectedMovie(id)
+                            }
+                        })
+                        adapter.notifyDataSetChanged()
+                    }
+                    is Resource.Error -> {
+                        showLoading(false)
+                        activity?.toast("Something goes wrong!")
+                    }
                 }
             }
-        }
+        })
     }
 
     private fun Context.toast(message: String) {

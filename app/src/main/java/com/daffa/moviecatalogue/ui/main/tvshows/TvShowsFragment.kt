@@ -19,65 +19,68 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class TvShowsFragment : Fragment() {
 
-    private val viewModel: MainViewModel by viewModel()
-
-    private lateinit var adapter: TvShowsAdapter
-
     private var _binding: FragmentTvshowsBinding? = null
     private val fragmentTvShowsBinding get() = _binding!!
+
+    private val viewModel: MainViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentTvshowsBinding.inflate(layoutInflater, container, false)
-        setHasOptionsMenu(true)
-        return fragmentTvShowsBinding.root
+        _binding = FragmentTvshowsBinding.inflate(inflater, container, false)
+        val view = fragmentTvShowsBinding.root
+        return view
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        with(fragmentTvShowsBinding.rvTvShow) {
+            if (this.adapter != null) {
+                this.adapter = null
+            }
+        }
+
         _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (activity != null) {
-            showLoading(true)
 
-            adapter = TvShowsAdapter()
+        val adapter = TvShowsAdapter()
 
-            viewModel.getTvShows.observe(viewLifecycleOwner, handleData)
+        showLoading(true)
 
-            fragmentTvShowsBinding.rvTvShow.layoutManager = LinearLayoutManager(context)
-            fragmentTvShowsBinding.rvTvShow.setHasFixedSize(true)
-            fragmentTvShowsBinding.rvTvShow.adapter = adapter
-        }
-
-    }
-
-    private val handleData = Observer<com.daffa.moviecatalogue.core.data.source.Resource<List<TvShow>>> {
-        if (it != null) {
-            when (it) {
-                is com.daffa.moviecatalogue.core.data.source.Resource.Loading -> showLoading(true)
-                is com.daffa.moviecatalogue.core.data.source.Resource.Success -> {
-                    showLoading(false)
-                    it.data?.let { data -> adapter.setTvShow(data) }
-                    adapter.setOnItemClickCallback(object :
-                        TvShowsAdapter.OnItemClickCallback {
-                        override fun onItemClicked(id: String) {
-                            selectTvShow(id)
-                        }
-                    })
-                    adapter.notifyDataSetChanged()
-                }
-                is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
-                    showLoading(false)
-                    Toast.makeText(context, "Something goes wrong!", Toast.LENGTH_SHORT).show()
+        viewModel.getTvShows.observe(viewLifecycleOwner, {
+            if (it != null) {
+                when (it) {
+                    is com.daffa.moviecatalogue.core.data.source.Resource.Loading -> showLoading(
+                        true
+                    )
+                    is com.daffa.moviecatalogue.core.data.source.Resource.Success -> {
+                        showLoading(false)
+                        it.data?.let { data -> adapter.setTvShow(data) }
+                        adapter.setOnItemClickCallback(object :
+                            TvShowsAdapter.OnItemClickCallback {
+                            override fun onItemClicked(id: String) {
+                                selectTvShow(id)
+                            }
+                        })
+                        adapter.notifyDataSetChanged()
+                    }
+                    is com.daffa.moviecatalogue.core.data.source.Resource.Error -> {
+                        showLoading(false)
+                        Toast.makeText(context, "Something goes wrong!", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-        }
+        })
+
+        fragmentTvShowsBinding.rvTvShow.layoutManager = LinearLayoutManager(context)
+        fragmentTvShowsBinding.rvTvShow.setHasFixedSize(true)
+        fragmentTvShowsBinding.rvTvShow.adapter = adapter
     }
 
     private fun selectTvShow(id: String) {

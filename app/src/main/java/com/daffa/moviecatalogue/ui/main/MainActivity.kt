@@ -18,20 +18,19 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
-        val moviesFragment = MoviesFragment()
-        val tvShowFragment = TvShowsFragment()
-
-        makeCurrentFragment(moviesFragment)
+        if (savedInstanceState == null) {
+            makeCurrentFragment(MoviesFragment())
+        }
 
         activityMainBinding.bottomNav.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_movie -> {
                     activityMainBinding.mainAppText.setText(getString(R.string.fragment_movie_title))
-                    makeCurrentFragment(moviesFragment)
+                    makeCurrentFragment(MoviesFragment())
                 }
                 R.id.menu_tv_show -> {
                     activityMainBinding.mainAppText.setText(getString(R.string.fragment_tvShow_title))
-                    makeCurrentFragment(tvShowFragment)
+                    makeCurrentFragment(TvShowsFragment())
                 }
                 R.id.menu_favorite -> {
                     activityMainBinding.mainAppText.setText(getString(R.string.fragment_favorite_title))
@@ -39,6 +38,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             true
+        }
+    }
+
+    override fun onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            finish()
+        } else {
+            super.onBackPressed()
         }
     }
 
@@ -50,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun goToFavoriteModule() {
         val fragment = instantiateFavoriteFragment(pathModule)
-        if (fragment!=null) {
+        if (fragment != null) {
             makeCurrentFragment(fragment)
         }
     }

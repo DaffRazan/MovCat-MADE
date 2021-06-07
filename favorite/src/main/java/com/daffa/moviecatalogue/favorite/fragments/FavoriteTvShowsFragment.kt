@@ -28,13 +28,20 @@ class FavoriteTvShowsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentFavoriteTvShowsBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentFavoriteTvShowsBinding.inflate(inflater, container, false)
         val view = favTvShowsBinding.root
         return view
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        with(favTvShowsBinding.rvFavoriteTvShow) {
+            if (this.adapter != null) {
+                this.adapter = null
+            }
+        }
+
         _binding = null
     }
 
@@ -54,10 +61,10 @@ class FavoriteTvShowsFragment : Fragment() {
                 if (favTvShows.isNotEmpty()) {
                     adapter.setTvShow(favTvShows)
                     favTvShowsBinding.tvFilmNotFound.visibility = View.GONE
-                    favTvShowsBinding.lavFilmNotFound.visibility = View.GONE
+//                    favTvShowsBinding.lavFilmNotFound.visibility = View.GONE
                 } else {
                     favTvShowsBinding.rvFavoriteTvShow.visibility = View.GONE
-                    favTvShowsBinding.lavFilmNotFound.visibility = View.VISIBLE
+//                    favTvShowsBinding.lavFilmNotFound.visibility = View.VISIBLE
                     favTvShowsBinding.tvFilmNotFound.visibility = View.VISIBLE
                 }
             })

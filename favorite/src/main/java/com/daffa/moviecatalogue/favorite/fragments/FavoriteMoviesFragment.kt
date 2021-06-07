@@ -27,13 +27,20 @@ class FavoriteMoviesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentFavoriteMoviesBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentFavoriteMoviesBinding.inflate(inflater, container, false)
         val view = favMoviesBinding.root
         return view
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        with(favMoviesBinding.rvFavoriteMovie) {
+            if (this.adapter != null) {
+                this.adapter = null
+            }
+        }
+
         _binding = null
     }
 
@@ -52,10 +59,10 @@ class FavoriteMoviesFragment : Fragment() {
                 if (favMovies.isNotEmpty()) {
                     adapter.setMovies(favMovies)
                     favMoviesBinding.tvFilmNotFound.visibility = View.GONE
-                    favMoviesBinding.lavFilmNotFound.visibility = View.GONE
+//                    favMoviesBinding.lavFilmNotFound.visibility = View.GONE
                 } else {
                     favMoviesBinding.tvFilmNotFound.visibility = View.VISIBLE
-                    favMoviesBinding.lavFilmNotFound.visibility = View.VISIBLE
+//                    favMoviesBinding.lavFilmNotFound.visibility = View.VISIBLE
                     favMoviesBinding.rvFavoriteMovie.visibility = View.GONE
                 }
             })
