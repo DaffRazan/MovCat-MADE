@@ -54,8 +54,10 @@ class FavoriteTvShowsFragment : Fragment() {
                 if (favTvShows.isNotEmpty()) {
                     adapter.setTvShow(favTvShows)
                     favTvShowsBinding.tvFilmNotFound.visibility = View.GONE
+                    favTvShowsBinding.lavFilmNotFound.visibility = View.GONE
                 } else {
                     favTvShowsBinding.rvFavoriteTvShow.visibility = View.GONE
+                    favTvShowsBinding.lavFilmNotFound.visibility = View.VISIBLE
                     favTvShowsBinding.tvFilmNotFound.visibility = View.VISIBLE
                 }
             })

@@ -48,7 +48,7 @@ class MoviesAdapter :
             }
 
             itemView.setOnClickListener { onItemClickCallback.onItemClicked(movie.id.toString()) }
-            itemView.animation = loadAnimation(itemView.context, R.anim.item_anim)
+//            itemView.animation = loadAnimation(itemView.context, R.anim.item_anim)
         }
     }
 
