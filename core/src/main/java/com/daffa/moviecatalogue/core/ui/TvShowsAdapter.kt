@@ -45,7 +45,7 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() 
                 tvTvShowRating.text = tvShow.vote_average.toString()
             }
             itemView.setOnClickListener { onItemClickCallback.onItemClicked(tvShow.id.toString()) }
-            itemView.animation = AnimationUtils.loadAnimation(itemView.context, R.anim.item_anim)
+//            itemView.animation = AnimationUtils.loadAnimation(itemView.context, R.anim.item_anim)
         }
     }
 

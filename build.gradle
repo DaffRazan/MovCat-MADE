@@ -46,6 +46,7 @@ ext {
     kotlin_coroutines_version = "1.4.3"
     lifecycle_version = "2.3.1"
     room_version = "2.3.0"
+    lottieVersion = "3.7.0"
 
     materialVersion = '1.2.1'
     recyclerViewVersion = '1.2.0'
