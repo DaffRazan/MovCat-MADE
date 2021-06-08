@@ -28,6 +28,9 @@ class RemoteDataSource(private val apiService: ApiService) {
                 emit(ApiResponse.Error(e.toString()))
                 Log.e("RemoteDataSource", e.toString())
             }
+            finally {
+
+            }
         }.flowOn(Dispatchers.IO)
     }
 

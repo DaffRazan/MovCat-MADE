@@ -11,6 +11,7 @@ import com.daffa.moviecatalogue.core.utils.AppExecutors
 import com.daffa.moviecatalogue.core.utils.Constants
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -23,6 +24,7 @@ val databaseModule = module {
     factory { get<FilmDatabase>().filmDao() }
 
     single {
+        // encryption
         val passphrase: ByteArray = SQLiteDatabase.getBytes("movcat".toCharArray())
         val factory = SupportFactory(passphrase)
 
@@ -38,9 +40,16 @@ val databaseModule = module {
 
 val networkModule = module {
     single {
+        // certificate pinning
+        val hostname = "api.themoviedb.org"
+        val certificatePinner = CertificatePinner.Builder()
+            .add(hostname, "sha256/+vqZVAzTqUP8BGkfl88yU7SQ3C8J2uNEa55B7RZjEg0=")
+            .build()
+
         OkHttpClient.Builder()
             .connectTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
             .readTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
+            .certificatePinner(certificatePinner)
             .build()
     }
 
