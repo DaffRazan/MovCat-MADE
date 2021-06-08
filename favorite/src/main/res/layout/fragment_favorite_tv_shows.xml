@@ -45,6 +45,6 @@
         android:visibility="gone"
         app:lottie_autoPlay="true"
         app:lottie_fileName="no_movies.json"
-        app:lottie_loop="true" />
+        app:lottie_loop="false" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
