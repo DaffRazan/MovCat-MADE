@@ -1,5 +1,6 @@
 package com.daffa.moviecatalogue.core.data.source.local.entity
 
+import androidx.annotation.Keep
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity

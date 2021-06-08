@@ -1,7 +1,9 @@
 package com.daffa.moviecatalogue.core.data.source.remote.response
 
+import androidx.annotation.Keep
 import com.daffa.moviecatalogue.core.data.source.remote.response.model.Genre
 
+@Keep
 data class DetailMovieResponse(
     val adult: Boolean = false,
     val backdrop_path: String = "",

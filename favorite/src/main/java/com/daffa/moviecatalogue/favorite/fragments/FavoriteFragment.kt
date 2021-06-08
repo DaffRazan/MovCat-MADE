@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import com.daffa.moviecatalogue.favorite.SectionsPagerAdapter
 import com.daffa.moviecatalogue.favorite.databinding.FragmentFavoriteBinding
@@ -11,6 +12,7 @@ import com.daffa.moviecatalogue.favorite.favoriteModule
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
+@Keep
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null

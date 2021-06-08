@@ -9,6 +9,8 @@ import com.daffa.moviecatalogue.core.data.source.remote.network.ApiService
 import com.daffa.moviecatalogue.core.domain.repository.IMainRepository
 import com.daffa.moviecatalogue.core.utils.AppExecutors
 import com.daffa.moviecatalogue.core.utils.Constants
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -21,18 +23,22 @@ val databaseModule = module {
     factory { get<FilmDatabase>().filmDao() }
 
     single {
+        val passphrase: ByteArray = SQLiteDatabase.getBytes("movcat".toCharArray())
+        val factory = SupportFactory(passphrase)
+
         Room.databaseBuilder(
             androidContext(),
             FilmDatabase::class.java,
             "Film.db"
-        ).fallbackToDestructiveMigration().build()
+        ).fallbackToDestructiveMigration()
+            .openHelperFactory(factory)
+            .build()
     }
 }
 
 val networkModule = module {
     single {
         OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .connectTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
             .readTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
             .build()
