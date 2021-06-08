@@ -59,10 +59,10 @@ class FavoriteMoviesFragment : Fragment() {
                 if (favMovies.isNotEmpty()) {
                     adapter.setMovies(favMovies)
                     favMoviesBinding.tvFilmNotFound.visibility = View.GONE
-//                    favMoviesBinding.lavFilmNotFound.visibility = View.GONE
+                    favMoviesBinding.lavFilmNotFound.visibility = View.GONE
                 } else {
                     favMoviesBinding.tvFilmNotFound.visibility = View.VISIBLE
-//                    favMoviesBinding.lavFilmNotFound.visibility = View.VISIBLE
+                    favMoviesBinding.lavFilmNotFound.visibility = View.VISIBLE
                     favMoviesBinding.rvFavoriteMovie.visibility = View.GONE
                 }
             })
@@ -82,8 +82,10 @@ class FavoriteMoviesFragment : Fragment() {
             if (favMovies.isNotEmpty()) {
                 adapter.setMovies(favMovies)
                 favMoviesBinding.tvFilmNotFound.visibility = View.GONE
+                favMoviesBinding.lavFilmNotFound.visibility = View.GONE
             } else {
                 favMoviesBinding.tvFilmNotFound.visibility = View.VISIBLE
+                favMoviesBinding.lavFilmNotFound.visibility = View.VISIBLE
                 favMoviesBinding.rvFavoriteMovie.visibility = View.GONE
             }
         })
