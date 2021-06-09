@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Movcat</string>
+    <string name="runtime_text">%s Minutes</string>
     <string name="movies">Movies</string>
     <string name="tvshows">Tv Shows</string>
-    <string name="runtime_text">%s Minutes</string>
     <string name="detail_title">Avengers Infinity War</string>
     <string name="detail_desc">detail desc</string>
     <string name="detail_release_date">detail release date</string>
@@ -18,9 +18,6 @@
     <string name="fragment_movie_title">Explore trending Movies</string>
     <string name="fragment_tvShow_title">Explore trending Tv Shows</string>
     <string name="fragment_favorite_title">Your Favorite Films</string>
-    <string name="cd_favorite">favorite film</string>
-    <string name="no_movie_found">No Favorite Movie Found</string>
-    <string name="title_favorite">Favorite</string>
     <string name="fab">floating action button</string>
-
+    <string name="title_favorite">Favorite</string>
 </resources>

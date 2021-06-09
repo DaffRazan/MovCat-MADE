@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="no_tv_shown">No Favorite TV Show Found</string>
+    <string name="no_movie_found">No Movie Found</string>
 </resources>

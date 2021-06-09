@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bc_cardView"
     android:gravity="center"
-    tools:context=".ui.main.SplashScreenActivity">
+    android:background="?colorPrimary"
+    tools:context=".ui.main.SplashScreenActivity"
+    tools:ignore="Overdraw">
 
     <ImageView
         android:id="@+id/applogo"
